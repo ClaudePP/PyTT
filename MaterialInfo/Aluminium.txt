@@ -1,0 +1,14 @@
+# ------------- ALUMINIUM ----------- #
+Name: Aluminium
+Z: 13				        # Atomic Number
+Am: 26.9815    			    # Atomic Mass
+Density: 2.7       		    # [g/cm3] Density
+MeltingPoint: 900    		# [K]
+WorkFunction: 4.26     		# [eV]
+Emissivity: 0.05     		#  
+SpecificHeat: 0.9       	# [J/gK]
+Conductivity: 237       	# [?]
+ExpansionCoeff: 21e-6		# [1/K]
+Sublimation_C1: 8.27		# [-]
+Sublimation_C2: 15.94e+3	# [-]
+Sublimation_Heat: -         # [J/mol]

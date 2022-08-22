@@ -1,0 +1,5 @@
+# ------------ ARGON (11+) --------- #
+Name: Argon
+ParticleMass: 6.633E-26		# [Kg] 
+Nprotons: 18
+Nelectrons: 7

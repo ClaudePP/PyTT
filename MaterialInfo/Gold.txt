@@ -1,0 +1,14 @@
+# ------------- GOLD ----------- #
+Name: Gold
+Z: 79          			# Atomic Number
+Am: 196.96     			# Atomic Mass
+Density: 19.30     		# [g/cm3] Density
+MeltingPoint: 1437   		# [K]
+WorkFunction: 5.4      		# [eV]
+Emissivity: 0.021     		#  
+SpecificHeat: 0.13      	# [J/gK]
+Conductivity: 0.0       	# [?]
+ExpansionCoeff: 14.2e-6		# [1/K]
+Sublimation_C1: 8.80		# [-]
+Sublimation_C2: 17.58e+3	# [-]
+Sublimation_Heat: -         # [J/mol]
