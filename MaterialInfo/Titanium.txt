@@ -1,0 +1,14 @@
+# ------------- TITANIUM ----------- #
+Name: Titanium
+Z: 22				# Atomic Number
+Am: 47.867     			# Atomic Mass
+Density: 4.506     		# [g/cm3] Density
+MeltingPoint: 1900   		# [K]
+WorkFunction: 4.33     		# [eV]
+Emissivity: 1.0      		#  
+SpecificHeat: 0.528     	# [J/gK]
+Conductivity: 0.528     	# [?]
+ExpansionCoeff: 9e-6		# [1/K]
+Sublimation_C1: 9.11		# [-]
+Sublimation_C2: 23.23e+3	# [-]
+Sublimation_Heat: 0.0         # [J/mol]

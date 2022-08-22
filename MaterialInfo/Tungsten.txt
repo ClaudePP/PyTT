@@ -1,0 +1,14 @@
+# ------------- TUNGSTEN ----------- #
+Name: Tungsten
+Z: 74		    		        # Atomic Number
+Am: 183.84	    		        # Atomic Mass
+Density: 19.35      		        # [g/cm3] Density
+MeltingPoint: 3680  		        # [K]
+WorkFunction: 4.5		        # [eV]
+Emissivity: 0.4				#  
+SpecificHeat: Tungsten_Cp		# [J/gK]
+Conductivity: Tungsten_k	        # [W/mK]
+ExpansionCoeff: 4.5e-6  	        # [1/K]
+Sublimation_C1: -		        # [-]
+Sublimation_C2: -		        # [-]
+Sublimation_Heat: -	                # [J/mol]

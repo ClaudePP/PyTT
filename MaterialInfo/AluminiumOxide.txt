@@ -1,0 +1,14 @@
+# ------------- ALUMINIUM OXIDE ----------- #
+Name: AluminiumOxide
+Z: 13			            # Atomic Number
+Am: 26.9815    		        # Atomic Mass
+Density: 2.7       	        # [g/cm3] Density
+MeltingPoint: 2300    	    # [K]
+WorkFunction: 4.26     	    # [eV]
+Emissivity: 0.11 	        #  
+SpecificHeat: 0.9           # [J/gK]
+Conductivity: 237           # [?]
+ExpansionCoeff: 21e-6	    # [1/K]
+Sublimation_C1: 0	        # [-]
+Sublimation_C2: 0	        # [-]
+Sublimation_Heat: 0         # [J/mol]

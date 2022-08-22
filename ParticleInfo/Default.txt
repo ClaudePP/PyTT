@@ -1,0 +1,5 @@
+# ------------ DEFAULT --------- #
+Name: Default
+ParticleMass: 0		# [Kg]
+Nprotons: 0.0
+Nelectrons: 0.0

@@ -1,0 +1,49 @@
+# ------------- Input File for PyTT ------------------ #
+#     Do NOT change the description names              #
+#     There must be at least one space between name    #
+#	    and value.					                     #
+# ---------------------------------------------------- #
+
+
+# ------------ Define Beam ------------- #
+BeamType: Gaussian
+Particle: ParticleInfo/Proton.txt 
+Energy: 160 
+sigx: 6.2e-3 
+sigy: 1.3e-3 
+x0: 0.0 
+y0: 0.0 
+tpulse: 1.0 
+BCurrent: - 
+Npart: 1.123e16 
+frec: 1 
+# ---------------- Define Detector ----------------- #
+Material: MaterialInfo/Tungsten.txt 
+EneDep: EneDepData/Proton_Tungsten.txt
+DetType: WIRESCAN 
+# ------------ Parameters for WIRESCAN ------------- # 
+WIRESCAN_Plane: Horizontal 
+WIRESCAN_IniPos: -2.96e-2 
+WIRESCAN_EndPos: 2.96e-2 
+WIRESCAN_wWidth: 30e-6 
+WIRESCAN_wLength: 2e-2 
+WIRESCAN_wRes: 5e-4 
+WIRESCAN_Type: 1 
+WIRESCAN_wSpeed: 0.06 
+# ------------- Temperature Simulation Parameters -------------- # 
+TemperatureSimulation: Yes 
+T0: 300 
+dtPulse: 5e-4 
+dtCooling: 1e-3 
+EnableParameterVariation: Yes 
+RadiativeCooling: Yes 
+ThermoionicCooling: Yes 
+ConductiveCooling: No 
+SublimationCooling: No 
+# ------------- Intensity Simulation Parameters -------------- # 
+IntensitySimulation: Yes 
+Mu: 1.0 
+Eta: 1.0
+BEp: 0.0
+BEe: 0.0
+# --------------------------------------------------- #

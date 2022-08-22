@@ -1,0 +1,14 @@
+# --------- Default Material ------- #
+Name: Default
+Z: 0		    	        # Atomic Number
+Am: 0	    		        # Atomic Mass
+Density: 0      	        # [g/cm3] Density
+MeltingPoint: 0  	        # [K]
+WorkFunction: 0   	        # [eV]
+Emissivity: 0    	        #  
+SpecificHeat: 0  	        # [J/gK]
+Conductivity: 0   	        # [W/mK]
+ExpansionCoeff: 0	        # [1/K]
+Sublimation_C1: 0	        # [-]
+Sublimation_C2: 0	        # [-]
+Sublimation_Heat: 0         # [J/mol]

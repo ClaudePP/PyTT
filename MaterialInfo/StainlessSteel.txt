@@ -1,0 +1,14 @@
+# ------------- STAINLESS STEEL ----------- #
+Name: StainlessSteel
+Z: 26				        # Atomic Number
+Am: 55.845    			    # Atomic Mass
+Density: 8.0       		    # [g/cm3] Density
+MeltingPoint: 1600		# [K]
+WorkFunction: 4.4     		# [eV]
+Emissivity: 0.85     		#  
+SpecificHeat: 0.5       	# [J/gK]
+Conductivity: 15        	# [W/mK]
+ExpansionCoeff: 21e-6		# [1/K]
+Sublimation_C1: 0.0		# [-]
+Sublimation_C2: 0.0	# [-]
+Sublimation_Heat: 0.0         # [J/mol]

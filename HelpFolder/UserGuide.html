@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> PyTT2_UserManual </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+    /* Style the body */
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+    }
+
+    h1{text-align: center;}
+
+    /* Header/logo Title */
+    .header {
+        padding: 30px;
+        text-align: center;
+        background: #dd6758;
+        color: white;
+    }
+
+    /* Increase the font size of the heading */
+    .header h1 {
+        font-size: 40px;
+    }
+
+    .navbar {
+        overflow: hidden;
+        background-color: #333;
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+    }
+
+    /* Style the navigation bar links */
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    /* Right-aligned link */
+    .navbar a.right {
+        float: right;
+    }
+
+    /* Change color on hover */
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    /* Active/current link */
+    .navbar a.active {
+        background-color: #666;
+        color: white;
+    }
+
+    /* Column container */
+    .row {  
+        display: -ms-flexbox; /* IE10 */
+        display: flex;
+        -ms-flex-wrap: wrap; /* IE10 */
+        flex-wrap: wrap;
+    }
+
+    /* Create two unequal columns that sits next to each other */
+    /* Sidebar/left column */
+    .side {
+        -ms-flex: 20%; /* IE10 */
+        flex: 20%;
+        background-color: #f1f1f1;
+        padding: 20px;
+    }
+
+    .side a {
+        color: black;
+        float: left;
+        display: block;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+    .side a:hover{
+        color: rgb(85, 85, 85);
+    }
+
+    /* Main column */
+    .main {   
+        -ms-flex: 80%; /* IE10 */
+        flex: 80%;
+        background-color: white;
+        padding: 20px;
+    }
+
+    .main a{
+        color: black;
+        text-decoration: bold;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 20px;
+        text-align: center;
+        background: #ddd;
+    }
+
+    /*Code Box */
+    code {
+        font-family: Consolas,"courier new";
+        color: #dd6758;
+        background-color: #f1f1f1;
+        padding: 2px;
+        font-size: 105%;
+    }
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    tab1 { padding-left: 2em; }
+
+</style>
+</head>
+
+<body>
+    <div class="header">
+        <h1> PyTT2 User Manual </h1>
+    </div>
+
+
+    <div class="navbar">
+        <a href="PyTT2_MainHelp.html" >Home</a>
+        <a href="Download.html" >Download</a>
+        <a href="UserGuide.html" class="active">User Guide</a>
+        <a href="Contact.html" class="right">Contact</a>
+    </div>
+
+    <div class="row">
+        <div class="side" style="overflow: auto; width: 100px; height: 700px">
+            <h1>  <a href="#User_Guide"> <tab1> Index</a></h1>
+            <h4> <a href="#Code_Execution"> 1. Code Execution </a></h4>
+                <h5> <a href="#NecessaryLib"> <tab1> 1.1 Necessary Libraries</a></h5>
+                <h5><a href="#Executable"><tab1> 1.2 Executable </a></h5>
+                <h5><a href="#PythonCode"><tab1>1.3 Python Code Execution</a></h5>
+
+            <h4> <a href='#Folder_Structure'>2. Folder Structure </a></h4>
+            <h4> <a href="#InputFile">3. Input Parameters</a></h4>
+            <h4> <a href="#BeamDescription">4. Particle Beam </a></h4>
+                <h5> <a href="#TypeEne"><tab1>4.1 Particle Type and Energy</a></h5>
+                <h5> <a href="#BeamSpace"><tab1>4.2 Spatial Information</a></h5>
+                <h5> <a href="#BeamTime"><tab1>4.3 Temporal Information</a></h5>
+                <h5> <a href="#BeamIntensity"><tab1>4.4 Beam Intensity</a></h5>
+            <h4> <a href="#MaterialInfo">5. Material Information</a></h4>
+                <h5><a href="#MaterialSelection"><tab1>5.1 Material Selection</a></h5>
+                <h5><a href="#enedepdata"><tab1>5.2 Energy Deposition</a></h5>
+        </div>
+
+        <div class="main" style="overflow: auto; width: 100px; height: 700px; text-align:justify" >
+            <h1 id="User_Guide"> User Guide </h1>
+            <p>
+                PyTT has been implemented and thoroughly tested with Python 3.6.9 
+            </p>
+
+            <h2 id="Code_Execution"> 1. Code Execution </h3>
+            <h4 id="NecessaryLib"> 1.1 Necessary Libraries </h4>
+            <p>
+                ....
+            </p>
+
+            <h4 id="Executable"> 1.2 Executable </h4>
+            <p>
+                ....
+            </p>
+
+            <h4 id="PythonCode"> 1.3 Python Code Execution</h4>
+            <p>
+                PyTT code can be executed using Python. The file MAIN.py is the one in charge of starting the program execution.
+                This method allows the user to execute the program in two ways: <br><br>
+
+                If no input file is provided, the program will execute the user-friendly interface. <br><br>
+                
+                Example of execution with user-friendly interface: <br><br>
+                <code> $ python3 MAIN.py</code> <br><br>
+
+                If an imput file is provided the program will directly execute the simlation without loading
+                Qt libraries. The program output will directly be stored in the Output folder files. <br><br>
+
+                Example of execution without user-friendly interface:<br><br>
+
+                <code> $ python3 MAIN.py Input.txt</code> <br><br>
+
+            </p>
+
+            <h2 id="Folder_Structure"> 2. Folder Structure</h2>
+
+            <p>
+                It is important for the folder structure to remain untouched as the program will look for certain files where 
+                it believes they belong. The names of the folders and the files inside of them should also not be changed. <br><br>
+
+                <input type="image" src="Pictures/FolderStructure.png" alt="Submit" width="600" height="300" class="center">
+                
+                <br><br>
+
+                The main folder contains two very important files. MAIN.py that will execute the code and InputFile.txt
+                which contains an example of <a href="#InputFile"> Input File</a> that might be used for the simulationsfor the simulations. 
+
+                <br><br>
+
+                <ul style="padding-left:4em">
+                <li ><b> BeamDescription: </b> Made to contain all the .txt files related to spatial beam descriptions. See 
+                    <a href="#BeamDescription"> Beam Description Section </a> .</li> 
+                <br><br>
+
+                <li><b> EneDepData: </b> Made to contain all the .txt files with the information of the energy deposition. See
+                    <a href="#enedepdata"> Energy Deposition Section </a>. </li>
+                <br><br>
+
+                <li> <b> HelpFolder: </b> Contains all the .html documents necessary for accesing this User Guide. </li>
+
+                <br><br>
+                <li><b>MaterialInfo: </b> Made to contain all the .txt files with information about the different materials
+                    accepted by the simulation program. Some of the properties of this materials are temperature dependent. 
+                    The necessary information for these parameters can be found in the folder ParametersWithTemperature. See 
+                    <a href='#MaterialInfo'>Material Information Section </a>.   </li>
+
+
+                    <br><br>
+                <li> <b> Modules: </b> Includes all the Python files that are necessary for the code to run. </li>
+                <br><br>
+
+                <li><b> Output: </b> This folder stores the output files that are automatically generated once the 
+                simulation is finished. See <a href=#Output> Output Files Section</a>. </li>
+
+                <br><br>
+
+                <li><b>ParticleInfo: </b> Made to contain all the .txt files with the information about 
+                the different types of particles that can constitute the beam. See <a href="#TypeEne" > 
+                    Particle Information Section </a>. </li>
+                
+                <br><br>
+
+                <li><b>QtInterface: </b> Includes all the Python files that are related to the User Friendly interface
+                See <a href="#QtInterface">User Friendly Interface Section.</a>  </li>
+
+                <br><br>
+
+                </ul>
+            </p>
+
+            <h2 id="InputFile"> 3. Input Parameters </h2>
+
+            In the case the <a href="#QtInterface">User Interface</a> is being used, the necessary parameters can be provided by manually introducing 
+            them in the respective cells. This process can be less time consuming if an input file is used. The input file must be a text but it's name
+            can be changed. The structure of the file itself should be somewhat be conserved. 
+
+            <br><br>
+
+            This file is loaded into a python dictionary variable. This allows freedom in the order in which the different parameters 
+            can appear, but limits the name this variables might take. All the variable names should remain as given in the example. They must finish 
+            with ":" and there must be a space between the name of the variable and the value itself. Comments can be added next to each variable as 
+            long as there is at least one space between the variable and the coment. The following image shows
+            an example of input file. 
+            <br><br>
+
+            <input type="image" src="Pictures/ImputFile.png" alt="Submit" width="500" height="700" class="center">
+
+            <br><br>
+
+            All the paramenters required for the simulations should be given in the input file. Do not leave parameters empty. 
+            The meaning of the different parameters will be covered in the different sections of this manual. We can clasify these 
+            parameters in three groups: <a href="#BeamDescription"> Beam Parameters</a>, <a href="#DetectorDesc"> Detector 
+            description parameters</a> and <a href="#Simulation" >Simulation Parameters</a>.
+  
+            <br><br>
+
+            <h2 id="BeamDescription">4. Particle Beam </h2>
+
+            <h4 id="TypeEne">4.1 Particle Type and Beam Energy</h4>
+
+            The beam of particles can be composed by any type of particle or ion, as long as the necessary information 
+            for this incident particle is provided. The name of the incident particle/ion has to be provided to the "Particle:" variable, 
+            and it will be interpreted as a String. If one is executing the program without user interface, the name of 
+            the particle type to be used should be probided (e.g. Particle: ParticleInfo/Proton.txt ). If the user Friendly
+            interface is used, the function UploadFile already takes care of writting the path for you, so only the name of 
+            the particle is necessary (e.g. Particle: Proton ).
+            
+            <br><br> 
+
+            Even if they are not available by default, other types of particles/ions can be used. For that it is only necessary
+            to add another .txt file in this ParticleInformation folder following the same structure as the already present files. 
+            Be aware that the <a href="#enedepdata"> energy deposition </a> in the detector is dependent on the material and the type 
+            of particle. So in case of adding a new particle, a new file should be added as well in the folder EneDepData with the energy 
+            deposition information. This will be further discussed later on. 
+
+            <br><br>
+
+            The variable "Energy:" allows the user to set the energy of the beam of particles. The program is not limited to 
+            a range of energies as long as the necessary information is provided. That is, the correct energy <a href="#enedepdata"> energy deposition </a> 
+            file is provided. 
+            
+
+            
+            <h4 id="BeamSpace">4.2 Spatial Information</h4>
+
+            The "BeamType" variable helps us set up the information about the spatial distribution of the particle beam. 
+            It does not determine the total amount of particles at each point in space, but rather the proportion of 
+            particles at each point. 
+
+            If one set's this variable to "Gaussian", the program will interpret the beam shape as a 2D gaussian distribution:
+            <br> <br> 
+
+            <input type="image" src="Pictures/GaussianBeam.png" alt="Submit" width="450" height="150" class="center">
+
+            <br> <br> 
+
+            If this is the selected option, the parameters Posx ("x0"), Posy ("y0"), Sigx ("Sigma X") Sigy = ("Sigma Y") must
+            be provided. 
+
+            <br> <br> 
+
+            A more general beam profile distribution can be probided by giving as an imput the name (and path) of a 
+            file with the distribution of interest. (i.e. "BeamType: BeamDescription/GaussianProfile.txt").
+            This file must include a two line header and then in this order, Horizontal position, Vertical Position 
+            and the proportion of the particles at that point. For points laying in between the given space positions, 
+            the particle proportion is calculated by means of a linear interpolations to the closest points. 
+            When summing the particle proportions for all the space points, the result should be 1.
+
+            <br> <br> 
+
+            <h4 id="BeamTime">4.3 Temporal Information</h4>
+
+            In all the cases the beam of particles is considered to be a rectangular time pulse. The variable 
+            "Frequency" indicates how often we will have a particle beam. While the variable "PLength" indicates
+            the temporal length of the particle bunch itself. 
+
+            <br><br>
+
+            <input type="image" src="Pictures/PulseStruct.png" alt="Submit" width="600" height="200" class="center">
+
+            <br><br>
+
+            <h4 id="BeamIntensity">4.4 Beam Intensity</h4>
+            The variables "Intensity" and "Npart" are very closely related together by the following relation: 
+
+            <br><br>
+            <input type="image" src="Pictures/intensity.png" alt="Submit" width="250" height="150" class="center">
+
+            Where Qe is the charge of the electron. Because they are directly interwined, it is only necessary
+            to define one or the other. What is more, if both are defined an error will occur. Dor the case of 
+            <a href="Wire2">Wire Scanner 2</a> this relationship is slightly more convoluted as the proportion of the 
+            time the wire remains inside the particle beam is also conisidered (depens on velocity). 
+            
+            <br><br>
+
+        
+            <h2 id=MaterialInfo>5. Material Information</h2>
+
+            <h4 id="MaterialSelection"> 5.1 Material Selection</h4>
+
+            The variable "Material:" , as the name indicates, helps us select the material our detector will be made of.  
+            Several materials are already provided in the MaterialInfo folder. If the <a href="#QtInterface"> User Interface</a>
+            is being used, the relative path to the material file has to be provided. (i.e. "MaterialInfo/Tungsten.txt"). If the InputFile.txt 
+            is being used, only the name of this file will be necessary. But be aware that the name needs to match one of the file names in This
+            folder. This would be an example of the material information file that should be provided. 
+            
+            <br><br>
+
+            <input type="image" src="Pictures/tungsteninfo.png" alt="Submit" width="450" height="300" class="center">
+
+            <br><br> 
+
+            The simulation program is not limited to the materials provided in the MaterialInfo folder. If another material is of interest
+            a new text file can be added to this folder. The only limitation is that it must follow the structure of the already existing materials
+            and it must contain all the necesary material information. Some of these paramenters might vary considerably 
+            with temperature. In order to asses this variation the program accepts two types of inputs. If the value 
+            given for a parameter is a float (i.e. WorkFunction: 4.5), this parameter will be considered constant for all 
+            the temperatures reached during the simulations.
+            
+            <br><br>
+            
+            If instead of a float, a string is provided (i.e. SpecificHeat: Tungsten_Cp)
+            , the program will go to the folder "ParametersWithTemperature" and will look for a text file with that name +".txt" (i.e. Tungsten_Cp.txt).
+            All this files contain information about the parameters variation with temperature. These files always follow the same structure. 4lines of 
+            header, and then two columns, temperature and value. If the value of the temperature is smaller than 300, the value of the parameter for 300 
+            will be taken. If the temperature is higher than the maximum value probided, the parameter for the maximum temperature 
+            provided will be considered. In the other cases a linear interpolation between the different temperature values will calculate
+            the correct value of the parameter. 
+
+            There is an option in the inputfile, "EnableParameterVariation:" which can be set to Yes or No. If No is provided, 
+            even if a String has been given to some parameter values, the value of these parameter will be considered constant 
+            and equal to the first value of the parameter in this tables. 
+
+            <br><br>
+
+            <h4 id="enedepdata"> 5.2 Energy Deposition</h4>
+                The amount of energy depostied in the material is a parameter 
+                that greatly affects the results of the simulations, as it is explained in the <a href="#PysicalModels">
+                Physical Models</a> section. In order to allow the program to work in various ranges of energies 
+                the parameter of the energy deposition has been left as an indirect input value. Several programs 
+                can be used to calculate energy deposition (SRIM, ESTAR, PSTAR, Geant4, FLUKA, etc.) and it is left 
+                to the user to select the method of their choice. 
+                <br><br>
+                This Parameter is basically dependent on the detector's material, the beam particle type and it's energy. 
+                In the folder EneDepData one can find the files that the program uses to read the energy deposition. The File
+                names follow the logic "Particle_Material.txt". Where "Particle" and "Material" are the particle name and 
+                material name provided in input files. (i.e. "Particle: Proton", "Material: Carbon", the program will 
+                load the file "Proton_Carbon.txt" that can be found in this folder). If we have a look at any of this files: 
+                <br><br>
+                <input type="image" src="Pictures/EnergyDep.png" alt="Submit" width="450" height="250" class="center">
+                <br><br>
+                We will see that they contain a header and two columns. The first column is the energy of the beam. 
+                And the second one is the value of the energy deposition in the material (which must be previously calculated
+                by other means.) As it is at the moment, the particle energy provided must match the beam energies on this 
+                parameters. This files are uploaded as python dictionaries, the energy of the beam being the key. 
+                <br><br> 
+                If a the user is interested in an energy that is not provided by default, it can be easily added by adding 
+                a new line in the corresponding document. If a new material or a particle type that is added to the program, 
+                aside from the corresponding material and particle files an energy deposition file must be created following the 
+                naming convention. 
+
+            <h2 id="DetectorGeometry"> 6. Detector Type. </h2>
+
+            Three different detector types are available. The variable "DetType:" determines the type of detector That
+            will be used. Posible options are: SEM, FOIL, WIRESCAN. Even if in the input file variables for the other 
+            types of detectors are defined, only the variables corresponding to the detector type chosen will be uploaded. 
+
+                <h4 id="SEM">6.1 SEM Grid</h4>
+
+                <input type="image" src="Pictures/SemGrid.png" alt="Submit" width="500" height="350" class="center">
+
+                <br><br>
+
+                The SEM grid detector is conformed of a certain number of wires that will be indicated with the 
+                "NWires" variable. If the number of wires is even, the center of the beam will be in between the two 
+                central wires. If the numbre of wires is odd, the center of the beam will lie at the center of the 
+                central wire. The variables "Wwidth" and "Wlength" are self-explanatory and help the user to set the 
+                Wire thickness and wire lenght. The variable "Wsep" determines the separation between the wires.
+                Each one of these wires will be divided in smaller pieces. 
+                
+                <br><br>
+                The size of 
+                these pieces will be given by the variable "Wres" which stands for Wire Resolution. This wire resolution 
+                determines how accurately we describe the space of our simulation. The smaller this value the more accurate we 
+                will be. Nevertheless increasing the wire resolution increases considerably the computational power, 
+                and it might induce inestabilities in the temperature simulation solvers. For more information about This
+                check the <a href="#PhysicalModels">Physical Models</a> section, in particular, the <a href="ConductionSolvers">Solvers for 
+                conduction cooling </a> section. Notice that the space coordinate in the direction of the beam will not be reduced to smaller
+                pieces. This program is only valid for thin materials. Thin in the sense that the energy deposition in the material
+                is considered constant along the width. 
+
+                <br><br> 
+
+                The horizontal and vertical selection boxes ("H","V") indicate if the simulation of interest should measure the horizontal or 
+                vertical transverse profile of the beam. In practice what this changes is the orientation of the wires of the SEM grid. That is, 
+                if the "H" cell is selected, the wires will lie on the Y direction, while if "V" is selected, they will lie on the Horizontal
+                direction. Both boxes cannot be ticked at the same time. 
+
+                <br><br>
+
+                The variable "Nturns" indicates how many beam pulses are going to be simulated. The length of the simulation will be determined by 
+                the total number of pulses and also parameters like the "dtpulse" and "dtcooling" that will be explained in the 
+                <a href="#SimuPar">Simulation Parameters</a> section.            
+
+
+                <h4 id="Foil">6.2 Foil</h4>
+
+                <input type="image" src="Pictures/Foil.png" alt="Submit" width="500" height="350" class="center">
+                <br><br>
+
+                The dimensions of the foil perpendicular to the particle beam are determined by "Xwidth" and "Ywidth". 
+                The variable "Zwidth" determine the thickness of the foil. Here again, it is required for the foil thickness to be 
+                small. The foil will be divided in a certain number of cells. The number of horizontal divisions will be determined
+                by the "Nx" variable, while the number of vertical divisions will be determined by the "Ny" variable. 
+                As in the case of the SEM grid. The higher this number of divisions the more accurate the simulation will be spacially, 
+                but also the more computationally demanding. 
+
+                <br><br>
+
+                Againg, as in the case of the SEM grid, the variable "Nturns" indicate how many beam pulses are going to be simulated. 
+
+                <h4 id="Wire">6.3 Wire Scanner </h4>
+
+                This detector consists
+                in one single wire. With a wire lenght described by "wLength" and a wire thickness of "wWidth". The spatial resolution of the 
+                wire will be described by the "wRes" variable. Same explanations as in the case of the SEM grid apply here, the smaller 
+                this value the more precise but the more computationally demanding the simulations. As in the case of the SEM grids, one can 
+                decide to go for a horizontal transversal profile measurement "H" or a vertical profile measurement "V". This determines 
+                the direction of the movement of the wire. "H" means the wirre will be laying on the vertical direction and move horizontally. 
+                The variables "Ini" and "End" determine the initial and ending position of the scan. The variables "H" and "V" will determine if 
+                this initial and ending position are in the Y or the X axis. 
+
+                <br><br>
+
+                This program can simulate two types of wire scanners (W.SCAN 1 and W.SCAN 2). Both of them are the same type of detector but 
+                the logic on the movement is slightly different. 
+
+                <input type="image" src="Pictures/WireScan.png" alt="Submit" width="500" height="350" class="center">
+
+                <ul>
+                    <li><b>Wire 1:</b>
+                         The first type of wire scanners defines the fast wire scanners. It was very difficult to coordinate a temporal beam bunch 
+                         structure and the wire movement, so in this case, instead of having a beam bunch, we have a continuous beam, with the 
+                         same intensity at each instant of time. This might be an over estimation of the real exposure. In this case, the 
+                         wire will move at a velocity that can be set by the "Wspeed" variable. This will determine for how long the wire is 
+                        exposed to the beam. Variables such as "dtPulse" annd "dtCooling" do not play a role in this type of simulations, 
+                        due to the nonexisting beam pulse structure. The simulation length will always be the same. By default the time in
+                        this simulations will be divided in 100000 points. That is, from point Ini to point End, the wire will move 
+                        100000 times, the position where this wire is at each one of these points will be determined by the speed of the wire. 
+                        Also the time it will take the wire to do this 100000 points will be determined by the wire speed. 
+                        <br><br> 
+                        In this case the intensity of the beam will not be as easily related to the number of particles as in the other 
+                        cases. For this particular simulations, the variable Nparticles is the one that should be used.  
+                        <br><br>
+                    </li>
+                    <li><b>Wire 2:</b>
+                        The second type of wire scanner defines what could be called bunch per bunch wire scanner. The wire scanner will measure 
+                        one point of the beam profile every beam pulse. That is, it will start at the Ini position and every time there is a 
+                        beam pulse it will advance its position until it reaches the end. In this case the speed of the wire scanner is not really 
+                        important as it will remain still every beam pulse. The variable N pulses determines, the lenght of the simulations
+                        as in the SEM grid and FOIL cases, but in this case it also determines how accuratelly the beam profiled is measured as 
+                        more pulses implie more points in the curve. 
+                    
+                    </li>
+                  </ul>  
+            
+                <br><br>
+
+            <h2 id="SimuPar"> 7. Other Simulation Parameters</h2>
+
+            This simulation program is able to perform two types of simulation. "TEMPERATURE SIMULATION" refer to the 
+            simulation of the thermal evolution of the detector along time. "INTENSITY SIMULATION" refer to the simulation of 
+            the current generated in the detector along time. In order to perform this simulations the corresponding boxes 
+            have to be ticked or the variables "TempSIM:" and "IntSIM:" must be set to "Yes". If that is the case, the corresponding 
+            parameters in have to be provided. <br><br>
+
+            <ul>
+                <li><b>Temperature Simulation Parameters:</b>
+                    First we should select the which cooling mechanisms wull be considered in the simulation. At least one of them must be active. 
+                    In order to do that, we either check the box in the User interce or we set the variables "RadiativeCooling","ThermionicCooling",
+                    "ConductionCooling" and "SublimationCooling" to Yes or No, depending on our interest. Note that the ConductiveCooling method 
+                    might slow down the simulations considerably. The variable "T0" is used to set the initial temperature of the detector. 
+                    <br> <br> 
+
+                    Finally, the variables dtPulse and dtCooling are directly related to the time division of the simulation and will determine it's length
+                    and accuracy. For the simulations, the time will ve divided in smaller pieces, and th etemperature calculation will be done in between 
+                    this time steps. "dtPulse" is the lenght of the time steps when the beam is impinging the detector. Take into account that this 
+                    variable must be smaller than the pulse lenght. It is recomended to have at least ten points in time during the beam pulse. 
+                    The variable "dtCooling" is the same but it accounts for the division of the time when there is no beam of particles reaching the detectors
+                    that is during the cooling fase. Again, this variable should be smaller than the time it takes the detector to cool down. Around 100 
+                    points are recommended in this case so a smooth cooling is observed. Be aware that after a certain point reducing this values, 
+                    or what is the same increasing the number of simulation steps will not impruve the simulation accuracy but it will make each simulation 
+                    very time consuming. 
+
+                    <br><br> 
+
+                    For the specific case of the <a href="#Wire">Wire Scanner</a> 1, this values are not used, they can either be left blank or not 
+                    but the program will not read them. In that case the simulatoin will always take 100000 time steps. 
+                    <br><br>
+
+                </li>
+                <li><b>Intensity Simulation Parameters:</b>
+                    Even if they are clasified as Temperature simulations, the parameters "dtPulse" and "dtCooling" need to be set for the intensity 
+                    simulations. It is actually recomended that whenever an intensity simulation is of interes, the thermal simulation is also performed
+                    as things such as thermionic emission could affect the intensity result. As explained in the <a href="#PysicalModels">Physical Models</a>
+                    section, the charge in the detector will be generated by mainly two means. Charge deposition and secondary emission. 
+                    The secondary emission part is calculated internally and depends on the properties of the material and energy deposition. Whereas in
+                    order to calculate the energy deposition we need a little more information. The parameter "mu" indicates the proportion of 
+                    electrons that remain in the detector. That is, if the incident particle/ion has some electros, what proportion of them will remain 
+                    in the detector. Similarly, "eta" indicates   the proportion of protons that remain in the material. 
+                    "BS" indicates the proportion of backscatered electrons. 
+                </li>
+              </ul>  
+
+            
+
+
+            <h2 id="Output">8. Output Files </h2>
+
+            When executing the simulations with the userfriendly interface, an output window will open at the End
+            of the simulations. This window will contain some very simple graphs with the most representative 
+            results of the simulation. Independenly of the User interface being used or not, several files
+            will be created in the OutputFiles folder at the end of the simulations. The file "InputFileUsedForSimulation.txt"
+            contains the input values that were used for the simulation. 
+            <br><br> 
+              The file "MaxTempVSTime.txt" stores, as it's name indicates, the maximum temperature reached by the detector
+              as a function of time. At each instant of time it also indicates the value of the emissivity at that point, and 
+              in the case of wire scanner simulations, it indicates its position. 
+              The file "IntensityVSTime" stores the information of the intensity generated in the detector as a function 
+              of time. If it is a SEM grid this document will store the information of each one of the wires. 
+
+            <h2 id="QtInterface"> 9. User Friendly Interface</h2>
+
+              
+
+            <h2 id="PhysicalModels"> 10. Physical Models</h2>
+
+            A journal is being written containing all the information about the physical models used for this 
+            simulation code. DOI will be provided when available. 
+
+
+
+        
+
+
+
+
+
+
+
+          
+        </div>
+
+    </div>
+    
+
+
+</body>
+</html>
+
+
+
+

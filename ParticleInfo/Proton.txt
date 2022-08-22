@@ -1,0 +1,5 @@
+# ------------ PROTONS --------- #
+Name: Proton
+ParticleMass: 1.67E-27		# [Kg] 
+Nprotons: 1.0
+Nelectrons: 0.0
