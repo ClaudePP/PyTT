@@ -7,4 +7,5 @@
  
  Contact: n.f.araceli@gmail.com
  
-![plot](./directory_1/directory_2/.../directory_n/plot.png)
+![plot](./HelpFolder/PyTTScreanshot.png)
+![plot](./HelpFolder/PyTTresults.png)
