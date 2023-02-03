@@ -1,4 +1,4 @@
-# ------ This File launches the simulation ----- # 
+# ------------- This File launches the simulation --------------------------------- # 
 #
 # When this module is imported, it starts the simulation.
 # If there was an input file given at the beggining, this module was imported in the MAIN.py file. 
