@@ -1,11 +1,15 @@
-# -------- Execute simulation ---------------- #
-# Note: This simulation will be performed with #
-# the input file just created.                 #
-# ---------------------------------------------#
+# ------ This File launches the simulation ----- # 
+#
+# When this module is imported, it starts the simulation.
+# If there was an input file given at the beggining, this module was imported in the MAIN.py file. 
+# If there was no input file, this module is imported when pressing the simulate button in the user friendly interface. 
+
+
+# First as always one must load all the necessary modules. 
 
 import numpy as np
 import sys
-# This files contain all the files necesary for the temperature evolution simulation.
+
 from Modules import LoadingFileFunctions
 from Modules import TargetGeometry
 from Modules import CoreSimulationFunctions
@@ -13,11 +17,22 @@ from Modules import NecessaryVariables as nv
 from Modules import TempPhysicalModels 
 
 
-# ------------------------------------------------------- #
-
+# ------------- Load Input Files --------------------------------------------------- #
+# 
+# First of all we load all the necessary parameters given by the input file. 
+#
 LoadingFileFunctions.LoadInputFile(nv.RealInputFilename)
 
-# ----------------- Generate Geometry ------------------ #
+#
+# Here We generate the detector geometry. This means:
+#    We generate the vectors with the spatial coordinates of the detector. 
+#    We calculate some values like the detector volume and surface. 
+#    If the detector is a wire scanner this is slightly different, as the coordinates of the detector
+#    Will change with the movement. The detector coordinates are created in the simulation loop. 
+# The ParticleProportionMatrix calculates for the just calculted detector coordinates, the proportion of beam particles
+# hitting that postion. 
+
+
 
 if nv.DetType != "WIRESCAN":
     TargetGeometry.CreateDetector(nv.DetType)
@@ -28,8 +43,12 @@ else:
         print("Wire Scanner Simulations with Non Gaussian beams are still not available .... ")
         sys.exit()
         
-
-# ------------------ Execute Simulations --------------- #
+# ------------- Execute Simulations --------------------------------------------------- #
+# 
+# Here we are ready to execute the simulation. The executed simulation depends on 
+# the detector type. In this function we also store the simulation outputs and we 
+# write the simulation results in an outputfile. 
+# 
 
 if nv.Flag_Temperature == 1:
     if nv.DetType == "SEM":
