@@ -1,24 +1,29 @@
+# ------------- This File reads the input file and writes the output file --------------------------------- # 
+
 from Modules import NecessaryVariables as nv
 from Modules import ParticleBank as pb
 from Modules import MaterialBank as mb
 import sys
 
+# -------------     Load Input File    ------------------------------------------------------------- #
+# 
+# To read the input file we will read all the lines in the given file and store them in a dictionary. 
+# It is important that the input file follows the format Property: Value
+# Including the : and the space. Otherwise this function will not work properly. 
+# It is also important that the property names in the input file match the ones expected by this function. 
+# Look at the InputFile_Example.txt for a reference
 
 def LoadInputFile(FileName):
 
-    '''
-        This function reads the InputFile
-    '''
-    
     f = open(FileName)
 
     count = 0         # Line counter for FileName
     d_Params = {}     # Dictionary of Necesary Parameters.
 
+    # First we read all the lines, ignoring empty ones and save them in the dictionary
+    
     for l in f: 
         
-        # It is very important that the names in imput file match this ones
-         
         if len(l.split()) >= 2:
             d_Params.update({l.split()[0] : l.split()[1]})
         else: continue
@@ -26,8 +31,13 @@ def LoadInputFile(FileName):
         count += 1
 
     f.close()
-
-    #  ------ Beam Parameters ------- #
+    
+    #
+    # Now we match the values of this dictionary with the expected properties names and 
+    # we update the nevesary variables file with this inputs. 
+    #
+    
+    #  1)  Beam Parameters
 
     nv.BeamType = d_Params["BeamType:"]
     nv.Particle = pb.Particle(d_Params["Particle:"])
@@ -53,7 +63,10 @@ def LoadInputFile(FileName):
 
     nv.frec = float(d_Params["frec:"])
 
-    # ------- Material and Detector Parameters ------
+    # 2)  Material and Detector Parameters 
+    # Notice that only the necessary variables will be read. Even if 
+    # the input file contains more lines its ok. 
+    
     nv.Material = mb.Material(d_Params["Material:"])
     nv.DetType = d_Params["DetType:"]
 
@@ -93,8 +106,11 @@ def LoadInputFile(FileName):
         print("The detector type selected is not available")
         print("Exiting .....")
         sys.exit()
-
-    # ------ Temperature Simulation Parameters ------- #
+    
+    #
+    # 3) Temperature Simulation Parameters 
+    #
+    
     if d_Params["TemperatureSimulation:"] == 'Yes':
         nv.Flag_Temperature = 1
     elif d_Params["TemperatureSimulation:"] == 'No':
@@ -132,7 +148,10 @@ def LoadInputFile(FileName):
     elif d_Params["SublimationCooling:"] == 'No':
         nv.SublimationCooling = 0
 
-    # ------ Intensity Simulation Parameters ------- #
+    #    
+    # 4) Intensity Simulation Parameters 
+    #
+    
     if d_Params["IntensitySimulation:"] == 'Yes':
         nv.Flag_Intensity = 1
     elif d_Params["IntensitySimulation:"] == 'No':
@@ -143,8 +162,17 @@ def LoadInputFile(FileName):
     nv.BEp = float(d_Params["BEp:"]) 
     nv.BEe = float(d_Params["BEe:"]) 
 
-    # ------- Load appropiate energy deposition ----- #
-
+    #
+    # 5)  Load appropiate energy deposition 
+    #
+    # Notice that the energy deposition given in the input file 
+    # is a file name, with its corresponding path. 
+    # Here we read this file. We also create a dictionary. In this case 
+    # the keys of the dictionary are strings with the energy of the incident particles
+    # The nv.BEnergy has to match one of these keys or the program will complain. 
+    #
+    # See EneDepData folder for examples of Energy deposition files. 
+    
     EneDep_Filename = d_Params["EneDep:"]
     
     g = open(EneDep_Filename)
@@ -161,7 +189,13 @@ def LoadInputFile(FileName):
     nv.enemat = float(d_EneDep[nv.BEnergy])
     g.close()
 
-    # If there are electrons in the particle, get energy deposition. 
+    
+    # 
+    # If there are electrons in the incident particle the code will also look for the 
+    # electron energy deposition file. Be aware that the program will directly look for this file 
+    # in the EneDepData folder, without asking. 
+    #
+
     if nv.Particle.Nelectrons != 0:
         Energy_Particle_Electron = float(nv.BEnergy)*nv.Emass/nv.Particle.PartMass
 
@@ -190,7 +224,13 @@ def LoadInputFile(FileName):
         
         h.close()
 
-    # -------- Load Beam Distrubution if NonGaussianBeam ----- #
+    #    
+    # 6) Load Beam distribution if nongaussian beam. 
+    # 
+    # If a non gaussian beam type was selected, we will need an input file 
+    # indicating how many particles reach each point in space. 
+    # See the BeamDescription folder for examples of this input files. 
+    # 
 
     if nv.BeamType != "Gaussian":
         BeamShape_Filename = nv.BeamType
@@ -200,6 +240,19 @@ def LoadInputFile(FileName):
             if i > 1:
                 nv.Mat_BeamShape.append([float(l.split()[0]),float(l.split()[1]),float(l.split()[2])])
         p.close()
+
+
+        
+        
+        
+        
+# -------------     Write Output File    ------------------------------------------------------------- #
+#
+# This function will be executed after the simulation is finished, and it will create a series of output 
+# files with the requested information. Notice that if one wants other information to be stored 
+# this can be done by modifiying this function and adding the corresponding lines. 
+
+
 
 
 def WriteOutputPlotsTxt(foldername):
@@ -253,58 +306,6 @@ def WriteOutputPlotsTxt(foldername):
 
     f2.close()
 
-    # ------ Write SEM: Intensity per wire ---------------------- # 
-    '''
-    if nv.DetType == "SEM":
-        f4 = open(foldername+"SEM_IntVSTime_AllWires.txt","w")
-        f4.write(" Time [us]   |"); 
-        for k in range(0,nv.SEM_nWires):
-            f4.write("    Wire "+str(k)+"   |")
-        f4.write("\n")
-        for t in range(0,len(nv.V_Time)):
-            f4.write(str(nv.V_Time[t])+"    ")
-            for k in range(0,nv.SEM_nWires):
-                f4.write(str(nv.M_Current[k][t])+"     ")
-            f4.write("\n")
-        f4.close()
-
-    print("Output Files Saved as .txt in "+str(foldername))
-    '''
-    '''
-    # ----- Write Contribution of cooling ----- # 
-    f3 = open(foldername+"ImportanceCoolingMethods.txt","w")
-    f3.write("# -------------- Cooling Methods Importance --------------- #\n\n")
-    f3.write("#     Temperature [K]   |   Radiation [K]   |   Thermionic [K]   |   Conduction [K]   |   Sublimation [K]     # \n")
-    for j in range(0,len(nv.CoolingImportance_Temp)):
-        f3.write(str(nv.CoolingImportance_Temp[j])+"    ")
-        f3.write(str(nv.CoolingImportance_Ems[j])+"    ")
-        f3.write(str(nv.CoolingImportance_Jth[j])+"    ")
-        f3.write(str(nv.CoolingImportance_Con[j])+"    ")
-        f3.write(str(nv.CoolingImportance_Sub[j])+"\n")
-
-    f3.close()
-
-    # ------ Write SEM Grid things: Temperature  and Intensity per wire ----- # 
-    if nv.DetType == "SEM":
-        f4 = open(foldername+"SEM_TempVSTime_AllWires.txt","w")
-        f5 = open(foldername+"SEM_IntVSTime_AllWires.txt","w")
-
-        f4.write(" Time [us]   |"); f5.write(" Time [us]     |")
-        for k in range(0,nv.SEM_nWires):
-            f4.write("    Wire "+str(k)+"   |")
-            f5.write("    Wire "+str(k)+"   |")
-        f4.write("\n"); f5.write("\n")
-        for t in range(0,len(nv.V_Time)):
-            f4.write(str(nv.V_Time[t])+"    "); f5.write(str(nv.V_Time[t])+"    "); 
-            for k in range(0,nv.SEM_nWires): 
-                f4.write(str(nv.M_MaxTemp[k][t])+"     ")
-                f5.write(str(nv.M_Current[k][t])+"     ")
-            f4.write("\n"); f5.write("\n")
-        
-        f4.close(); f5.close()
-    '''
-
-
-
+   
 
         
