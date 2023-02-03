@@ -1,10 +1,8 @@
 
 '''
     This File Contains all the Variables Necessary to execute the codes. 
-        1st: Phyisical constants used by the different programs. 
-        2nd: All necessary variables are initialized to 0 in this file. 
-        This is done in this way so all the variables can be modified whenever necessary 
-        by all the different functions. 
+    This is done in this way so all the variables can be modified whenever necessary 
+    by all the different functions. 
 
 '''
 
