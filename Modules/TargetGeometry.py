@@ -1,8 +1,17 @@
-'''
+# --------------------- Create detector geometry --------------------------------- #
+#
+#   This means, we will create some vectors or arrays containing the information of the 
+#   location in the x,y plane of our detecotor. The space has been discretized so 
+#   this vectors contain the information of all the central locations of the different 
+#   divisions of the detector. 
+#   This functions also calculate other properties such as the volume of the detectors 
+#   and their surface. 
+#   
+#   In the case of the SEM grids/Wire scanners, the user can specify the plane. 
+#   the creation of the geometry is done in the same way, however it is then rotated in case 
+#   the vertical plane was requested. 
 
-    This module describes the target for the need of thin target modeling.
 
-'''
 import numpy as np
 import math
 from Modules import NecessaryVariables as nv
@@ -164,6 +173,7 @@ def FOILDefinition(width_xaxis, Ncells_xaxis, width_yaxis, Ncells_yaxis, width_z
 def WIRESCAN_H_Definition(wirelength, width, resolution, X0, Y0):
     '''
     This aims to measure the horizontal profile. One wire. X0 fixed Y depends on wlength
+    The position in the x axis will be moved as the wire moves. 
     '''
     yvec = np.array(np.arange(-wirelength / 2. + resolution / 2., wirelength / 2. - resolution / 2, resolution))
     xvec = np.array([X0])
@@ -176,6 +186,7 @@ def WIRESCAN_H_Definition(wirelength, width, resolution, X0, Y0):
 def WIRESCAN_V_Definition(wirelength, width, resolution, X0, Y0):
     '''
     This aims to measure the Vertical profile. One wire. Y0 fixed X depends on wlength
+    The position in the y axes will be updated as the wire moves.
     '''
     yvec = np.array([Y0])
     xvec = np.array(np.arange(-wirelength / 2. + resolution / 2., wirelength / 2. - resolution / 2, resolution))
