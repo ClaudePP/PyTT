@@ -17,8 +17,6 @@ from QtInterface import QTPlotGeometry_Description
 import numpy as np
 import matplotlib
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 
 # Necesary libraries for plotting stuff.
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
