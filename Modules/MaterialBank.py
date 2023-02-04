@@ -1,13 +1,25 @@
-'''
-	This module contains all the materials information
-'''
+# ----------------------------------- Material Banck ----------------------------------------- #
+#
+# This module has all the functions and necesary information to load the material data. 
+# The material is a class, whith all the material properties being properties of this class. 
+#
+
 import sys
 import os
 import numpy as np
 class Material:
 
+    # When a Object of the class material is created this function is called. 
+    # 
     def __init__(self,MaterialFileName):
-
+	
+	#
+	# To create an object we need as an input the name of the file containing the information 
+	# of the material. Follow the examples in the MaterialInfo folder. 
+	# This creates a dictionary with the keys being the name of the material property and 
+	# and the contents are this values. 
+	#
+	
         h = open(MaterialFileName)
 
         d_MatInfo = {}
@@ -28,6 +40,9 @@ class Material:
         self.Z = float(d_MatInfo["Z:"])                             # Atomic Number
         self.Am = float(d_MatInfo["Am:"])                           # Atomic Mass
         self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function
+	
+	# The sublimation parameters are not fully needed, one can just have an empty value. 
+	#	
         if (d_MatInfo["Sublimation_C1:"] != "-" and d_MatInfo["Sublimation_C2:"] != "-"):
             self.Sublimation_C1 = float(d_MatInfo["Sublimation_C1:"])   # Parameter 1 of sublimation formula. 
             self.Sublimation_C2 = float(d_MatInfo["Sublimation_C2:"])    # Parameter 2 of sublimation formula. 
@@ -35,7 +50,14 @@ class Material:
             self.Sublimation_C1 = "-"
             self.Sublimation_C2 = "-"
 
-        #  --------- Emissivity --------- #
+        #  ------------------- Emissivity ----------------------- #
+	#
+	# The emissivity can be either a constant value or a string. If the value registered is 
+	# a string, the program will look for a file with that same name in the MaterialInflo/ParametersWithTemperature
+	# folder. This function loads the values of the parameter in another dictionary. Emissivity dictionary 
+	# where the temperature is the key and the values are the emissivity value. 
+	# 
+	
         EmsInput = d_MatInfo["Emissivity:"]; 
         self.D_Ems = {"Temperature": [], "Parameter": []}
         try: 
@@ -54,7 +76,11 @@ class Material:
 
         self.epsT = self.GetEmissivity(np.array([[300]]))   # Default at 300 K
 
-        # ------------ Specific Heat --------------- #
+        # ----------------------------------- Specific Heat ----------------------------------------- #
+	# 
+	# Same as the emissivity
+	#
+	
         CpInput = d_MatInfo["SpecificHeat:"]
         self.D_Cp = {"Temperature": [], "Parameter": []}
         try:
@@ -112,8 +138,7 @@ class Material:
                     self.D_H["Parameter"] += [float(l.split()[1])]
             f_h.close()
 
-        
-        
+    
         
         self.HT = self.GetH(np.array([[300]]))              # [J/K] Sublimation enthalpy
         
@@ -123,6 +148,14 @@ class Material:
         h.close()
 
 
+	#  ----------------------------------------------------------------------------------- #
+	
+	
+	# This function is called during the main loop of the simulations to update the values of 
+	# the parameter materials. This is the general function that does the search in a dictionary 
+	# for a given temperature. Afterwards there are the various functions feeding this ones the
+	# corresponding dictionary per parameter
+	
     def GetParameterValue(self,D_Par,T):
         # All the parameter search follows the same logic.                         #
         # ------------------------------------------------------------------------ #
