@@ -1,13 +1,20 @@
-'''
-    This file contains the information about all the abailable particle types for 
-    the beam. 
-    They have been implemented in classes. 
-'''
+# ----------------------- Particle Banck ----------------------# 
+#
+# This file is very similar to the Material Banck module. It contains the information 
+# of the particles conforming the beam. The Particle is a class, and we will create an 
+# object of this class during the simulation. The properties of this particles are 
+# properties of this calss. 
+# 
 
 import sys 
 
 class Particle: 
-
+    
+    # This function will be called when creating an object of the class, it needs the 
+    # input file with information of the particle properties. See the folder ParticleInfo for examples 
+    # of particle file informations. 
+    # 
+    
     def __init__(self, ParticleFileName):
         
         h = open(ParticleFileName)
