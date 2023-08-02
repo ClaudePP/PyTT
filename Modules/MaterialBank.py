@@ -39,7 +39,7 @@ class Material:
         self.rho = float(d_MatInfo["Density:"])                     # [g/cm3] Density
         self.Z = float(d_MatInfo["Z:"])                             # Atomic Number
         self.Am = float(d_MatInfo["Am:"])                           # Atomic Mass
-        self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function
+        #self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function
 	
 	# The sublimation parameters are not fully needed, one can just have an empty value. 
 	#	
@@ -97,6 +97,30 @@ class Material:
             f_cp.close()
 
         self.CpT = self.GetCp(np.array([[300]]))            # [J/gK] Specific Heat
+        
+        
+        
+        #---------------------------------Work function --------------------------
+        
+        
+        WfInput = d_MatInfo["WorkFunction:"]
+        self.D_Wf = {"Temperature": [], "Parameter": []}
+        try:
+            Wf = float(WfInput)
+            self.D_Wf["Temperature"] += [300.0]; self.D_Wf["Parameter"] += [Wf]
+
+        except ValueError:
+            pathtowf = os.getcwd()+"/MaterialInfo/ParametersWithTemperature/"+WfInput+".txt"
+            f_wf = open(pathtowf,"r")
+            for j,l in enumerate(f_wf,0):
+                if j > 3:
+                    self.D_Wf["Temperature"] += [float(l.split()[0])]
+                    self.D_Wf["Parameter"] += [float(l.split()[1])]
+            f_wf.close()
+
+        self.wfun = self.GetWf(np.array([[300]]))            # [eV] work function
+
+
 
         # --------------- Conductivity --------------- #
 
@@ -215,6 +239,15 @@ class Material:
             for j in range(0,len(Cp[i])):
                 Cp[i][j] = self.GetParameterValue(self.D_Cp,Temp[i][j])
         return Cp
+
+
+    def GetWf(self,Temp):
+        Wf = Temp**0
+        for i in range(0,len(Wf)):
+            for j in range(0,len(Wf[i])):
+                Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])
+        return Wf
+
 
     def Getk(self, Temp):
         KK = Temp**0
