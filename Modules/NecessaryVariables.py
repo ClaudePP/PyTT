@@ -29,6 +29,7 @@ re = 2.817940289e-15	# [m] Clasical electron radious
 Na = 6.602e+23          # [part/mol] Avogadro's number
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
+kgMeV = 5.587e+29       # [MeV/kg] for particle mass conversion
 
 ############################
 ParticleInfo_dir = "asd.txt"
