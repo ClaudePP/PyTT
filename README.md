@@ -5,7 +5,10 @@
  
  Developed by: Araceli Navarro & Mariusz Sapinski
  
- Contact: n.f.araceli@gmail.com
+ Contact: n.f.araceli@gmail.com or mariusz.sapinski@psi.ch
  
 ![plot](./HelpFolder/PyTTScreanshot.png)
 ![plot](./HelpFolder/PyTTresults.png)
+
+
+see also: https://sapinski.web.cern.ch/sapinski/soft/pyTT/index.html
