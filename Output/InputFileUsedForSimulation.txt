@@ -8,33 +8,33 @@
 # ------------ Define Beam ------------- #
 BeamType: Gaussian
 Particle: ParticleInfo/Proton.txt 
-Energy: 160 
-sigx: 6.2e-3 
-sigy: 1.3e-3 
+Energy: 123 
+sigx: 1.633744092562829e-3 
+sigy: 1.4016445836139826e-3 
 x0: 0.0 
 y0: 0.0 
-tpulse: 1.0 
-BCurrent: - 
-Npart: 1.123e16 
+tpulse: 1 
+BCurrent: 1.496e-3 
+Npart: - 
 frec: 1 
 # ---------------- Define Detector ----------------- #
-Material: MaterialInfo/Tungsten.txt 
-EneDep: EneDepData/Proton_Tungsten.txt
+Material: MaterialInfo/Carbon.txt 
+EneDep: EneDepData/Proton_Carbon.txt
 DetType: WIRESCAN 
 # ------------ Parameters for WIRESCAN ------------- # 
 WIRESCAN_Plane: Horizontal 
 WIRESCAN_IniPos: -2.96e-2 
 WIRESCAN_EndPos: 2.96e-2 
-WIRESCAN_wWidth: 30e-6 
+WIRESCAN_wWidth: 33e-6 
 WIRESCAN_wLength: 2e-2 
-WIRESCAN_wRes: 5e-4 
+WIRESCAN_wRes: 2.5e-4 
 WIRESCAN_Type: 1 
-WIRESCAN_wSpeed: 0.06 
+WIRESCAN_wSpeed: 0.0297 
 # ------------- Temperature Simulation Parameters -------------- # 
 TemperatureSimulation: Yes 
-T0: 300 
+T0: 1030 
 dtPulse: 5e-4 
-dtCooling: 1e-3 
+dtCooling: 5e-4 
 EnableParameterVariation: Yes 
 RadiativeCooling: Yes 
 ThermoionicCooling: Yes 
@@ -42,8 +42,8 @@ ConductiveCooling: No
 SublimationCooling: No 
 # ------------- Intensity Simulation Parameters -------------- # 
 IntensitySimulation: Yes 
-Mu: 1.0 
-Eta: 1.0
+Mu: 0.0 
+Eta: 0.0
 BEp: 0.0
 BEe: 0.0
 # --------------------------------------------------- #
