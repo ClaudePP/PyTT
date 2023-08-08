@@ -92,10 +92,16 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     Nv = nv.Na*nv.Material.rho/nv.Material.Am
     Ls = 1.0/(3.68e-17*Nv*nv.Material.Z**(1/3.))
 
-    SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.Amu))))
+    # ms, 20230808:
+    #SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.Amu))))
+    SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.kgMeV))))
     SEYe = 0.01*Ls*nv.Ele_enemat*1e+6*nv.Material.rho
 
-    Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp 
+    # ms, 20230808:
+    #Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp 
+    # nv.Eta - fraction of protons stopped in the material (thin targets: 0)
+    # nv.BSp - fraction of backscatterted protons (they also cross the wire surface twice)
+    Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp + nv.Particle.Nprotons*SEYp   
     Qse_e = nv.Particle.Nelectrons*(1-nv.Mu)*SEYe + nv.Particle.Nelectrons*nv.BEe*SEYe 
     
     
@@ -109,9 +115,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
 
     # Current Due to thermoionic emission. This term highly depends on the temperature of the detector at each point. 
     #
-    
+ 
+    # ms, ToDo: 1.602e-19 to nv:   
     thcurrent = nv.eSup*1e+4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*1.602e-19/(nv.BZ*Temperature))   # Current [A]
-
+ 
     #
     # Number of particles reaching each spot in the geometry, it is used to calculate the total current. 
     
@@ -153,7 +160,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
 
     
     elif nv.DetType == "WIRESCAN":
-        Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth
+        # ms: 20230808
+        # following Manon's suggestion:
+        # Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth
+        Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth*1e4
         Current1 = Surf*np.sum(Super_Q[0,:])                            # Current  Without Thermoionic emission [A]
         Current2 = Surf*np.sum(Super_Q[0,:])+np.sum(thcurrent[0,:])       # Current With Thermoionic Emission [A] 
 
@@ -169,7 +179,9 @@ def BeamHeating(Temperature, numberStepPulse):
    
     if (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Type == 1):
         dt = numberStepPulse
-        nparts = NumberPartcles(nv.Nparticles)*dt*nv.frec
+        # ms: 20230808, after Manon:
+        #nparts = NumberPartcles(nv.Nparticles)*dt*nv.frec   # synchrotron beam
+        nparts = NumberPartcles(nv.Nparticles)               # cyclotron beam        
     else:
         nparts = NumberPartcles(nv.Nparticles) / numberStepPulse
 
@@ -263,7 +275,9 @@ def ConductiveCooling(dt, Temperature):
             posvec2 = nv.yvec.copy()
             dx = nv.SEM_wRes
             Calculate_dTemp(posvec1,posvec2,Temperature,dt,dx)
-        elif (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Plane == "Vertical"):
+        # ms: 20230808, following Manon
+        #elif (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Plane == "Vertical"):
+        elif (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Plane == "Horizontal"):    
             posvec1 = nv.xvec.copy()
             posvec2 = nv.yvec.copy()
             dx = nv.WIRESCAN_wRes
