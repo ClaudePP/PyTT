@@ -1,0 +1,14 @@
+# ------------- MOLYBDENUM ------------ #
+Name: Molybdenum
+Z: 42		    		                # Atomic Number
+Am: 95.95	    		                # Atomic Mass
+Density: 10.28      		            # [g/cm3] Density
+MeltingPoint: 2896  		            # [K]
+WorkFunction: Molybdenum_WorkFunction	# [eV], wikipedia gives: 4.36-4.95
+Emissivity: Molybdenum_Emissivity	    #  (it is temperature dependent)
+SpecificHeat: Molybdenum_Cp		        # [J/gK]
+Conductivity: 138.0		                # [W/mK]
+ExpansionCoeff: 4.8e-6  	            # [1/K]
+Sublimation_C1: -		                # [N.A.]
+Sublimation_C2: -		                # [N.A.]
+Sublimation_Heat: -	                    # [J/mol]
