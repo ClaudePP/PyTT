@@ -30,10 +30,12 @@ nv.ParticleInfo_dir = resource_path("ParticleInfo")
 
 def main():
 
+    # launching from command line
     if len(sys.argv) > 1:
         nv.Flag_QtInterface = 0
         nv.RealInputFilename = sys.argv[1]
         from Modules import MAIN_CALLSIMULATION 
+    # launching from GUI    
     else:
         nv.Flag_QtInterface = 1
         from PyQt5.QtWidgets import QApplication, QWidget, QDialog, QMainWindow

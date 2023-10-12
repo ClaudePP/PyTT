@@ -64,8 +64,18 @@ def CreateDetector(detectortype):
             nv.eSup = np.asanyarray(vec[2])
             nv.eVol = np.asanyarray(vec[3])
             nv.IntSurf = np.asanyarray(vec[4])
-            
-        
+    
+    # 2023.10.09 - definition of a strip, for Marco Hartman (PSI's new splitter for IMPACT project)
+    elif detectortype == 'STRIP':
+        vec = STRIP_V_Definition(nv.STRIP_width,nv.STRIP_depth,nv.STRIP_length,nv.STRIP_Res)        
+        nv.xvec = np.asanyarray(vec[0])
+        nv.yvec = np.asanyarray(vec[1])
+        nv.eSup = np.asanyarray(vec[2])
+        nv.eVol = np.asanyarray(vec[3])
+        nv.IntSurf = np.asanyarray(vec[4])
+
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 
 def SEMgridHorizontal(Number_of_wires,wire_separation,wirelength,width,resolution):
@@ -201,3 +211,14 @@ def WIRESCAN_D_Definition(wirelength, width, resolution, X0, Y0):
     sys.exit()
 
     return 0.0,0.0,0.0,0.0,0.0,0.0
+
+# it is like WIRESCAN_V_Definition, except volume and surface
+def STRIP_V_Definition(width,depth,striplength,resolution):    
+    yvec = np.array([Y0])
+    # definition of bins along the strip:
+    xvec = np.array(np.arange(-striplength / 2. + resolution / 2., striplength / 2. - resolution / 2, resolution))
+    Sup = resolution * 2 * (width+depth)   # [m2] Radiative surface
+    Vol = resolution * width * depth  # [m3] Volumen
+    Isuf = width * resolution  # [m2] Surface of a cross-section
+
+    return xvec, yvec, Sup, Vol, Isuf

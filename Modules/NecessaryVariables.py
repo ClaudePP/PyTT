@@ -32,7 +32,7 @@ Amu = 6.022e+26         # [uma/kg]
 kgMeV = 5.587e+29       # [MeV/kg] for particle mass conversion
 
 ############################
-ParticleInfo_dir = "asd.txt"
+ParticleInfo_dir = "ParticleInfo/"
 
 ################################################
 #        Define the beam  Parameters           #
@@ -43,7 +43,7 @@ RealInputFilename = "asd.txt"
 BeamType = "BeamDescription/asd.txt"
 ParticleProportionMatrix = np.array([])              # Matrix With Particle Porportion at each detector point. [posx,posy,prop]
 Mat_BeamShape = []                                   # Matrix With beam shape (if not Gaussian)
-Particle = pb.Particle('ParticleInfo/Default.txt')   # Name of particle the beam is made of. Loot in ParticleBank for available options. 
+Particle = pb.Particle('ParticleInfo/Default.txt')   # Name of particle the beam is made of. Look in ParticleBank for available options. 
 BEnergy = 0                                          # Beam Energy [MeV]
 Intensity = 0                                        # Beam Intensity [A]
 Nparticles = 0                                       # Number of particles per beam bunch.
@@ -74,12 +74,13 @@ DetType = 'yxc'                     # Name of Detector Type. See TargetGeometry 
 is_it_SEM = 0                        
 is_it_WIRE = 0
 is_it_FOIL = 0
+is_it_STRIP = 0
 
 # For the simulation, detectors will be simulated as a grid. 
 xvec = np.asanyarray([0])           # Vector of x positions of each detor slice.
 yvec = np.asanyarray([0])           # Vector of y postions of each detector slice. 
 
-IntSurf = 0                         # [m2] Intensity surface: Surface of the detectors' slice particles see. 
+IntSurf = 0                         # [m2] Intensity surface: Surface of the detectors' slice particles see (cross section). 
 eVol = 0                            # [m3] Detector's slice volume.
 eSup = 0                            # [m2] Real surface of each detector slice.  
 
@@ -117,6 +118,20 @@ WIRESCAN_wCposX = 0.0                # Position of the center of the wire [m]
 WIRESCAN_wCposY = 0.0                # Position of the center of the wire [m]
 WIRESCAN_IniPos = 0.0                # Starting Scan Position [m]. Depending on Plane, it will be x or y. 
 WIRESCAN_EndPos = 0.0                # Endins Scan Position [m]
+
+
+# -------   STRIP Necessary Parameters  ----------
+
+STRIP_Plane = "asd"                 # Plane of beam to be measured: Horizontal, Vertical.
+STRIP_width = 0                     # Width of the strip [m]
+STRIP_length = 0                    # Length of the strip [m]
+STRIP_depth = 0                     # Depth od the strip in the beam direction [m]
+STRIP_res = 0                       # Resolution of the strip
+                                    # This is how big each slice will be. 
+
+
+
+
 
 ################################################
 #           Simulation Information             #
