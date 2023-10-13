@@ -3230,7 +3230,7 @@ background-color: rgb(212, 212, 212);</string>
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBoxThermoioniCooling">
+                <widget class="QCheckBox" name="checkBoxThermioniCooling">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -3265,7 +3265,7 @@ background-color: rgb(212, 212, 212);</string>
 }</string>
                  </property>
                  <property name="text">
-                  <string>  Thermoionic Cooling</string>
+                  <string>  Thermionic Cooling</string>
                  </property>
                 </widget>
                </item>

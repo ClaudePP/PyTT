@@ -21,6 +21,7 @@ from Modules import TempPhysicalModels
 # 
 # First of all we load all the necessary parameters given by the input file. 
 #
+print("MAIN_CALLSIMULATION debug: nv.RealInputFilename is:",nv.RealInputFilename)
 LoadingFileFunctions.LoadInputFile(nv.RealInputFilename)
 
 #
