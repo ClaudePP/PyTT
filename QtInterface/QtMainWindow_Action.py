@@ -81,11 +81,15 @@ class AppWindow(QMainWindow):
         self.ui.lineEditNpart.setText(d_Params["Npart:"])
         self.ui.lineEditPlength.setText(d_Params["tpulse:"])
         self.ui.lineEditBeamFrequency.setText(d_Params["frec:"])
-        self.ui.lineEditParticleFile.setText("ParticleInfo/"+d_Params["Particle:"]+".txt")
+        #self.ui.lineEditParticleFile.setText("ParticleInfo/"+d_Params["Particle:"]+".txt") # 2023.10.12: this goes to LoadingFileFunctions
+                                                                                            # otherwise command line launching does not work 
+        self.ui.lineEditParticleFile.setText(d_Params["Particle:"])
+
 
         # Writes Detector Definition Parameters. 
 
         self.ui.lineEditMaterialFile.setText("MaterialInfo/"+d_Params["Material:"]+".txt")
+        self.ui.lineEditMaterialFile.setText(d_Params["Material:"])  # 2023.10.12, moved to LoadingFile
 
         EneDepFilename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
         self.ui.lineEditEnergzDepFile.setText(EneDepFilename)
@@ -134,8 +138,8 @@ class AppWindow(QMainWindow):
             self.ui.checkBoxTEMPERATUREsim.setCheckState(2)
         if d_Params["RadiativeCooling:"] == 'Yes':
             self.ui.checkBoxRadiativeCooling.setCheckState(2)
-        if d_Params["ThermoionicCooling:"] == "Yes":
-            self.ui.checkBoxThermoioniCooling.setCheckState(2)
+        if d_Params["ThermionicCooling:"] == "Yes":
+            self.ui.checkBoxThermioniCooling.setCheckState(2)
         if d_Params["ConductiveCooling:"] == "Yes":
             self.ui.checkBoxConductionCooling.setCheckState(2)
         if d_Params["SublimationCooling:"] == "Yes":
@@ -218,7 +222,7 @@ class AppWindow(QMainWindow):
         self.ui.checkBoxTEMPERATUREsim_2.setCheckState(0)
 
         self.ui.checkBoxRadiativeCooling.setCheckState(0)
-        self.ui.checkBoxThermoioniCooling.setCheckState(0)
+        self.ui.checkBoxThermioniCooling.setCheckState(0)
         self.ui.checkBoxConductionCooling.setCheckState(0)
         self.ui.checkBoxSublimationCooling.setCheckState(0)
         self.ui.lineEditBeamT0.setText("")
@@ -352,9 +356,9 @@ class AppWindow(QMainWindow):
                 rf.write("WIRESCAN_Npulses: "+self.ui.lineEditBeamNpulses_3.text()+" \n")
         rf.write("# ------------- Temperature Simulation Parameters -------------- # \n")
         if self.ui.checkBoxTEMPERATUREsim.checkState():
-            rf.write("TemperatureSimulation: Yes \n")
+            rf.write("TempSIM: Yes \n")
         else:
-            rf.write("TemperatureSimulation: No \n")
+            rf.write("TempSIM: No \n")
         rf.write("T0: "+self.ui.lineEditBeamT0.text()+" \n")
         rf.write("dtPulse: "+self.ui.lineEditdtPulse.text()+" \n")
         rf.write("dtCooling: "+self.ui.lineEditdtCooling.text()+" \n")
@@ -367,10 +371,10 @@ class AppWindow(QMainWindow):
             rf.write("RadiativeCooling: Yes \n")
         else:
             rf.write("RadiativeCooling: No \n")
-        if self.ui.checkBoxThermoioniCooling.checkState():
-            rf.write("ThermoionicCooling: Yes \n")
+        if self.ui.checkBoxThermioniCooling.checkState():
+            rf.write("ThermionicCooling: Yes \n")
         else:
-            rf.write("ThermoionicCooling: No \n")
+            rf.write("ThermionicCooling: No \n")
         if self.ui.checkBoxConductionCooling.checkState():
             rf.write("ConductiveCooling: Yes \n")
         else:
@@ -382,14 +386,14 @@ class AppWindow(QMainWindow):
 
         rf.write("# ------------- Intensity Simulation Parameters -------------- # \n")
         if self.ui.checkBoxTEMPERATUREsim_2.checkState():
-            rf.write("IntensitySimulation: Yes \n")
+            rf.write("IntSIM: Yes \n")
         else:
-            rf.write("IntensitySimulation: No \n")
+            rf.write("IntSIM: No \n")
 
-        rf.write("Mu: "+self.ui.lineEditmu.text()+" \n")
-        rf.write("Eta: "+self.ui.lineEditeta.text()+"\n")
-        rf.write("BEp: "+self.ui.lineEditBSp.text()+"\n")            
-        rf.write("BEe: "+self.ui.lineEditBSp.text()+"\n")    
+        rf.write("mu: "+self.ui.lineEditmu.text()+" \n")
+        rf.write("eta: "+self.ui.lineEditeta.text()+"\n")
+        rf.write("BSp: "+self.ui.lineEditBSp.text()+"\n")            
+        rf.write("BSe: "+self.ui.lineEditBSp.text()+"\n")    
         rf.write("# --------------------------------------------------- #")
 
         rf.close()

@@ -16,6 +16,7 @@ import sys
 def LoadInputFile(FileName):
 
     f = open(FileName)
+    print("LoadingFunctions debug: FileName is:",FileName)
 
     count = 0         # Line counter for FileName
     d_Params = {}     # Dictionary of Necesary Parameters.
@@ -40,7 +41,8 @@ def LoadInputFile(FileName):
     #  1)  Beam Parameters
 
     nv.BeamType = d_Params["BeamType:"]
-    nv.Particle = pb.Particle(d_Params["Particle:"])
+    print("LoadingFileFunctions debug: d_Params[Particle:] is ",d_Params["Particle:"])
+    nv.Particle = pb.Particle("ParticleInfo/"+d_Params["Particle:"]+".txt")  # here
     nv.BEnergy = d_Params["Energy:"]
     if nv.BeamType == "Gaussian":
         nv.sigx = float(d_Params["sigx:"])
@@ -67,7 +69,7 @@ def LoadInputFile(FileName):
     # Notice that only the necessary variables will be read. Even if 
     # the input file contains more lines its ok. 
     
-    nv.Material = mb.Material(d_Params["Material:"])
+    nv.Material = mb.Material("MaterialInfo/"+d_Params["Material:"]+".txt")
     nv.DetType = d_Params["DetType:"]
 
     if nv.DetType == "SEM":
@@ -110,10 +112,12 @@ def LoadInputFile(FileName):
     #
     # 3) Temperature Simulation Parameters 
     #
-    
-    if d_Params["TemperatureSimulation:"] == 'Yes':
+    print("LoadingFileFunctions debug: d_Params is:", d_Params)
+    #if d_Params["TemperatureSimulation:"] == 'Yes':
+    if d_Params["TempSIM:"] == 'Yes':        
         nv.Flag_Temperature = 1
-    elif d_Params["TemperatureSimulation:"] == 'No':
+    #elif d_Params["TemperatureSimulation:"] == 'No':
+    else:    
         nv.Flag_Temperature = 0
 
     nv.T0 = float(d_Params["T0:"])
@@ -130,9 +134,9 @@ def LoadInputFile(FileName):
     elif d_Params["RadiativeCooling:"] == 'No': 
         nv.RadiativeCooling = 0 
 
-    if d_Params["ThermoionicCooling:"] == 'Yes':
+    if d_Params["ThermionicCooling:"] == 'Yes':
         nv.ThermoionicCooling = 1
-    elif d_Params["ThermoionicCooling:"] == 'No': 
+    elif d_Params["ThermionicCooling:"] == 'No': 
         nv.ThermoionicCooling = 0
     
     if d_Params["ConductiveCooling:"] == 'Yes':
@@ -152,15 +156,17 @@ def LoadInputFile(FileName):
     # 4) Intensity Simulation Parameters 
     #
     
-    if d_Params["IntensitySimulation:"] == 'Yes':
+    #if d_Params["IntensitySimulation:"] == 'Yes':
+    if d_Params["IntSIM:"] == 'Yes':
         nv.Flag_Intensity = 1
-    elif d_Params["IntensitySimulation:"] == 'No':
+    #elif d_Params["IntensitySimulation:"] == 'No':
+    else:
         nv.Flag_Intensity = 0
 
-    nv.Mu = float(d_Params["Mu:"])
-    nv.Eta = float(d_Params["Eta:"])
-    nv.BEp = float(d_Params["BEp:"]) 
-    nv.BEe = float(d_Params["BEe:"]) 
+    nv.Mu = float(d_Params["mu:"])
+    nv.Eta = float(d_Params["eta:"])
+    nv.BEp = float(d_Params["BSp:"]) 
+    nv.BEe = float(d_Params["BSe:"]) 
 
     #
     # 5)  Load appropiate energy deposition 
@@ -173,7 +179,9 @@ def LoadInputFile(FileName):
     #
     # See EneDepData folder for examples of Energy deposition files. 
     
-    EneDep_Filename = d_Params["EneDep:"]
+    print(d_Params)
+    EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
+    #EneDep_Filename = d_Params["EneDep:"]
     
     g = open(EneDep_Filename)
 

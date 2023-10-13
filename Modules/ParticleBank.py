@@ -17,6 +17,7 @@ class Particle:
     
     def __init__(self, ParticleFileName):
         
+        print("ParticleBank debug: ParticleFileName is:",ParticleFileName)
         h = open(ParticleFileName)
 
         d_PartInfo = {}
