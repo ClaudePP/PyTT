@@ -75,6 +75,7 @@ is_it_SEM = 0
 is_it_WIRE = 0
 is_it_FOIL = 0
 is_it_STRIP = 0
+is_it_SPLITTER = 0
 
 # For the simulation, detectors will be simulated as a grid. 
 xvec = np.asanyarray([0])           # Vector of x positions of each detor slice.
@@ -96,6 +97,14 @@ SEM_wRes = 0                        # Resolution of the wires: Each wire will be
 SEM_wSublim = np.asanyarray([0])    # Amount of sublimation suffered by the wire. [m]
                                     # it might be a vector. Each wire will srink depending 
                                     # on the maximum temperature reached by the wire
+
+# -------   SPLITTER Necessary Parameters  ----------
+
+SPLITTER_Plane = "asd"                   # Plane of beam to be measured: Horizontal, Vertical.
+SPLITTER_wWidth = 0                      # Width of the strip [m]
+SPLITTER_wDepth = 0                      # Depth of the strip [m]
+SPLITTER_wLength = 0                     # Length of the wire [m]
+SPLITTER_wRes = 0                        # Resolution of the strip: Each wire will be divided in slices. 
 
 # -------   FOIL Necessary Parameters ------------------
 
@@ -121,12 +130,12 @@ WIRESCAN_EndPos = 0.0                # Endins Scan Position [m]
 
 
 # -------   STRIP Necessary Parameters  ----------
-
-STRIP_Plane = "asd"                 # Plane of beam to be measured: Horizontal, Vertical.
-STRIP_width = 0                     # Width of the strip [m]
-STRIP_length = 0                    # Length of the strip [m]
-STRIP_depth = 0                     # Depth od the strip in the beam direction [m]
-STRIP_res = 0                       # Resolution of the strip
+# remove, it is splitter
+#STRIP_Plane = "asd"                 # Plane of beam to be measured: Horizontal, Vertical.
+#STRIP_width = 0                     # Width of the strip [m]
+#STRIP_length = 0                    # Length of the strip [m]
+#STRIP_depth = 0                     # Depth od the strip in the beam direction [m]
+#STRIP_res = 0                       # Resolution of the strip
                                     # This is how big each slice will be. 
 
 

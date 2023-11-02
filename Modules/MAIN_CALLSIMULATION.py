@@ -59,6 +59,14 @@ if nv.Flag_Temperature == 1:
         nv.M_MaxTemp = vec[2]
         nv.V_Current2 = vec[3]
         LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+
+    if nv.DetType == "SPLITTER":
+        vec = CoreSimulationFunctions.TempEvolSPLITTER()
+        nv.V_Time = vec[0]
+        nv.V_MaximumTemperature = vec[1]
+        #nv.M_MaxTemp = vec[2]
+        #nv.V_Current2 = vec[3]   # we should not care about current?
+        LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
             
     elif nv.DetType == "FOIL":
         vec = CoreSimulationFunctions.TimeEvolFOIL()

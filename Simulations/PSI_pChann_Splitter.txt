@@ -1,0 +1,53 @@
+# ------------- Input File for PyTT ------------------- #
+#      Do NOT change the description names              #
+#      There must be at least one space between name    #
+#	and value.					                        #
+# 	Explanation of each input at the end of file.       #
+# ----------------------------------------------------- #
+
+# this is configuration file for PSI EHT splitter
+# details provided by Marco Hatrmann
+# author: Mariusz.Sapinski@psi.ch
+# date: 2023.11.02
+
+
+# ------------ Define Beam ------------- #
+Particle: Proton	# From ParticleInfo/Proton.txt
+Energy: 590		# [MeV] Make sure the energy deposition number is in file 'particle_material.txt' file
+BeamType: Gaussian
+sigx: 3.75e-3   # [m] horizontal beam sigma in the location of the splitter
+sigy: 2.4e-3    # [m] vertical beam sigma in the location of the splitter
+x0: 0.0			# 0 is the center of the beam
+y0: 0.0			# 0 is the center of the beam
+tpulse: 8		# [s] Always needed
+BCurrent: 1.8e-3		# [A] beam current units from Qt interface (1.8e-3)  1.8 mA
+Npart: -	    # Either number of particles or current
+frec: 0.1       # simulation over 10 seconds
+# ---------------- Define Detector ----------------- #
+Material: Tungsten
+DetType: SPLITTER
+# ------------ Parameters for SPLITTER ------------- #
+SPLITTER_Plane: Horizontal
+SLPITTER_Pos: -1.95*3.75e-3 # [m], position of the splitter with respect to the beam center
+SPLITTER_wShape: Strip      # options: Wire, Strip, right now not used, only strip
+SPLITTER_wWidth: 5e-6       # [m], strip width (perpendiculat to the beam direction)
+SPLITTER_wDepth: 2e-3       # [m], 2mm - depth of the strip along the beam
+SPLITTER_wLength: 2e-2      # [m], 2cm - length of the strip
+SPLITTER_wRes: 0.6e-3       # [m], vertical bin resolution       
+# ------------ Temp Simulation Parameters -------------- #
+TempSIM: Yes
+T0: 300
+dtPulse: 5e-4               #  [s] temporal resolution of the simulation during the beam pulse
+dtCooling: 5e-4             #  [s] temporal resolution of the simulation when beam pulse is over - cooling only
+EnableParameterVariation: Yes    # temperature-variation 
+RadiativeCooling: Yes		# Yes 
+ThermionicCooling: Yes		# Yes
+ConductiveCooling: No		# Slows the simulation
+SublimationCooling: No
+# --------------- Int Simulation Parameters ------------ #
+IntSIM: No
+mu: 0.0
+eta: 0.0
+BSp: 0.0
+BSe: 0.0
+# ------------------------------------------------------ #

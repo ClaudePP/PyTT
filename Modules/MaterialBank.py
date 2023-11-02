@@ -195,7 +195,7 @@ class Material:
         #       extrapolation of the last two available values.                    #
         # ------------------------------------------------------------------------ #
 
-   
+        #print("MaterialBank/GetParameterValue D_Par:",D_Par,T)
         if len(D_Par["Temperature"]) == 1:
             Parameter = D_Par["Parameter"][0]
         else:
@@ -221,7 +221,8 @@ class Material:
                     Parameter = a*T + b
 
                     break
-        
+
+        #print(Parameter)
         return Parameter
 
     def GetEmissivity(self,Temp):
