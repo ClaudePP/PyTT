@@ -49,7 +49,7 @@ def LoadInputFile(FileName):
         nv.sigy = float(d_Params["sigy:"])
         nv.x0 = float(d_Params["x0:"])
         nv.y0 = float(d_Params["y0:"])
-    nv.tpulse = float(d_Params["tpulse:"])
+    nv.tpulse = float(d_Params["tpulse:"])     # [s] beam pulse duration
 
     if (d_Params["Npart:"] == "-") and (d_Params["BCurrent:"] == "-"):
         print("Beam Current not correctly set: No Value"); sys.exit()
@@ -80,6 +80,12 @@ def LoadInputFile(FileName):
         nv.SEM_wSep = float(d_Params["SEM_wSep:"])
         nv.SEM_wRes = float(d_Params["SEM_wRes:"])
         nv.Npulses = int(d_Params["SEM_Npulses:"])
+    elif nv.DetType == "SPLITTER":
+        nv.SPLITTER_Plane = d_Params["SPLITTER_Plane:"]
+        nv.SPLITTER_wWidth = float(d_Params["SPLITTER_wWidth:"])
+        nv.SPLITTER_wDepth = float(d_Params["SPLITTER_wDepth:"])
+        nv.SPLITTER_wLength = float(d_Params["SPLITTER_wLength:"])
+        nv.SPLITTER_wRes = float(d_Params["SPLITTER_wRes:"])
     elif nv.DetType == "FOIL":
         nv.FOIL_xwidth = float(d_Params["FOIL_xwidth:"])
         nv.FOIL_nx = float(d_Params["FOIL_nx:"])
@@ -91,7 +97,10 @@ def LoadInputFile(FileName):
         nv.WIRESCAN_Plane = d_Params["WIRESCAN_Plane:"]
         nv.WIRESCAN_IniPos = float(d_Params["WIRESCAN_IniPos:"])
         nv.WIRESCAN_EndPos = float(d_Params["WIRESCAN_EndPos:"])
+        nv.WIRESCAN_wShape = d_Params["WIRESCAN_wShape"]
         nv.WIRESCAN_wWidth = float(d_Params["WIRESCAN_wWidth:"])
+        if nv.WIRESCAN_wShape == "Strip":                                 # 2023.11.02: this is not yet implemented
+            new.WIRESCAN_wDepth = float(d_Params["WIRESCAN_wDepth"])
         nv.WIRESCAN_wLength = float(d_Params["WIRESCAN_wLength:"])
         nv.WIRESCAN_wRes = float(d_Params["WIRESCAN_wRes:"])
         nv.WIRESCAN_Type = int(d_Params["WIRESCAN_Type:"])
@@ -121,8 +130,8 @@ def LoadInputFile(FileName):
         nv.Flag_Temperature = 0
 
     nv.T0 = float(d_Params["T0:"])
-    nv.dtPulse = float(d_Params["dtPulse:"])
-    nv.dtCooling = float(d_Params["dtCooling:"])
+    nv.dtPulse = float(d_Params["dtPulse:"])           # [s] simulation resolution during the beam pulse
+    nv.dtCooling = float(d_Params["dtCooling:"])       # [s] simulation resolution after the beam pulse (cooling only)
 
     if d_Params["EnableParameterVariation:"] == 'Yes':
         nv.EnableParameterVariation = 1
@@ -256,12 +265,9 @@ def LoadInputFile(FileName):
         
 # -------------     Write Output File    ------------------------------------------------------------- #
 #
-# This function will be executed after the simulation is finished, and it will create a series of output 
+# This function is executed after the simulation is finished, and it creates a series of output 
 # files with the requested information. Notice that if one wants other information to be stored 
 # this can be done by modifiying this function and adding the corresponding lines. 
-
-
-
 
 def WriteOutputPlotsTxt(foldername):
     
@@ -270,13 +276,13 @@ def WriteOutputPlotsTxt(foldername):
 
     f1 = open(foldername+"MaxTempVSTime.txt","w")
     f1.write("# ------------ Maximum Temperature Vs Time ----------- #\n\n")
-    if (nv.DetType == "SEM") or (nv.DetType == "FOIL"):
+    if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
         f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   #\n")
     else: 
         f1.write("#   Emissivity  |  Time [us]  |  Position [cm]  |  Temperature [K]")
      
     for j in range(0,len(nv.V_MaximumTemperature)):
-        if (nv.DetType == "SEM") or (nv.DetType == "FOIL"):
+        if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
             f1.write(str(nv.V_Emissivity[j])+"   "+str(round(nv.V_Time[j]*1e+6,6))+"   "+str(round(nv.V_MaximumTemperature[j],3))+"\n")
         else: 
             f1.write(str(nv.V_Emissivity[j])+"   "+str(round(nv.V_Time[j]*1e+6,6))+"   "+str(round(nv.V_Pos[j]*1e+2,6))+"   "+str(round(nv.V_MaximumTemperature[j],3))+"\n")
@@ -287,7 +293,7 @@ def WriteOutputPlotsTxt(foldername):
 
     f2 = open(foldername+"IntensityVSTime.txt","w")
     f2.write("# ------------ Intensity Vs Time ----------- #\n\n")
-    if (nv.DetType == "SEM"): 
+    if (nv.DetType == "SEM") or (nv.DetType == "SPLITTER") : 
         f2.write("#   Time [us]  |  WirePos [cm]   | Intensity [mA] #\n")
 
     elif nv.DetType == "FOIL":
@@ -297,7 +303,7 @@ def WriteOutputPlotsTxt(foldername):
         f2.write("#   Time [us]  |   Position [cm]    |   Intensity  [mA] #\n")
       
     for j in range(0,len(nv.V_Time)):
-        if nv.DetType == "SEM":
+        if nv.DetType == "SEM" or nv.DetType == "SPLITTER":
             f2.write(str(nv.V_Time[j]*1e+6)+"   [ ")
             for nw in range(0,len(nv.xvec)):
                 f2.write(str(nv.xvec[nw])+", ")

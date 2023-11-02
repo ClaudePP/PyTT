@@ -12,3 +12,13 @@
 
 
 see also: https://sapinski.web.cern.ch/sapinski/soft/pyTT/index.html
+
+
+
+# -------- Quick start ----------------------------  #
+
+Running from command line:
+
+python3 MAIN.py Simulations/RRL123MeV.txt
+
+
