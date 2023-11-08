@@ -33,6 +33,7 @@ class Particle:
         self.PartMass = float(d_PartInfo["ParticleMass:"])    # Particle mass  [Kg]
         self.Nprotons = float(d_PartInfo["Nprotons:"])        # Number of Protons.
         self.Nelectrons = float(d_PartInfo["Nelectrons:"])     # Number of electrons. 
+        #self.Ek = 0                        # [MeV] kinetic energy, from main configuration file, needed by Bethe Bloch (not anymore, remove)
 
         h.close()
 
