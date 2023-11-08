@@ -7,6 +7,8 @@
 import sys
 import os
 import numpy as np
+from scipy import constants
+
 class Material:
 
     # When a Object of the class material is created this function is called. 
@@ -266,3 +268,5 @@ class Material:
             for j in range(0,len(HH[i])):
                 HH[i][j] = self.GetParameterValue(self.D_H,Temp[i][j])
         return HH
+
+
