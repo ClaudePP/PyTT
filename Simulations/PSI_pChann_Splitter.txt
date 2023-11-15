@@ -37,6 +37,7 @@ SPLITTER_wRes: 0.6e-3       # [m], vertical bin resolution
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
+EdepMethod: Interpolated    #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
 dtPulse: 5e-4               #  [s] temporal resolution of the simulation during the beam pulse
 dtCooling: 5e-4             #  [s] temporal resolution of the simulation when beam pulse is over - cooling only
 EnableParameterVariation: Yes    # temperature-variation 

@@ -19,6 +19,21 @@ see also: https://sapinski.web.cern.ch/sapinski/soft/pyTT/index.html
 
 Running from command line:
 
-python3 MAIN.py Simulations/RRL123MeV.txt
+> python3 MAIN.py Simulations/PSI_RRL123MeV.txt
+
+Running GUI (currently GUI is not working):
+
+> python3 MAIN.py
+
+
+from IPython console (eg. spyder 5)
+
+cd the_top_directory
+
+> run MAIN.py 
+
+
+Running tests:
+
 
 

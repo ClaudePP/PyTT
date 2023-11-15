@@ -13,6 +13,7 @@ from Modules import MaterialBank as mb
 ################################################
 #            Physical Constants                #
 ################################################
+# to do: use scipy.constants
 
 ST = 5.6704E-8 		    # [J/sec m2 K4] Stefan-Bolthman constant for black-body radiation law
 BZ = 1.38065e-23		# [J/K] Bolzmann constant
@@ -50,7 +51,7 @@ Nparticles = 0                                       # Number of particles per b
 sigx = 0                                             # sigma x of the beam [mm]
 sigy = 0                                             # sigma y of the beam [mm]
 tpulse = 0                                           # Length of the beam pulse [us]
-frec = 0                                             # Frequency of the beam. Beam per second [Hz]
+frec = 0                                             # Revolution frequency of the beam. Turns per second [Hz]
 Npulses = 0                                          # Total number of pulses. 
 x0 = 0.0                                             # Central position of the beam x [mm]
 y0 = 0.0                                             # Central position of the beam y [mm]
@@ -61,8 +62,8 @@ y0 = 0.0                                             # Central position of the b
 
 #Material = mb.Material('MaterialInfo/Default.txt')       # Name of Material detector is mada of. Look in Material Bank for available options.
 Material = 0
-enemat = 0                              # Energy deposited by Particle in Material. [MeV cm2/g]
-Ele_enemat = 0                          # Energy Deposited by Particle's Electrons in Material [MeV cm2/g]
+enemat = 0                              # Energy deposited by ion in Material. [MeV cm2/g]
+Ele_enemat = 0                          # Energy Deposited by ion's electrons (if there are any) in Material [MeV cm2/g]
 
 ################################################
 #         Geometry Information                 #
@@ -148,7 +149,9 @@ WIRESCAN_EndPos = 0.0                # Endins Scan Position [m]
 
 # ---------------- Temperature Simulation ---------------------- #
 Flag_Temperature = 0
-T0 = 0                              # Initial temperature of detector [K]
+T0 = 300                            # Initial temperature of detector [K]
+EdepMethod = "Interpolated"         # Method to compute energy deposit (dE/dx)
+Edep = 0.0                          # Edep (needed if EdepMethod = Value)
 dtPulse = 0.0                       # Length Time Step Heating [s]
 dtCooling = 0.0                     # Length Time step cooling [s]
 EnableParameterVariation = 0        # Active: 1      Inactive: 0

@@ -3,7 +3,9 @@
 from Modules import NecessaryVariables as nv
 from Modules import ParticleBank as pb
 from Modules import MaterialBank as mb
+from Modules import BetheBloch as bb
 import sys
+import numpy as np
 
 # -------------     Load Input File    ------------------------------------------------------------- #
 # 
@@ -97,10 +99,10 @@ def LoadInputFile(FileName):
         nv.WIRESCAN_Plane = d_Params["WIRESCAN_Plane:"]
         nv.WIRESCAN_IniPos = float(d_Params["WIRESCAN_IniPos:"])
         nv.WIRESCAN_EndPos = float(d_Params["WIRESCAN_EndPos:"])
-        nv.WIRESCAN_wShape = d_Params["WIRESCAN_wShape"]
+        nv.WIRESCAN_wShape = d_Params["WIRESCAN_wShape:"]
         nv.WIRESCAN_wWidth = float(d_Params["WIRESCAN_wWidth:"])
         if nv.WIRESCAN_wShape == "Strip":                                 # 2023.11.02: this is not yet implemented
-            new.WIRESCAN_wDepth = float(d_Params["WIRESCAN_wDepth"])
+            nv.WIRESCAN_wDepth = float(d_Params["WIRESCAN_wDepth"])
         nv.WIRESCAN_wLength = float(d_Params["WIRESCAN_wLength:"])
         nv.WIRESCAN_wRes = float(d_Params["WIRESCAN_wRes:"])
         nv.WIRESCAN_Type = int(d_Params["WIRESCAN_Type:"])
@@ -189,22 +191,33 @@ def LoadInputFile(FileName):
     # See EneDepData folder for examples of Energy deposition files. 
     
     print(d_Params)
-    EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
-    #EneDep_Filename = d_Params["EneDep:"]
+    nv.EdepMethod = d_Params["EdepMethod:"]
+    if nv.EdepMethod == "Interpolated":
+        EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
+        #EneDep_Filename = d_Params["EneDep:"]
     
-    g = open(EneDep_Filename)
+        g = open(EneDep_Filename)
 
-    d_EneDep = {}   # Dictionary with energy loss 
-    cont = 0
-    for l in g:
-        if cont == 0:
-            cont+=1
-            continue
-        else:
-            d_EneDep.update({l.split()[0] : l.split()[1]})
+        d_EneDep = {}   # Dictionary with energy loss 
+        cont = 0
+        for l in g:
+            if cont == 0:
+                cont+=1
+                continue
+            else:
+                d_EneDep.update({l.split()[0] : l.split()[1]})
         
-    nv.enemat = float(d_EneDep[nv.BEnergy])
-    g.close()
+        nv.enemat = float(d_EneDep[nv.BEnergy])  # do the interpolation!
+        g.close()
+    elif nv.EdepMethod == "Value":
+        # first check if field EneDep exists, throw exception if not
+        nv.enemat = float(d_Params["Edep:"])    
+    elif nv.EdepMethod =="BetheBloch":
+        # Bethe-Bloch dE/dx converted to energy deposit
+        # factor 100 is needed to convert wWidth in [m] to [cm]
+        nv.enemat = bb.BetheBloch(nv.Particle,float(nv.BEnergy),nv.Material)*nv.Material.rho*nv.WIRESCAN_wWidth*100*np.pi/4 
+    else:
+        print("Unknown DEDx method: verify!")    
 
     
     # 
