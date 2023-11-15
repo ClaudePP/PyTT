@@ -1,0 +1,57 @@
+# ------------- Input File for PyTT.       ------------ #
+#      Do NOT change the description names              #
+#      There must be at least one space between name    #
+#	and value.					                        #
+# 	Explanation of each input at the end of file.       #
+# ----------------------------------------------------- #
+
+# this is configuration file for scan of (a fraction) of 
+# LHC beam at injection, adapted from old study
+# author: Mariusz Sapinski, 2023.11.15
+
+
+# ------------ Define Beam ------------- #
+Particle: Proton	# From ParticleInfo/Proton.txt
+Energy: 450e3		# [MeV] i.e. 450 GeV
+BeamType: Gaussian
+sigx: 0.8e-3		# [m] beam sigma along the scan
+sigy: 0.53e-3       # [m] 
+x0: 0.0			    # 0 is the center of the sample
+y0: 0.0			    # 0 is the center of the sample
+tpulse: 1		    # [s] Always needed
+BCurrent: -		    # [A] 
+Npart: 0.8e14	    # either number of particles or the beam current (above)
+frec: 11236.0       # [Hz] LHC revolution frequency
+# ---------------- Define Detector ----------------- #
+Material: Carbon
+DetType: WIRESCAN
+# ------------ Parameters for WIRESCAN ------------- #
+WIRESCAN_Plane: Horizontal
+WIRESCAN_IniPos: -0.96e-2      # [m], start of the scan
+WIRESCAN_EndPos:  1.96e-2      # [m], end of the scan
+WIRESCAN_wShape: Wire          # options: Wire, Strip, Strip not yet coded
+WIRESCAN_wWidth: 33e-6         # [m], wire diameter
+WIRESCAN_wLength: 2e-2         # [m], length of the wire considered in simulation
+WIRESCAN_wRes: 2.5e-4          # [m], 
+WIRESCAN_Type: 1               # simulation type, explain
+WIRESCAN_wSpeed: 1.0           # [m/s] wire speed 
+WIRESCAN_Npulses: 1
+# ------------ Temp Simulation Parameters -------------- #
+TempSIM: Yes
+T0: 300
+EdepMethod: Value               #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
+Edep: 7640.0e-6                 # [MeV]
+dtPulse: 5e-4
+dtCooling: 5e-4
+EnableParameterVariation: Yes
+RadiativeCooling: Yes		# important for most temperatures
+ThermionicCooling: Yes		# important above 3000K
+ConductiveCooling: No		# not important and slow calculation
+SublimationCooling: No
+# --------------- Int Simulation Parameters ------------ #
+IntSIM: Yes
+mu: 0.0
+eta: 0.0
+BSp: 0.0
+BSe: 0.0
+# ------------------------------------------------------ #
