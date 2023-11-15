@@ -32,8 +32,8 @@ cd the_top_directory
 
 > run MAIN.py 
 
+Running tests from command line (temporary solution):
 
-Running tests:
-
+> python3 Test.py
 
 
