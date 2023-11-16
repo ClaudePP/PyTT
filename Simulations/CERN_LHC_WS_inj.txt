@@ -40,7 +40,7 @@ WIRESCAN_Npulses: 1
 TempSIM: Yes
 T0: 300
 EdepMethod: Value               #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
-Edep: 7640.0e-6                 # [MeV]
+Edep: 7640.0e-6                 # [MeV]... should be *pi/4 and divided by density*diameter
 dtPulse: 5e-4
 dtCooling: 5e-4
 EnableParameterVariation: Yes
