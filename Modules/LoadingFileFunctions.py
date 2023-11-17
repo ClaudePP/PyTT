@@ -211,7 +211,11 @@ def LoadInputFile(FileName):
         g.close()
     elif nv.EdepMethod == "Value":
         # first check if field EneDep exists, throw exception if not
-        nv.enemat = float(d_Params["Edep:"])    
+        try: 
+            nv.enemat = float(d_Params["Edep:"])
+        except:
+            print("Missing Edep field describing dE/dx [MeV*cm2/g] for this beam.")
+            exit()
     elif nv.EdepMethod =="BetheBloch":
         # Bethe-Bloch dE/dx converted to energy deposit
         # factor 100 is needed to convert wWidth in [m] to [cm]
