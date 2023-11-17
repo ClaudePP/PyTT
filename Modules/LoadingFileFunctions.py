@@ -193,8 +193,8 @@ def LoadInputFile(FileName):
     print(d_Params)
     nv.EdepMethod = d_Params["EdepMethod:"]
     if nv.EdepMethod == "Interpolated":
+        # data with dE/dx:
         EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
-        #EneDep_Filename = d_Params["EneDep:"]
     
         g = open(EneDep_Filename)
 
