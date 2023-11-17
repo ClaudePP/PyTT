@@ -196,19 +196,29 @@ def LoadInputFile(FileName):
         # data with dE/dx:
         EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
     
-        g = open(EneDep_Filename)
-
-        d_EneDep = {}   # Dictionary with energy loss 
-        cont = 0
-        for l in g:
-            if cont == 0:
-                cont+=1
-                continue
-            else:
-                d_EneDep.update({l.split()[0] : l.split()[1]})
-        
-        nv.enemat = float(d_EneDep[nv.BEnergy])  # do the interpolation!
-        g.close()
+        #g = open(EneDep_Filename)
+        #d_EneDep = {}   # Dictionary with energy loss 
+        #cont = 0
+        #for l in g:
+        #    if cont == 0:
+        #        cont+=1
+        #        continue
+        #    else:
+        #        d_EneDep.update({l.split()[0] : l.split()[1]})        
+        #nv.enemat = float(d_EneDep[nv.BEnergy])  # do the interpolation!
+        #g.close()
+        beamef=[]
+        dedxf=[]
+        with open(EneDep_Filename) as dedxfile:
+            for idx,line in enumerate(dedxfile):
+                print(idx,line)
+                if idx>0:
+                    beame,dedx = line.split()
+                    beamef.append(float(beame))
+                    dedxf.append(float(dedx))
+        #print(beamef,dedxf)            
+        # check for exceptions             
+        nv.enemat = np.interp([float(nv.BEnergy)],beamef,dedxf)
     elif nv.EdepMethod == "Value":
         # first check if field EneDep exists, throw exception if not
         try: 
