@@ -218,7 +218,7 @@ def LoadInputFile(FileName):
                     dedxf.append(float(dedx))
         #print(beamef,dedxf)            
         # check for exceptions             
-        nv.enemat = np.interp([float(nv.BEnergy)],beamef,dedxf)
+        nv.enemat = np.interp(nv.BEnergy,beamef,dedxf)
     elif nv.EdepMethod == "Value":
         # first check if field EneDep exists, throw exception if not
         try: 

@@ -52,6 +52,7 @@ else:
 # 
 
 if nv.Flag_Temperature == 1:
+    print(nv.DetType)
     if nv.DetType == "SEM":
         vec = CoreSimulationFunctions.TempEvolSEM()
         nv.V_Time = vec[0]
@@ -60,7 +61,7 @@ if nv.Flag_Temperature == 1:
         nv.V_Current2 = vec[3]
         LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
 
-    if nv.DetType == "SPLITTER":
+    elif nv.DetType == "SPLITTER":
         vec = CoreSimulationFunctions.TempEvolSPLITTER()
         nv.V_Time = vec[0]
         nv.V_MaximumTemperature = vec[1]
@@ -104,7 +105,7 @@ if nv.Flag_Temperature == 1:
             sys.exit()
     else:
         print("Select a Correct detector Option: ")
-        print("   Options: SEM, FOIL, WIRESCAN")
+        print("   Options: SEM, FOIL, WIRESCAN, SPLITTER")
  
         sys.exit()
 

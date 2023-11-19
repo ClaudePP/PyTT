@@ -1,0 +1,51 @@
+# ------------------ Input File for PyTT ------------------- #
+#  Do NOT change the description names.                      #
+#  There must be at least one space between name and value.  #
+# ---------------------------------------------------------- #
+
+# Linac4 SEM grid
+# by Araceli Navarro
+
+
+
+# ------------ Define Beam ------------- #
+Particle: H-
+Energy: 160         # [MeV]
+BeamType: Gaussian
+sigx: 1.1e-3		
+sigy: 1.0e-3
+x0: 0.0		
+y0: 0.0		
+tpulse: 100e-6      # [s] 100 us
+BCurrent: 25e-3     # [A]
+Npart: -
+frec: 1             # [Hz]
+# ---------------- Define Detector ----------------- #
+Material: Tungsten_Test
+DetType: SEM
+# ------------ Parameters for SEM ------------------ #
+SEM_Plane: Horizontal
+SEM_nWires: 1
+SEM_wWidth: 40e-6
+SEM_wLength: 5e-2 
+SEM_wSep: 0.4e-3 	
+SEM_wRes: 1e-3 		
+SEM_Npulses: 15 
+# ------------ Temp Simulation Parameters -------------- #
+TempSIM: Yes
+T0: 300
+EdepMethod: Interpolated
+dtPulse: 1e-6
+dtCooling: 1e-3
+EnableParameterVariation: Yes
+RadiativeCooling: Yes		
+ThermionicCooling: Yes	
+ConductiveCooling: Yes		
+SublimationCooling: No
+# --------------- Int Simulation Parameters ------------ #
+IntSIM: Yes
+mu: 1.0
+eta: 1.0
+BSp: 0.0     # proton backscattering
+BSe: 0.0     # electron backscattering
+# ------------------------------------------------------ #
