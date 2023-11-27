@@ -23,32 +23,31 @@ BCurrent: 20e-3		# [A]
 Npart: -		# Either number of particles or current
 frec: 1
 # ---------------- Define Detector ----------------- #
-Material: Tungsten
-DetType: WIRESCAN
+Material: Carbon
+DetType: SEM
 # ------------ Parameters for WIRESCAN ------------- #
-WIRESCAN_Plane: Horizontal
-WIRESCAN_IniPos: -2.96e-2      # [m], nominal -9.96e-2
-WIRESCAN_EndPos:  2.96e-2      # [m], nominal 12.04e-2
-WIRESCAN_wWidth: 30e-6
-WIRESCAN_wLength: 2e-2
-WIRESCAN_wRes: 5e-4
-WIRESCAN_Type: 1
-WIRESCAN_wSpeed: 0.06          # [m/s] wire speed 
-WIRESCAN_Npulses: 1
+SEM_Plane: Horizontal
+SEM_nWires: 1
+SEM_wWidth: 20e-6
+SEM_wLength: 2e-2
+SEM_wSep: 1e-3              # makes no sense for one wire
+SEM_wRes: 5e-4
+SEM_Npulses: 10
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
-dtPulse: 5e-4
-dtCooling: 1e-3
+EdepMethod: Interpolated
+dtPulse: 1e-6
+dtCooling: 1e-6
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		# Yes for screen
-ThermoionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
-ConductiveCooling: No		# Yes but slower the process. If no, Temp simulated values will be higher 
+ThermionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
+ConductiveCooling: No		# 
 SublimationCooling: No
 # --------------- Int Simulation Parameters ------------ #
 IntSIM: Yes
 mu: 1.0
 eta: 1.0
-BSp: 0.0
-BSe: 0.0
+BSp: 0.0    # proton backscattering coefficient
+BSe: 0.0    # electron backscattering coefficient
 # ------------------------------------------------------ #
