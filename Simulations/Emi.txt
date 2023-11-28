@@ -18,7 +18,7 @@ sigx: 5.0e-3		# [m] beam sigma along the scan
 sigy: 5.0e-3
 x0: 0.0			# 0 is the center of the sample
 y0: 0.0			# 0 is the center of the sample
-tpulse: 200e-6 		# [s] Always needed
+tpulse: 200 		# [us] Always needed
 BCurrent: 20e-3		# [A] 
 Npart: -		# Either number of particles or current
 frec: 1
@@ -32,7 +32,7 @@ SEM_wWidth: 20e-6
 SEM_wLength: 2e-2
 SEM_wSep: 1e-3              # makes no sense for one wire
 SEM_wRes: 5e-4
-SEM_Npulses: 10
+SEM_Npulses: 3
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
