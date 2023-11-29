@@ -28,9 +28,9 @@ Material: Tungsten
 DetType: SPLITTER
 # ------------ Parameters for SPLITTER ------------- #
 SPLITTER_Plane: Horizontal
-SLPITTER_Pos: -1.95*3.75e-3 # [m], position of the splitter with respect to the beam center
+SPLITTER_wPos: -7.31e-3      # [m], position of the splitter with respect to the beam center
 SPLITTER_wShape: Strip      # options: Wire, Strip, right now not used, only strip
-SPLITTER_wWidth: 50e-6       # [m], strip width (perpendiculat to the beam direction)
+SPLITTER_wWidth: 50e-6      # [m], strip width (perpendiculat to the beam direction)
 SPLITTER_wDepth: 2e-3       # [m], 2mm - depth of the strip along the beam
 SPLITTER_wLength: 2e-2      # [m], 2cm - length of the strip
 SPLITTER_wRes: 0.6e-3       # [m], vertical bin resolution       

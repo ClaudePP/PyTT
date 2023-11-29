@@ -67,7 +67,7 @@ def CreateDetector(detectortype):
     
     # 2023.10.09 - definition of a splitter, strip, for Marco Hartman (PSI's new splitter for IMPACT project)
     elif detectortype == 'SPLITTER':  
-        vec = SPLITTER_V_Definition(nv.SPLITTER_wWidth,nv.SPLITTER_wDepth,nv.SPLITTER_wLength,nv.SPLITTER_wRes)        
+        vec = SPLITTER_V_Definition(nv.SPLITTER_wPos,nv.SPLITTER_wWidth,nv.SPLITTER_wDepth,nv.SPLITTER_wLength,nv.SPLITTER_wRes)        
         nv.xvec = np.asanyarray(vec[0])
         nv.yvec = np.asanyarray(vec[1])
         nv.eSup = np.asanyarray(vec[2])
@@ -214,8 +214,8 @@ def WIRESCAN_D_Definition(wirelength, width, resolution, X0, Y0):
 
 # it is like WIRESCAN_V_Definition, except volume and surface
 # change name! SPLITTER
-def SPLITTER_V_Definition(width,depth,striplength,resolution):    
-    yvec = np.array([0.0])  # is this correct?
+def SPLITTER_V_Definition(wpos,width,depth,striplength,resolution):    
+    yvec = np.array([float(wpos)])  # is this correct?
     # definition of bins along the strip:
     xvec = np.array(np.arange(-striplength / 2. + resolution / 2., striplength / 2. - resolution / 2, resolution))
     Sup = resolution * 2 * (width+depth)   # [m2] Radiative surface

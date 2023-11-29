@@ -102,6 +102,7 @@ SEM_wSublim = np.asanyarray([0])    # Amount of sublimation suffered by the wire
 # -------   SPLITTER Necessary Parameters  ----------
 
 SPLITTER_Plane = "asd"                   # Plane of beam to be measured: Horizontal, Vertical.
+SPLITTER_wPos = 0                        # Position of the strip wrt beam center [m]
 SPLITTER_wWidth = 0                      # Width of the strip [m]
 SPLITTER_wDepth = 0                      # Depth of the strip [m]
 SPLITTER_wLength = 0                     # Length of the wire [m]

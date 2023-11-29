@@ -84,6 +84,7 @@ def LoadInputFile(FileName):
         nv.Npulses = int(d_Params["SEM_Npulses:"])
     elif nv.DetType == "SPLITTER":
         nv.SPLITTER_Plane = d_Params["SPLITTER_Plane:"]
+        nv.SPLITTER_wPos = d_Params["SPLITTER_wPos:"]
         nv.SPLITTER_wWidth = float(d_Params["SPLITTER_wWidth:"])
         nv.SPLITTER_wDepth = float(d_Params["SPLITTER_wDepth:"])
         nv.SPLITTER_wLength = float(d_Params["SPLITTER_wLength:"])

@@ -34,7 +34,7 @@ def CreateNiMatrix():
         return val
 
     Nmat = np.zeros([len(nv.xvec),len(nv.yvec)])
-
+    print(len(nv.yvec))
     if nv.BeamType == "Gaussian":
         for k in range(len(nv.xvec)):
             for j in range(len(nv.yvec)):
