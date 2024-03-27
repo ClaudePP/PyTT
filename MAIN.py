@@ -38,6 +38,7 @@ def main():
     # launching from GUI    
     else:
         nv.Flag_QtInterface = 1
+        nv.RealInputFilename = "GUI"
         from PyQt5.QtWidgets import QApplication, QWidget, QDialog, QMainWindow
         from QtInterface import QtMainWindow_Action
         app = QApplication(sys.argv)

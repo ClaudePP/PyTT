@@ -303,11 +303,12 @@ def WriteOutputPlotsTxt(foldername):
     #  ----- Write Maximum temperature vs time. ------ #
 
     f1 = open(foldername+"MaxTempVSTime.txt","w")
-    f1.write("# ------------ Maximum Temperature Vs Time ----------- #\n\n")
+    f1.write("# ------------ Maximum Temperature Vs Time ----------- #\n")
+    f1.write("# input file: "+nv.RealInputFilename+" \n")
     if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
-        f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   #\n")
+        f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")
     else: 
-        f1.write("#   Emissivity  |  Time [us]  |  Position [cm]  |  Temperature [K]")
+        f1.write("#   Emissivity  |  Time [us]  |  Position [cm]  |  Temperature [K] | \n")
      
     for j in range(0,len(nv.V_MaximumTemperature)):
         if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
