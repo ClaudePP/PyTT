@@ -1,52 +1,53 @@
-# ------------- Input File for PyTT_2.0_V3 ------------ #
-#      Do NOT change the description names              #
-#      There must be at least one space between name    #
-#	and value.					#
-# 	Explanation of each input at the end of file.   #
-# ----------------------------------------------------- #
+# ----------------- Input File for PyTT ---2024.03.27---------- #
+#  Do NOT change the variable names.                            #
+#  There must be at least one space between name  and value.    #
+#  Explanation of each input at the end of line.                #
+# ------------------------------------------------------------- #
 
-# this is PSI p-channel 
+# this is an example input file PSI p-channel 
 
 
 # ------------ Define Beam ------------- #
 Particle: Proton	# From ParticleInfo/Proton.txt
-Energy: 160		# [MeV] Make sure the energy deposition number is in file 'particle_material.txt' file
+Energy: 160		    # [MeV] Make sure the energy/energy deposition line is in file 'EneDepData/$(particle)_$(material).txt' file
 BeamType: Gaussian
-sigx: 6.2e-3		# [m] beam sigma along the scan
-sigy: 1.3e-3
-x0: 0.0			# 0 is the center of the sample
-y0: 0.0			# 0 is the center of the sample
-tpulse: 1.0 		# [s] Always needed
-BCurrent: -		# [A] units from Qt interface (1.8e-3)  1.8 mA, some misunderstanding here!
-Npart: 1.123e16		# Either number of particles or current
-frec: 1
+sigx: 6.2e-3		# [m] transverse beam sigma in horizontal plane
+sigy: 1.3e-3        # [m] transverse beam sigma in vertical plane
+x0: 0.0			    # [m] horizontal beam position, 0.0 is the center (of?)
+y0: 0.0			    # [m] vertical beam position, 0.0 is the center (of?)
+tpulse: 1.0 		# [s] beam pulse duration, for synchrotron should be larger than the scan duration
+BCurrent: -		    # [A] beam current, (e.g. 1.8 mA)
+Npart: 1.123e16		# Number of particles circulating in synchrotron, either this or beam current must be given
+frec: 1             # revolution frequency, important for synchrotron 
 # ---------------- Define Detector ----------------- #
 Material: Tungsten
 DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
-WIRESCAN_Plane: Horizontal
-WIRESCAN_IniPos: -2.96e-2      # [m], nominal -9.96e-2
-WIRESCAN_EndPos:  2.96e-2      # [m], nominal 12.04e-2
-WIRESCAN_wWidth: 30e-6
-WIRESCAN_wLength: 2e-2
-WIRESCAN_wRes: 5e-4
-WIRESCAN_Type: 1
+WIRESCAN_Plane: Horizontal     # Horizontal or Vertical 
+WIRESCAN_IniPos: -2.96e-2      # [m] initial posotion of the wire in the simulation (default -9.96e-2)
+WIRESCAN_EndPos:  2.96e-2      # [m] final position of the wire in simulation (default 12.04e-2)
+WIRESCAN_wShape: Wire          # target shapes, eg. Wire, Strip
+WIRESCAN_wWidth: 30e-6         # [m] wire diameter
+WIRESCAN_wLength: 2e-2         # [m] length of the wire considered in the simulation, should be larger than corresponding beam width
+WIRESCAN_wRes: 5e-4            # [m] length of wire slice, should be smaller than correspinding beam sigma 
+WIRESCAN_Type: 1               # version of the simulation procedure
 WIRESCAN_wSpeed: 0.06          # [m/s] wire speed 
-WIRESCAN_Npulses: 1
+WIRESCAN_Npulses: 1            # in case of scanning beam in the pulsed linac
 # ------------ Temp Simulation Parameters -------------- #
-TempSIM: Yes
-T0: 300
-dtPulse: 5e-4
-dtCooling: 1e-3
-EnableParameterVariation: Yes
-RadiativeCooling: Yes		# Yes for screen
-ThermoionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
-ConductiveCooling: No		# Yes but slower the process. If no, Temp simulated values will be higher 
-SublimationCooling: No
+TempSIM: Yes                   # if not then only beam is created (for visualization)
+T0: 300                        # initial and environment temperature (should be split)
+EdepMethod: Interpolated       # Value (then need to define Edep), Interpolated, BetheBloch        
+dtPulse: 5e-4                  # [s] time step for beam heating computation
+dtCooling: 5e-4                # [s] time step for cooling computation
+EnableParameterVariation: Yes  # Cp, etc as temperature dependent (if data available) 
+RadiativeCooling: Yes		   # take into account radiative cooling
+ThermionicCooling: Yes		   # take into account thermionic cooling, especially important above 3000K
+ConductiveCooling: No		   # Yes but slower the process. Sometimes breaks the simulation if large temp gradients
+SublimationCooling: No         # Usually not needed because very small     
 # --------------- Int Simulation Parameters ------------ #
-IntSIM: Yes
-mu: 1.0
-eta: 1.0
-BSp: 0.0
-BSe: 0.0
+IntSIM: Yes                    # unused? verify
+mu: 0.0                        # fraction of protons stopped in the target (for low energy beams) 
+eta: 0.0                       # fraction of electrons stopped in the target (for H- etc) 
+BSp: 0.0                       # fraction of beam protons backscattered
+BSe: 0.0                       # fraction of beam electrons (for H-) backscattered
 # ------------------------------------------------------ #
