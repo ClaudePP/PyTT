@@ -12,7 +12,7 @@
 
 # ------------ Define Beam ------------- #
 Particle: Proton	# From ParticleInfo/Proton.txt
-Energy: 450e3		# [MeV] i.e. 450 GeV
+Energy: 450000		# [MeV] i.e. 450 GeV
 BeamType: Gaussian
 sigx: 0.8e-3		# [m] beam sigma along the scan
 sigy: 0.53e-3       # [m] 
@@ -38,8 +38,8 @@ WIRESCAN_wSpeed: 1.0           # [m/s] wire speed
 WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
-T0: 300
-EdepMethod: Value               #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
+T0: 300                         # initial temperature
+EdepMethod: Interpolated        #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
 Edep: 7640.0e-6                 # [MeV]... should be *pi/4 and divided by density*diameter
 dtPulse: 5e-4
 dtCooling: 5e-4

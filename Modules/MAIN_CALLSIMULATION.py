@@ -10,7 +10,7 @@
 import numpy as np
 import sys
 
-from Modules import LoadingFileFunctions
+from Modules import FileIO
 from Modules import TargetGeometry
 from Modules import CoreSimulationFunctions
 from Modules import NecessaryVariables as nv
@@ -22,7 +22,7 @@ from Modules import TempPhysicalModels
 # First of all we load all the necessary parameters given by the input file. 
 #
 print("MAIN_CALLSIMULATION debug: nv.RealInputFilename is:",nv.RealInputFilename)
-LoadingFileFunctions.LoadInputFile(nv.RealInputFilename)
+FileIO.LoadInputFile(nv.RealInputFilename)
 
 #
 # Here We generate the detector geometry. This means:
@@ -59,7 +59,7 @@ if nv.Flag_Temperature == 1:
         nv.V_MaximumTemperature = vec[1]
         nv.M_MaxTemp = vec[2]
         nv.V_Current2 = vec[3]
-        LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+        FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
 
     elif nv.DetType == "SPLITTER":
         vec = CoreSimulationFunctions.TempEvolSPLITTER()
@@ -67,7 +67,7 @@ if nv.Flag_Temperature == 1:
         nv.V_MaximumTemperature = vec[1]
         #nv.M_MaxTemp = vec[2]
         #nv.V_Current2 = vec[3]   # we should not care about current?
-        LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+        FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
             
     elif nv.DetType == "FOIL":
         vec = CoreSimulationFunctions.TimeEvolFOIL()
@@ -76,9 +76,8 @@ if nv.Flag_Temperature == 1:
         nv.M_FancyTemperature = vec[2]
         nv.V_MaxCurrent1 = vec[3]
         nv.V_Current2 = vec[4]
-        LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+        FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
             
-          
     elif nv.DetType == "WIRESCAN":
         if nv.WIRESCAN_Type == 1:
             vec = CoreSimulationFunctions.TimeEvolWIRESCAN1()
@@ -87,7 +86,7 @@ if nv.Flag_Temperature == 1:
             nv.M_FancyTemperature= vec[2]
             nv.V_Current2 = vec[3]
             nv.V_Pos = vec[4]
-            LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+            FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
                 
         elif nv.WIRESCAN_Type == 2:
             vec = CoreSimulationFunctions.TimeEvolWIRESCAN2()
@@ -96,7 +95,7 @@ if nv.Flag_Temperature == 1:
             nv.M_FancyTemperature= vec[2]
             nv.V_Current2 = vec[3]
             nv.V_Pos = vec[4]
-            LoadingFileFunctions.WriteOutputPlotsTxt(nv.OutputFolderName)
+            FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
                
         else: 
             print("Select a type of wire simulation: ")
