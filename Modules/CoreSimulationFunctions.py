@@ -84,6 +84,7 @@ def TempEvolSEM():
                 nv.Material.HT = nv.Material.GetH(300*Temp**0)
             
             # this stores the value of the emissivity at each time step. It can be removed if it is not of interest. 
+            # 2do: either remove or do the same for other temperature-dependent parameters
             nv.V_Emissivity += [nv.Material.epsT[np.unravel_index(np.argmax(Temp),Temp.shape)]]
             
             #
@@ -782,7 +783,9 @@ def TimeEvolWIRESCAN1():
             
         nv.V_Emissivity += [nv.Material.epsT[np.unravel_index(np.argmax(Temp),Temp.shape)]]
 
-        heat = TempPhysicalModels.BeamHeating(Temp, dt)
+        heat,npart = TempPhysicalModels.BeamHeating(Temp, dt)
+        #print(heat,npart)
+        #sys.exit()
         #print(np.max(heat)); sys.exit()
         cold1 = TempPhysicalModels.RadiativeCooling(dt, Temp)
         cold2 = TempPhysicalModels.ThermoionicCooling(dt,Temp)

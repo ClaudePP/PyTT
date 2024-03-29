@@ -4,6 +4,7 @@ from Modules import NecessaryVariables as nv
 from Modules import ParticleBank as pb
 from Modules import MaterialBank as mb
 from Modules import BetheBloch as bb
+import datetime
 import sys
 import numpy as np
 
@@ -349,6 +350,34 @@ def WriteOutputPlotsTxt(foldername):
 
     f2.close()
 
-   
 
+
+# -------------     Write Output File    ------------------------------------------------------------- #
+#
+# This is a new function which outputs the data, 2024.03.29 mariusz.sapinski@psi.ch
+# in future user should be able to choose what he wants to save
+# and the header should contain main simulation parameters (beam size, intensity etc)
+
+def WriteResults(foldername):
+   
+    f1 = open(foldername+"Output.txt","w")
+    f1.write("# --------------- PyTT output file ------------------ \n")
+    f1.write("# input file: "+nv.RealInputFilename+" \n")
+    f1.write("# execution date and time: "+datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')+" \n")
+    f1.write("# --------------------------------------------------- \n")
+    if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
+        f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")   # correct
+    else:   # WIRESCANNER
+        f1.write("#   Time [us], Position [mm], Npart, MaxTemp [K], SEMcurr [uA], TOTcurr [uA] \n")
         
+    for j in range(0,len(nv.V_MaximumTemperature)):
+        if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
+          f1.write(str(nv.V_Emissivity[j])+"   "+str(round(nv.V_Time[j]*1e+6,6))+"   "+str(round(nv.V_MaximumTemperature[j],3))+"\n")
+        else:  # WIRESCANNER
+          # formatting output:
+          otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us
+          opos=+str(round(nv.V_Pos[j]*1e+3,6))    # position converted from m to mm
+          onpa=+str()
+          f1.write(otime+","+opos+","+str(round(nv.V_MaximumTemperature[j],3))+"\n")
+
+    f1.close()        

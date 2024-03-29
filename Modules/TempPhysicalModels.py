@@ -39,7 +39,7 @@ def CreateNiMatrix():
         for k in range(len(nv.xvec)):
             for j in range(len(nv.yvec)):
                 Ni = (1.0/(2*math.pi*nv.sigx*nv.sigy))*np.exp(-0.5*(((nv.xvec[k]-nv.x0)/nv.sigx)**2+((nv.yvec[j]-nv.y0)/nv.sigy)**2))
-                Nmat[k,j] = Ni*1e-4
+                Nmat[k,j] = Ni*1e-4  # sigx,y are in meters, why 1e-4?
     else: 
         for i,x in enumerate(nv.xvec,0):
             for j,y in enumerate(nv.yvec,0):
@@ -47,7 +47,14 @@ def CreateNiMatrix():
                 val = FindMatrixValue(x,y,nv.Mat_BeamShape)
                 Nmat[i][j] = val*1e-4
     
-    
+    # debugging
+    #with open('debug.txt','a') as fp:
+        #fp.write(str(Nmat[0][5]+','+str(Nmat.sum()))+'\n')
+        #fp.write(str(Nmat.sum())+'\n')
+    # this shows roughly corectness
+    #exit()
+    # to do: compute correction due to the binning!!!
+    # to do: skew gaussian option 
     return Nmat
 
 
@@ -163,7 +170,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         # ms: 20230808
         # following Manon's suggestion:
         # Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth
-        Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth*1e4
+        Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth*1e4                  # [cm2] ?
         Current1 = Surf*np.sum(Super_Q[0,:])                            # Current  Without Thermoionic emission [A]
         Current2 = Surf*np.sum(Super_Q[0,:])+np.sum(thcurrent[0,:])       # Current With Thermoionic Emission [A] 
 
@@ -173,6 +180,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
 #
 # Calculates the beam heating of each space segment at a given instant of time. We are considering that 
 # the heating will be always the same during the beam pulse.
+# 2024.03.29 - add sum of the number of particles to the output
 
 def BeamHeating(Temperature, numberStepPulse):
     
@@ -187,9 +195,8 @@ def BeamHeating(Temperature, numberStepPulse):
 
     dtemp =  nparts *  (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
     
-    # As an output we obtain the temperature variation for each point. 
-    
-    return np.asanyarray(dtemp)
+    # As an output we obtain the temperature variation for each point.     
+    return np.asanyarray(dtemp),nparts.sum()
 
 # ---------------------------------- Radiative Cooling -------------------------- # 
 
@@ -213,6 +220,7 @@ def RadiativeCooling(dt, Temperature):
 
 # ------------------------------- Thermionic Cooling --------------------------------------- # 
 
+# to do: correct name
 def ThermoionicCooling(dt,Temperature):
     '''
     Here thermoionic cooling is calculated

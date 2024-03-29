@@ -163,7 +163,7 @@ SublimationCooling = 0              # Active: 1      Inactive: 0
 
 # ---------------- Intensity Simulation ---------------------- #
 Flag_Intensity = 0
-Mu = 0.0
+Mu = 0.0                           # explain
 Eta = 0.0
 BEp = 0.0
 BEe = 0.0
@@ -188,7 +188,7 @@ V_Current2 = []                  # List of Currens along time for maximum curren
 M_Current = []                      # Matrix of currents along time. 
 V_Emissivity = []                   # List of values of emissivity used. 
 V_Pos = []                          # List of positions, used by wire scanners. 
-
+V_Npar = []                         # list of number of particles crossing the wire
 
 CoolingImportance_Temp = []
 CoolingImportance_Ems = []

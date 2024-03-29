@@ -29,8 +29,8 @@ WIRESCAN_IniPos: -2.96e-2      # [m], nominal -9.96e-2
 WIRESCAN_EndPos:  2.96e-2      # [m], nominal 12.04e-2
 WIRESCAN_wShape: Wire          # options: Wire, Strip
 WIRESCAN_wWidth: 24e-6         # [m], wire diameter
-WIRESCAN_wLength: 2e-2         # [m], length of the wire considered in simulation
-WIRESCAN_wRes: 2.5e-4
+WIRESCAN_wLength: 1e-2         # [m], length of the wire considered in simulation
+WIRESCAN_wRes: 1e-3
 WIRESCAN_Type: 1
 WIRESCAN_wSpeed: 0.06          # [m/s] wire speed 
 WIRESCAN_Npulses: 1            # should it be moved to the beam properties?
