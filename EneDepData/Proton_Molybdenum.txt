@@ -1,0 +1,2 @@
+﻿# Energy Beam [MeV]	¦      Energy Loss [MeV cm2 / g]
+590     1.642	

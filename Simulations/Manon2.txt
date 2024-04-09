@@ -1,0 +1,51 @@
+# ------------- Input File for PyTT ------------------ #
+#     Do NOT change the description names              #
+#     There must be at least one space between name    #
+#	    and value.					                     #
+# ---------------------------------------------------- #
+
+
+# ------------ Define Beam ------------- #
+BeamType: Gaussian
+Particle: Proton              # mod
+Energy: 590 
+sigx: 6.2e-3 
+sigy: 1.3e-3 
+x0: 0.0 
+y0: 0.0 
+tpulse: 1 
+BCurrent: 1.8e-3 
+Npart: - 
+frec: 1 
+# ---------------- Define Detector ----------------- #
+Material: Molybdenum          # mod
+EneDep: EneDepData/Proton_Molybdenum.txt
+DetType: WIRESCAN 
+# ------------ Parameters for WIRESCAN ------------- # 
+WIRESCAN_Plane: Horizontal 
+WIRESCAN_IniPos: -2.96e-2 
+WIRESCAN_EndPos: 2.96e-2 
+WIRESCAN_wShape: Wire          # add
+WIRESCAN_wWidth: 25e-6 
+WIRESCAN_wLength: 2e-2 
+WIRESCAN_wRes: 2.5e-4 
+WIRESCAN_Type: 1 
+WIRESCAN_wSpeed: 0.06 
+# ------------- Temperature Simulation Parameters -------------- # 
+TempSIM: Yes                  # mod
+T0: 300 
+EdepMethod: Interpolated      # add     
+dtPulse: 5e-4 
+dtCooling: 5e-4 
+EnableParameterVariation: Yes 
+RadiativeCooling: Yes 
+ThermionicCooling: Yes        # mod
+ConductiveCooling: No 
+SublimationCooling: No 
+# ------------- Intensity Simulation Parameters -------------- # 
+IntSIM: Yes                   # mod 
+mu: 0.0                       # mod
+eta: 0.9                      # mod
+BSp: 0.0                      # mod
+BSe: 0.0                      # mod
+# --------------------------------------------------- #

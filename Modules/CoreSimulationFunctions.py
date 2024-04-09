@@ -729,18 +729,11 @@ def TimeEvolWIRESCAN1():
         nv.WIRESCAN_wCposX = x0
         nv.WIRESCAN_wCposY = 0.0
         dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)   # calculate recommended dt
-
-        
-        
         
     if nv.Nparticles == 0.0:
         nv.Nparticles = nv.Intensity*dt/nv.Qe
         
-        
-
     TargetGeometry.CreateDetector(nv.DetType)
-    
-    
     
     #
     # We initialize the necesary parameters
