@@ -728,7 +728,7 @@ def TimeEvolWIRESCAN1():
         x0 = nv.WIRESCAN_IniPos; x1 = nv.WIRESCAN_EndPos
         nv.WIRESCAN_wCposX = x0
         nv.WIRESCAN_wCposY = 0.0
-        dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)
+        dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)   # calculate recommended dt
 
         
         
@@ -784,6 +784,7 @@ def TimeEvolWIRESCAN1():
         nv.V_Emissivity += [nv.Material.epsT[np.unravel_index(np.argmax(Temp),Temp.shape)]]
 
         heat,npart = TempPhysicalModels.BeamHeating(Temp, dt)
+        nv.V_Npar.append(npart)
         #print(heat,npart)
         #sys.exit()
         #print(np.max(heat)); sys.exit()
@@ -811,8 +812,8 @@ def TimeEvolWIRESCAN1():
         print("Simulation: ", step, "    From: ", Nsteps, "    Tmax: ", np.max(Temp), "   x: ", nv.xvec*1e+3 , " [mm]")
         #  ------------ Calculate Current Generated in Wire ------------ #
         V_current = TempPhysicalModels.CalculateCurrent(Flag_Current,Temp,1.0,dt)
-        current1 = V_current[0]
-        current2 = V_current[1]
+        current1 = V_current[0]  # Secondary electron current [A]
+        current2 = V_current[1]  # Thermionic emission current [A]
         # -------------------------------------------------------------- #
       
         Time[step] = t
@@ -836,4 +837,4 @@ def TimeEvolWIRESCAN1():
 
     nv.WireExp = TempPhysicalModels.LinearThermalExpansion(FancyTemp)
 
-    return Time, Tmax, FancyTemp, Imax2, V_Pos
+    return Time, Tmax, FancyTemp, Imax1, V_Pos, Imax2

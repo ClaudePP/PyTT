@@ -84,9 +84,10 @@ if nv.Flag_Temperature == 1:
             nv.V_Time = vec[0]
             nv.V_MaximumTemperature = vec[1]
             nv.M_FancyTemperature= vec[2]
-            nv.V_Current2 = vec[3]
+            nv.V_Current1 = vec[3]
             nv.V_Pos = vec[4]
-            FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
+            nv.V_Current2 = vec[5]
+            FileIO.WriteResults(nv.OutputFolderName)
                 
         elif nv.WIRESCAN_Type == 2:
             vec = CoreSimulationFunctions.TimeEvolWIRESCAN2()

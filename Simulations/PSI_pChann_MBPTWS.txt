@@ -25,27 +25,27 @@ Material: Molybdenum      # Molybdenum or Dexmat
 DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
 WIRESCAN_Plane: Horizontal
-WIRESCAN_IniPos: -2.96e-2      # [m], nominal -9.96e-2
-WIRESCAN_EndPos:  2.96e-2      # [m], nominal 12.04e-2
+WIRESCAN_IniPos: -12.0e-2      # [m], nominal -9.96e-2
+WIRESCAN_EndPos:  12.0e-2      # [m], nominal 12.04e-2
 WIRESCAN_wShape: Wire          # options: Wire, Strip
 WIRESCAN_wWidth: 24e-6         # [m], wire diameter
-WIRESCAN_wLength: 1e-2         # [m], length of the wire considered in simulation
-WIRESCAN_wRes: 1e-3
+WIRESCAN_wLength: 1.0e-2       # [m], length of the wire considered in simulation
+WIRESCAN_wRes: 1.0e-3          # [m], bin length           
 WIRESCAN_Type: 1
 WIRESCAN_wSpeed: 0.06          # [m/s] wire speed 
 WIRESCAN_Npulses: 1            # should it be moved to the beam properties?
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
-EdepMethod: Value             #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
+EdepMethod: dEdxValue              #  options: dEdxValue (then must define dEdx field), Edep value (Edep field), Interpolated (from file), BetheBloch
 # Edep is dEdx, and is 1.093 MeV*cm2/g for Molybdenum and 1.52 MeV*cm2/g for Dexmat CNT
-Edep: 1.093             # [MeV*cm2/g] G4 Edep [MeV]: Molybdenum, 24 um: 34.34*pi/4 [keV], CNT wire 20 um (Dexmat): 5.4*pi/4 [keV] 
-dtPulse: 5e-4
-dtCooling: 5e-4
+dEdx: 1.093                    # [MeV*cm2/g] G4 Edep [MeV]: Molybdenum, 24 um: 34.34*pi/4 [keV], CNT wire 20 um (Dexmat): 5.4*pi/4 [keV] 
+dtPulse: 4e-4                  # wWidth/wSpeed?
+dtCooling: 4e-4
 EnableParameterVariation: Yes
-RadiativeCooling: Yes		# Yes for screen
-ThermionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
-ConductiveCooling: No		# Yes but slower the process. If no, Temp simulated values will be higher 
+RadiativeCooling: Yes		# Radiative cooling, important in most of the temperature range
+ThermionicCooling: Yes		# Thermionic cooling, important above 3000K
+ConductiveCooling: No		# Yes but slow calculations and produces numerical error occassionally
 SublimationCooling: No
 # --------------- Int Simulation Parameters ------------ #
 IntSIM: Yes

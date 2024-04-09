@@ -163,10 +163,10 @@ SublimationCooling = 0              # Active: 1      Inactive: 0
 
 # ---------------- Intensity Simulation ---------------------- #
 Flag_Intensity = 0
-Mu = 0.0                           # explain
-Eta = 0.0
-BEp = 0.0
-BEe = 0.0
+Mu = 0.0             # fraction of electrons stopping in the wire (in case of H- beam)
+Eta = 0.0            # fraction of protons stopping in the wire
+BEp = 0.0            # fraction of backscattered protons
+BEe = 0.0            # fraction of backscattered electrons (eg. H- beam)
 
 ################################################
 #              Other Information               #
@@ -178,16 +178,17 @@ WireExp = []                        # List of wire expansions. For SEM grid calc
 ################################################
 #              Output  Parameters              #
 ################################################
+# V is for vector, M is for matrix
 
 V_Time = []                         # Contains a list of all the time steps.
 V_MaximumTemperature = []           # Contains a list of the maximum temperature reached by the detector at each instant of time. 
 M_MaxTemp = []                      # Matrix, Maximum temperature of each wire along time. 
 M_FancyTemperature = []             # Matrix, contains the maximum temperature reached by all the cells in the grid. 
-V_Current1 = []                  # List of Currens along time for maximum current wire.  Without Thermoionic ems.
-V_Current2 = []                  # List of Currens along time for maximum current wire.  With thermoionic ems.
+V_Current1 = []                     # List of Currens along time for maximum current wire.  Without Thermoionic ems.
+V_Current2 = []                     # List of Currens along time for maximum current wire.  With thermoionic ems.
 M_Current = []                      # Matrix of currents along time. 
 V_Emissivity = []                   # List of values of emissivity used. 
-V_Pos = []                          # List of positions, used by wire scanners. 
+V_Pos = []                          # List of wire positions during movement, used by wire scanners. 
 V_Npar = []                         # list of number of particles crossing the wire
 
 CoolingImportance_Temp = []

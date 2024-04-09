@@ -48,8 +48,8 @@ def LoadInputFile(FileName):
     nv.Particle = pb.Particle("ParticleInfo/"+d_Params["Particle:"]+".txt")  # here
     nv.BEnergy = d_Params["Energy:"]
     if nv.BeamType == "Gaussian":
-        nv.sigx = float(d_Params["sigx:"])
-        nv.sigy = float(d_Params["sigy:"])
+        nv.sigx = float(d_Params["sigx:"])   # [m] 
+        nv.sigy = float(d_Params["sigy:"])   # [m]
         nv.x0 = float(d_Params["x0:"])
         nv.y0 = float(d_Params["y0:"])
     nv.tpulse = float(d_Params["tpulse:"])     # [s] beam pulse duration
@@ -221,13 +221,21 @@ def LoadInputFile(FileName):
         #print(beamef,dedxf)            
         # check for exceptions             
         nv.enemat = np.interp(nv.BEnergy,beamef,dedxf)
-    elif nv.EdepMethod == "Value":
+    elif nv.EdepMethod == "dEdxValue":
         # first check if field EneDep exists, throw exception if not
         try: 
-            nv.enemat = float(d_Params["Edep:"])
+            nv.enemat = float(d_Params["dEdx:"])*np.pi/4
+        except:
+            print("Missing dEdx field describing dE/dx [MeV*cm2/g] for this beam.")
+            exit()
+    elif nv.EdepMethod == "EdepValue":
+        # first check if field EneDep exists, throw exception if not
+        try: 
+            nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.WIRESCAN_wWidth*100*np.pi/4)
         except:
             print("Missing Edep field describing dE/dx [MeV*cm2/g] for this beam.")
             exit()
+
     elif nv.EdepMethod =="BetheBloch":
         # Bethe-Bloch dE/dx converted to energy deposit
         # factor 100 is needed to convert wWidth in [m] to [cm]
@@ -360,7 +368,9 @@ def WriteOutputPlotsTxt(foldername):
 
 def WriteResults(foldername):
    
-    f1 = open(foldername+"Output.txt","w")
+    #f1 = open(foldername+nv.RealInputFilename[:-3]+"txt","w")  # Remove Simulations/
+    f1 = open(foldername+"Last.txt","w")
+
     f1.write("# --------------- PyTT output file ------------------ \n")
     f1.write("# input file: "+nv.RealInputFilename+" \n")
     f1.write("# execution date and time: "+datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')+" \n")
@@ -368,7 +378,7 @@ def WriteResults(foldername):
     if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
         f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")   # correct
     else:   # WIRESCANNER
-        f1.write("#   Time [us], Position [mm], Npart, MaxTemp [K], SEMcurr [uA], TOTcurr [uA] \n")
+        f1.write("#   Time [us], Position [mm], Npart, MaxTemp [K], SEMcurr [uA], THcurr [uA] \n")
         
     for j in range(0,len(nv.V_MaximumTemperature)):
         if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
@@ -376,8 +386,11 @@ def WriteResults(foldername):
         else:  # WIRESCANNER
           # formatting output:
           otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us
-          opos=+str(round(nv.V_Pos[j]*1e+3,6))    # position converted from m to mm
-          onpa=+str()
-          f1.write(otime+","+opos+","+str(round(nv.V_MaximumTemperature[j],3))+"\n")
+          opos=str(round(nv.V_Pos[j]*1e+3,6))    # position converted from m to mm
+          onpa=str(round(nv.V_Npar[j],6))       # number of particles hitting the wire
+          omxt=str(round(nv.V_MaximumTemperature[j],3)) # max wire temparature
+          osem=str(nv.V_Current1[j]*1e6)    # SEM current A->uA 
+          othc=str(nv.V_Current2[j]*1e6)    # thermionic current A->uA 
+          f1.write(otime+","+opos+","+onpa+","+omxt+","+osem+","+othc+"\n")
 
     f1.close()        
