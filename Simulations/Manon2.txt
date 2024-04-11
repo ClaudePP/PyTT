@@ -19,7 +19,7 @@ Npart: -
 frec: 1 
 # ---------------- Define Detector ----------------- #
 Material: Molybdenum          # mod
-EneDep: EneDepData/Proton_Molybdenum.txt
+# EneDep: EneDepData/Proton_Molybdenum.txt          # not needed?
 DetType: WIRESCAN 
 # ------------ Parameters for WIRESCAN ------------- # 
 WIRESCAN_Plane: Horizontal 
@@ -34,7 +34,8 @@ WIRESCAN_wSpeed: 0.06
 # ------------- Temperature Simulation Parameters -------------- # 
 TempSIM: Yes                  # mod
 T0: 300 
-EdepMethod: Interpolated      # add     
+EdepMethod: dEdxValue         # add     
+dEdx: 1.289                   # [MeV * cm2/g] add
 dtPulse: 5e-4 
 dtCooling: 5e-4 
 EnableParameterVariation: Yes 
@@ -48,4 +49,8 @@ mu: 0.0                       # mod
 eta: 0.9                      # mod
 BSp: 0.0                      # mod
 BSe: 0.0                      # mod
+# ---------- Debugging --------------------------------- #
+Debug: Edep                 # options: None, Edep, Thermionic; add
+# ------------------------------------------------------ #
+
 # --------------------------------------------------- #

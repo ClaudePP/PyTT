@@ -8,6 +8,11 @@ import datetime
 import sys
 import numpy as np
 
+
+
+
+
+
 # -------------     Load Input File    ------------------------------------------------------------- #
 # 
 # To read the input file we will read all the lines in the given file and store them in a dictionary. 
@@ -55,7 +60,8 @@ def LoadInputFile(FileName):
     nv.tpulse = float(d_Params["tpulse:"])     # [s] beam pulse duration
 
     if (d_Params["Npart:"] == "-") and (d_Params["BCurrent:"] == "-"):
-        print("Beam Current not correctly set: No Value"); sys.exit()
+        print("Beam Current not correctly set: One must give intensity or number of particles."); 
+        sys.exit()
     elif (d_Params["Npart:"] != "-") and (d_Params["BCurrent:"] != "-"):
         print("Beam Current not correctly set: One must give either intensity or number of particles. Not both."); 
         sys.exit()
@@ -194,6 +200,8 @@ def LoadInputFile(FileName):
     
     print(d_Params)
     nv.EdepMethod = d_Params["EdepMethod:"]
+    ostrEdepMethod = nv.EdepMethod
+    nv.enemat=0.0
     if nv.EdepMethod == "Interpolated":
         # data with dE/dx:
         EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
@@ -224,7 +232,7 @@ def LoadInputFile(FileName):
     elif nv.EdepMethod == "dEdxValue":
         # first check if field EneDep exists, throw exception if not
         try: 
-            nv.enemat = float(d_Params["dEdx:"])*np.pi/4
+            nv.enemat = float(d_Params["dEdx:"])*np.pi/4            
         except:
             print("Missing dEdx field describing dE/dx [MeV*cm2/g] for this beam.")
             exit()
@@ -243,7 +251,6 @@ def LoadInputFile(FileName):
     else:
         print("Unknown DEDx method: verify!")    
 
-    
     # 
     # If there are electrons in the incident particle the code will also look for the 
     # electron energy deposition file. Be aware that the program will directly look for this file 
@@ -295,8 +302,9 @@ def LoadInputFile(FileName):
                 nv.Mat_BeamShape.append([float(l.split()[0]),float(l.split()[1]),float(l.split()[2])])
         p.close()
 
-
-        
+    #
+    # 7) Debugging
+    nv.Debug=d_Params["Debug:"]    
         
         
         
@@ -305,7 +313,7 @@ def LoadInputFile(FileName):
 # This function is executed after the simulation is finished, and it creates a series of output 
 # files with the requested information. Notice that if one wants other information to be stored 
 # this can be done by modifiying this function and adding the corresponding lines. 
-
+# OBSOLETE:
 def WriteOutputPlotsTxt(foldername):
     
 
@@ -374,6 +382,9 @@ def WriteResults(foldername):
     f1.write("# --------------- PyTT output file ------------------ \n")
     f1.write("# input file: "+nv.RealInputFilename+" \n")
     f1.write("# execution date and time: "+datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')+" \n")
+    f1.write("# Particle: "+str(nv.Particle.name)+"   Material: "+str(nv.Material.name)+" \n")
+    f1.write("# EdepMethod: "+nv.EdepMethod+" \n")
+    f1.write("# dEdx: "+str(nv.enemat)+" [MeV*cm2/g] \n")    
     f1.write("# --------------------------------------------------- \n")
     if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
         f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")   # correct

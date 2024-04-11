@@ -47,7 +47,7 @@ def CreateNiMatrix():
             for j,y in enumerate(nv.yvec,0):
                 # first find corresponding element in BeamMatrix. 
                 val = FindMatrixValue(x,y,nv.Mat_BeamShape)
-                Nmat[i][j] = val*1e-4
+                Nmat[i][j] = val
     
     # debugging
     #with open('debug.txt','a') as fp:
@@ -57,6 +57,7 @@ def CreateNiMatrix():
     #exit()
     # to do: compute correction due to the binning!!!
     # to do: skew gaussian option 
+    # unit of Nmat matrix is particles/m2
     return Nmat
 
 
@@ -69,7 +70,8 @@ def CreateNiMatrix():
 
 def NumberParticles(Ntot):
     '''
-    Gives you the number of particles reaching each part of the detector when the beam..
+    Gives you the number of particles reaching each part of the detector 
+    in fluence unit 1/m2
     '''
     Nmat = Ntot*nv.ParticleProportionMatrix
     
@@ -104,15 +106,20 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
 
     # ms, 20230808:    
     #SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.Amu))))
-    # nv.enemat is dE/dx in [MeV*cm2/g] and it needs to be converted to eV/cm
-    
+    # nv.Material.rho is in [g/cm3]
+    # nv.enemat is dE/dx in [MeV*cm2/g] and it needs to be converted to eV/cm, hence factor 1e+6
+    if nv.Debug=="Edep":
+        print("Debug   TempPhysicalModels:CalculateCurrent:nv.enemat: ",nv.enemat)
     SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.kgMeV))))
+    # BTW delta electrons lead to Secondary electron emission, no?
     SEYe = 0.01*Ls*nv.Ele_enemat*1e+6*nv.Material.rho
 
     # ms, 20230808:
     #Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp 
     # nv.Eta - fraction of protons stopped in the material (thin targets: 0)
     # nv.BSp - fraction of backscatterted protons (they also cross the wire surface twice)
+    # Q: do we take into account the fact that protons cross the wire surface twice (factor 2)?
+    # plus additional factor when they "scratch" edge of the wire?
     Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp + nv.Particle.Nprotons*SEYp   
     Qse_e = nv.Particle.Nelectrons*(1-nv.Mu)*SEYe + nv.Particle.Nelectrons*nv.BEe*SEYe 
     
@@ -204,7 +211,9 @@ def BeamHeating(Temperature, numberStepPulse):
     else:
         nparts = NumberParticles(nv.Nparticles) / numberStepPulse
 
-    dtemp =  nparts *  (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
+    # 2024.04.11: added 1e-4 because nparts in in 1/m2 now
+    # nv.Material.CpT [J/(gK)]
+    dtemp =  nparts *  1e-4 * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
     
     # As an output we obtain the temperature variation for each point.    
     # 2024.03.30: include also total number of particles in output, do we need it? We have nv.Nparticles
@@ -224,8 +233,9 @@ def RadiativeCooling(dt, Temperature):
     :return: temperature reduction (negative sign)
     '''
 
-    cp = nv.Material.CpT
-    eps = nv.Material.epsT
+    cp = nv.Material.CpT     # [J/(gK)]
+    eps = nv.Material.epsT   # emmissivity []
+    # nv.ST - Stefan-Boltzmann [J/sec m2 K4]
     dene = nv.eSup * nv.ST * eps * (Temperature ** 4 - (nv.T0 ** 4) * Temperature ** 0) * dt
     dtemp = -dene / (cp * nv.eVol * nv.Material.rho * 1e+6)
 
@@ -244,7 +254,8 @@ def ThermoionicCooling(dt,Temperature):
     
     # thcurrent should be a single function! It is defined twice.
     # 1.602e-19 - use Qe 
-    thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*1.602e-19/(nv.BZ*Temperature))
+    #thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*1.602e-19/(nv.BZ*Temperature))
+    thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))
     dene = (nv.Material.wfun*1.602e-19+(2*nv.BZ*Temperature))*thcurrent*dt/nv.Qe
     dtemp = -dene/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
 

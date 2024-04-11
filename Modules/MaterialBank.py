@@ -81,7 +81,7 @@ class Material:
         # ----------------------------------- Specific Heat ----------------------------------------- #
 	# 
 	# Same as the emissivity
-	#
+	# units: [J/(g*K)]
 	
         CpInput = d_MatInfo["SpecificHeat:"]
         self.D_Cp = {"Temperature": [], "Parameter": []}

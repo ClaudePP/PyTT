@@ -6,7 +6,8 @@
 
 # this is configuration file for PSI in-shielding test monitor (MBPT12)
 # author: Mariusz Sapinski
-# last modification: 2023.11.16
+# last modification: 2024.04.10
+
 
 # ------------ Define Beam ------------- #
 Particle: Proton	# From ParticleInfo/Proton.txt
@@ -37,9 +38,10 @@ WIRESCAN_Npulses: 1            # should it be moved to the beam properties?
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
-EdepMethod: dEdxValue              #  options: dEdxValue (then must define dEdx field), Edep value (Edep field), Interpolated (from file), BetheBloch
+EdepMethod: dEdxValue          #  options: dEdxValue (then must define dEdx field), Edep value (Edep field), Interpolated (from file), BetheBloch
 # Edep is dEdx, and is 1.093 MeV*cm2/g for Molybdenum and 1.52 MeV*cm2/g for Dexmat CNT
 dEdx: 1.093                    # [MeV*cm2/g] G4 Edep [MeV]: Molybdenum, 24 um: 34.34*pi/4 [keV], CNT wire 20 um (Dexmat): 5.4*pi/4 [keV] 
+#Edep: 0.02696                  # [MeV]  hm, way too high temperatures!
 dtPulse: 4e-4                  # wWidth/wSpeed?
 dtCooling: 4e-4
 EnableParameterVariation: Yes
@@ -47,10 +49,12 @@ RadiativeCooling: Yes		# Radiative cooling, important in most of the temperature
 ThermionicCooling: Yes		# Thermionic cooling, important above 3000K
 ConductiveCooling: No		# Yes but slow calculations and produces numerical error occassionally
 SublimationCooling: No
-# --------------- Int Simulation Parameters ------------ #
+# ----------- Current Simulation Parameters ------------ #
 IntSIM: Yes
 mu: 0.0
 eta: 0.0
 BSp: 0.0
 BSe: 0.0
+# ---------- Debugging --------------------------------- #
+Debug: Edep                 # options: None, Edep, Thermionic
 # ------------------------------------------------------ #

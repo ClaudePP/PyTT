@@ -30,7 +30,7 @@ re = 2.817940289e-15	# [m] Clasical electron radious
 Na = 6.602e+23          # [part/mol] Avogadro's number
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
-kgMeV = 5.587e+29       # [MeV/kg] for particle mass conversion
+kgMeV = 5.6096e+29      # [MeV/kg] for particle mass conversion
 
 ############################
 ParticleInfo_dir = "ParticleInfo/"
@@ -152,7 +152,8 @@ WIRESCAN_EndPos = 0.0                # Endins Scan Position [m]
 Flag_Temperature = 0
 T0 = 300                            # Initial temperature of detector [K]
 EdepMethod = "Interpolated"         # Method to compute energy deposit (dE/dx)
-Edep = 0.0                          # Edep (needed if EdepMethod = Value)
+Edep = 0.0                          # Edep (needed if EdepMethod = EdepValue)
+dEdx = 0.0                          # dEdx (needed if EdepMethod = dEdxValue)
 dtPulse = 0.0                       # Length Time Step Heating [s]
 dtCooling = 0.0                     # Length Time step cooling [s]
 EnableParameterVariation = 0        # Active: 1      Inactive: 0
@@ -204,8 +205,8 @@ OutputFolderName = "Output/"
 #                 Error Flags                  #
 ################################################
 
-Flag1 = 0
-
-Flag_QtInterface = 0
-
+Flag1 = 0                   # Aracelli
+Flag_QtInterface = 0        # Aracelli
+# debug output control, possible value "None", "Edep", 
+Debug = "None"              # debug output control
 
