@@ -24,23 +24,23 @@ frec: 43478.26          # [Hz] SPS revolution frequency
 Material: Carbon
 DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
-WIRESCAN_Plane: Vertical.      # Horizontal or Vertical     
-WIRESCAN_IniPos: -0.0018       # [m], initial position in the simulation, default -9.96e-2
+WIRESCAN_Plane: Vertical       # Horizontal or Vertical     
+WIRESCAN_IniPos: -0.0038       # [m], initial position in the simulation, default -9.96e-2
 WIRESCAN_EndPos:  4.33e-2      # [m], final position in the simulation, default 12.04e-2
 WIRESCAN_wShape: Wire          # target shape options: Wire, Strip;
 WIRESCAN_wWidth: 30e-6         # [m] wire diameter
-WIRESCAN_wLength: 2e-2         # [m] considered wire length, should be larger than corresponding beam sigma
+WIRESCAN_wLength: 2e-3         # [m] considered wire length, should be larger than corresponding beam sigma
 WIRESCAN_wRes: 2.0e-4          # [m] size of wire slice, should be smaller than beam size sigx/y
 WIRESCAN_Type: 1
-WIRESCAN_wSpeed: 9.0            # [m/s] wire speed 
+WIRESCAN_wSpeed: 1.0            # [m/s] wire speed 
 WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
-EdepMethod: Interpolated        #  options: Value (then must define Edep), Interpolated (from 'particle_material.txt' file), BetheBloch
+EdepMethod: Interpolated        #  options: EdepValue (then must define Edep), Interpolated (from 'particle_material.txt' file), BetheBloch
 Edep: 7640.0e-6                 # [MeV]... should be *pi/4 and divided by density*diameter - check
-dtPulse: 2e-4                   # [s] time step for heating simulation 
-dtCooling: 2e-4                 # [s] time step for cooling 
+dtPulse: 1e-4                   # [s] time step for heating simulation 
+dtCooling: 1e-4                 # [s] time step for cooling 
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		# Yes for screen
 ThermionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
@@ -49,7 +49,9 @@ SublimationCooling: No      # small effect, rarely needed
 # --------------- Int Simulation Parameters ------------ #
 IntSIM: Yes
 mu: 0.0
-eta: 0.0
+eta: 0.0  # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0  # proton backscattering fraction
 BSe: 0.0  # electron backscattering fraction for negative ions
+# ---------- Debugging --------------------------------- #
+Debug: Thermionic                 # options: None, Edep, Thermionic
 # ------------------------------------------------------ #
