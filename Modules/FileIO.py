@@ -46,6 +46,14 @@ def LoadInputFile(FileName):
     # we update the nevesary variables file with this inputs. 
     #
     
+    
+    #
+    # 0) Debugging
+    # reading this must be at the beginning to have access to debugging flag also in eg. Material constructor
+    nv.Debug=d_Params["Debug:"]    
+    
+    
+    
     #  1)  Beam Parameters
 
     nv.BeamType = d_Params["BeamType:"]
@@ -200,7 +208,7 @@ def LoadInputFile(FileName):
     
     print(d_Params)
     nv.EdepMethod = d_Params["EdepMethod:"]
-    ostrEdepMethod = nv.EdepMethod
+    #ostrEdepMethod = nv.EdepMethod   # not needed ?
     nv.enemat=0.0
     if nv.EdepMethod == "Interpolated":
         # data with dE/dx:
@@ -302,9 +310,6 @@ def LoadInputFile(FileName):
                 nv.Mat_BeamShape.append([float(l.split()[0]),float(l.split()[1]),float(l.split()[2])])
         p.close()
 
-    #
-    # 7) Debugging
-    nv.Debug=d_Params["Debug:"]    
         
         
         

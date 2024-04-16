@@ -118,8 +118,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     #Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp 
     # nv.Eta - fraction of protons stopped in the material (thin targets: 0)
     # nv.BSp - fraction of backscatterted protons (they also cross the wire surface twice)
-    # Q: do we take into account the fact that protons cross the wire surface twice (factor 2)?
-    # plus additional factor when they "scratch" edge of the wire?
+    # Idea: plus additional factor when they "scratch" edge of the wire?
+    # BTW this equation takes into account the fact, that secondary electrons are produced on two surfaces: entry and exit.
+    # remark by Araceli: the entry surface is taken into account by the last term, 
+    # the exit surface is considered in the first term; when eta=0 protons are not stopped and secondary electrons is emitted
     Qse_p = nv.Particle.Nprotons*(1-nv.Eta)*SEYp + nv.Particle.Nprotons*nv.BEp*SEYp + nv.Particle.Nprotons*SEYp   
     Qse_e = nv.Particle.Nelectrons*(1-nv.Mu)*SEYe + nv.Particle.Nelectrons*nv.BEe*SEYe 
     
@@ -133,9 +135,23 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     # Current Due to thermoionic emission. This term highly depends on the temperature of the detector at each point. 
     #
  
+    # not needed, remove:
+    #if nv.EnableParameterVariation:
+    #    nv.Material.wf = nv.Material.GetWf(Temperature)            
+    #    print(Temperature)
+    #    print(nv.Material.wf)
+    #else: 
+    #    nv.Material.wf = nv.Material.GetWf(300*Temperature**0)
+ 
+    
     # eSup is vector of surfaces of each bin of the wire [m2]
     # RH is Richardson constant 120.173	 [A/cm2 K2] - factor 1e4 converts it to to [A/m2 K2]   
     # wfun is material work function [eV]
+    if nv.Debug=="Thermionic":
+        print("Debug   TempPhysicalModels:thcurrent:nv.Material.wfun: ",nv.Material.wfun)
+        print("Debug   TempPhysicalModels:thcurrent:nv.RH: ",nv.RH)
+        print("Debug   TempPhysicalModels:thcurrent:nv.eSup: ",nv.eSup)
+        print("Debug   TempPhysicalModels:thcurrent:nv.Temperature: ",Temperature)
     #thcurrent = nv.eSup*1e+4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))   # Current [A]
     thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))   # Current [A]
 
@@ -185,10 +201,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         # following Manon's suggestion:
         # Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth*1e4            # 1e4? [cm2]?
         Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth                  # [m2] - number of particles crossing the wire in each bin
-        Current1 = Surf*np.sum(Super_Q[0,:])                            # Current  Without Thermoionic emission [A]
-        Current2 = np.sum(thcurrent[0,:])                     # Current With Thermoionic Emission [A] 
+        Current1 = Surf*np.sum(Super_Q[0,:])                        # Current  Without Thermionic emission [A]
+        Current2 = np.sum(thcurrent[0,:])                           # Thermionic Current [A] 
         #Current1 = np.sum(Super_Q[0,:])                            # Current  Without Thermoionic emission [A]
-        #Current2 = np.sum(thcurrent[0,:])       # Thermoionic Emission current [A] 
+        #Current2 = np.sum(thcurrent[0,:])                          # Thermoionic Emission current [A] 
         # add Current3 delta electrons
 
 
@@ -214,7 +230,7 @@ def BeamHeating(Temperature, numberStepPulse):
     # 2024.04.11: added 1e-4 because nparts in in 1/m2 now
     # nv.Material.CpT [J/(gK)]
     dtemp =  nparts *  1e-4 * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
-    
+    print("Debug TempPhysicalModels:BeamHeating:nv.Material.CpT ",nv.Material.CpT)
     # As an output we obtain the temperature variation for each point.    
     # 2024.03.30: include also total number of particles in output, do we need it? We have nv.Nparticles
     # verify

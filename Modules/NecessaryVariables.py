@@ -21,6 +21,7 @@ RH = 120.173			# [A/cm2 K2]	Richardson constant
 h = 6.626e-34			# [m2kg/s] Planks constant
 Pmass = 1.67E-27 		# [Kg] Mass of a proton
 Emass = 9.1E-31 		# [Kg] Mass of an electron
+Eradius = 2.81794e-15   # [m] classical radius of an electron
 ratio = Emass/Pmass	    # ratio
 Na = 6.022E+23		    # Avogadro's Number
 vluz = 2.998E+8		    # [m/s] Ligth velocity
@@ -31,6 +32,7 @@ Na = 6.602e+23          # [part/mol] Avogadro's number
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
 kgMeV = 5.6096e+29      # [MeV/kg] for particle mass conversion
+cspeed = 299792458.0    # [m/s] speed of light
 
 ############################
 ParticleInfo_dir = "ParticleInfo/"

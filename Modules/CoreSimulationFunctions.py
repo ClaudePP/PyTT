@@ -75,11 +75,13 @@ def TempEvolSEM():
             if nv.EnableParameterVariation:
                 nv.Material.epsT = nv.Material.GetEmissivity(Temp)
                 nv.Material.CpT = nv.Material.GetCp(Temp)
+                nv.Material.wfun = nv.Material.GetWf(Temp)                
                 nv.Material.con = nv.Material.Getk(Temp)
                 nv.Material.HT = nv.Material.GetH(Temp)
             else: 
                 nv.Material.epsT = nv.Material.GetEmissivity(300*Temp**0)
                 nv.Material.CpT = nv.Material.GetCp(300*Temp**0)
+                nv.Material.wfun = nv.Material.GetWf(300*Temp**0)                
                 nv.Material.con = nv.Material.Getk(300*Temp**0)
                 nv.Material.HT = nv.Material.GetH(300*Temp**0)
             
@@ -269,11 +271,13 @@ def TempEvolSPLITTER():
         if nv.EnableParameterVariation:
             nv.Material.epsT = nv.Material.GetEmissivity(Temp)
             nv.Material.CpT = nv.Material.GetCp(Temp)
+            nv.Material.wfun = nv.Material.GetWf(Temp)            
             nv.Material.con = nv.Material.Getk(Temp)
             nv.Material.HT = nv.Material.GetH(Temp)
         else: 
             nv.Material.epsT = nv.Material.GetEmissivity(300*Temp**0)
             nv.Material.CpT = nv.Material.GetCp(300*Temp**0)
+            nv.Material.wfun = nv.Material.GetWf(300*Temp**0)
             nv.Material.con = nv.Material.Getk(300*Temp**0)
             nv.Material.HT = nv.Material.GetH(300*Temp**0)
             
@@ -419,11 +423,13 @@ def TimeEvolFOIL():
             if nv.EnableParameterVariation:
                 nv.Material.epsT = nv.Material.GetEmissivity(Temp)
                 nv.Material.CpT = nv.Material.GetCp(Temp)
+                nv.Material.wfun = nv.Material.GetWf(Temp)                
                 nv.Material.con = nv.Material.Getk(Temp)
                 nv.Material.HT = nv.Material.GetH(Temp)
             else: 
                 nv.Material.epsT = nv.Material.GetEmissivity(300*Temp**0)
                 nv.Material.CpT = nv.Material.GetCp(300*Temp**0)
+                nv.Material.wfun = nv.Material.GetWf(300*Temp**0)
                 nv.Material.con = nv.Material.Getk(300*Temp**0)
                 nv.Material.HT = nv.Material.GetH(300*Temp**0)
             
@@ -600,11 +606,13 @@ def TimeEvolWIRESCAN2():
             if nv.EnableParameterVariation:
                 nv.Material.epsT = nv.Material.GetEmissivity(Temp)
                 nv.Material.CpT = nv.Material.GetCp(Temp)
+                nv.Material.wfun = nv.Material.GetWf(Temp)                
                 nv.Material.con = nv.Material.Getk(Temp)
                 nv.Material.HT = nv.Material.GetH(Temp)
             else: 
                 nv.Material.epsT = nv.Material.GetEmissivity(300*Temp**0)
                 nv.Material.CpT = nv.Material.GetCp(300*Temp**0)
+                nv.Material.wfun = nv.Material.GetWf(300*Temp**0)                
                 nv.Material.con = nv.Material.Getk(300*Temp**0)
                 nv.Material.HT = nv.Material.GetH(300*Temp**0)
             
@@ -765,12 +773,14 @@ def TimeEvolWIRESCAN1():
         if nv.EnableParameterVariation:
             nv.Material.epsT = nv.Material.GetEmissivity(Temp)
             nv.Material.CpT = nv.Material.GetCp(Temp)
+            nv.Material.wfun = nv.Material.GetWf(Temp)            
             nv.Material.con = nv.Material.Getk(Temp)
             nv.Material.HT = nv.Material.GetH(Temp)
         
         else: 
             nv.Material.epsT = nv.Material.GetEmissivity(300*Temp**0)
             nv.Material.CpT = nv.Material.GetCp(300*Temp**0)
+            nv.Material.wfun = nv.Material.GetWf(300*Temp**0)
             nv.Material.con = nv.Material.Getk(300*Temp**0)
             nv.Material.HT = nv.Material.GetH(300*Temp**0)
             

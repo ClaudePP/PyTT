@@ -8,6 +8,8 @@ import sys
 import os
 import numpy as np
 from scipy import constants
+from Modules import NecessaryVariables as nv
+
 
 class Material:
 
@@ -41,7 +43,7 @@ class Material:
         self.rho = float(d_MatInfo["Density:"])                     # [g/cm3] Density
         self.Z = float(d_MatInfo["Z:"])                             # Atomic Number
         self.Am = float(d_MatInfo["Am:"])                           # Atomic Mass
-        #self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function
+        #self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function, obsolete, does not work anymore
 	
 	# The sublimation parameters are not fully needed, one can just have an empty value. 
 	#	
@@ -104,8 +106,10 @@ class Material:
         
         #---------------------------------Work function --------------------------
         
-        
+        #print("MaterialBank: initialization of work function: ",d_MatInfo["WorkFunction:"],nv.Debug)
         WfInput = d_MatInfo["WorkFunction:"]
+        if nv.Debug=="Thermionic":
+            print("Debug   MaterialBank:WfInput ",WfInput)
         self.D_Wf = {"Temperature": [], "Parameter": []}
         try:
             Wf = float(WfInput)
@@ -113,13 +117,18 @@ class Material:
 
         except ValueError:
             pathtowf = os.getcwd()+"/MaterialInfo/ParametersWithTemperature/"+WfInput+".txt"
+            if nv.Debug=="Thermionic":
+                print("Debug   MaterialBank:pathtowf ",pathtowf)
             f_wf = open(pathtowf,"r")
             for j,l in enumerate(f_wf,0):
                 if j > 3:
                     self.D_Wf["Temperature"] += [float(l.split()[0])]
                     self.D_Wf["Parameter"] += [float(l.split()[1])]
             f_wf.close()
-
+            if nv.Debug=="Thermionic":
+                print("Debug   MaterialBank:D_Wf ")
+                print(self.D_Wf["Temperature"])
+                print(self.D_Wf["Parameter"])
         self.wfun = self.GetWf(np.array([[300]]))            # [eV] work function
 
 
@@ -197,7 +206,7 @@ class Material:
         #       extrapolation of the last two available values.                    #
         # ------------------------------------------------------------------------ #
 
-        #print("MaterialBank/GetParameterValue D_Par:",D_Par,T)
+        #print("MaterialBank/GetParameterValue D_Par:",D_Par,T)  # useless, too much output
         if len(D_Par["Temperature"]) == 1:
             Parameter = D_Par["Parameter"][0]
         else:
@@ -230,6 +239,7 @@ class Material:
     def GetEmissivity(self,Temp):
         # Emissivity is a numpy array, with the same dimentions as Temp
         Emissivity = Temp**0
+        print("Emissivity: ",Emissivity)
         for i in range(0,len(Emissivity)):
             for j in range(0,len(Emissivity[i])):
                 Emissivity[i][j] = self.GetParameterValue(self.D_Ems,Temp[i][j])
@@ -238,6 +248,7 @@ class Material:
 
     def GetCp(self,Temp):
         Cp = Temp**0
+        print("MaterialBank Cp: ",Cp)
         for i in range(0,len(Cp)):
             for j in range(0,len(Cp[i])):
                 Cp[i][j] = self.GetParameterValue(self.D_Cp,Temp[i][j])
@@ -245,7 +256,8 @@ class Material:
 
 
     def GetWf(self,Temp):
-        Wf = Temp**0
+        Wf = Temp**0  # create Wf array with the same dimensions as temperature array [[1]]
+        print("MaterialBank Wf: ",Wf)
         for i in range(0,len(Wf)):
             for j in range(0,len(Wf[i])):
                 Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])

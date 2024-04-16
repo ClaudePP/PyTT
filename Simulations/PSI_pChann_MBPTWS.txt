@@ -38,10 +38,10 @@ WIRESCAN_Npulses: 1            # should it be moved to the beam properties?
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
-EdepMethod: dEdxValue          #  options: dEdxValue (then must define dEdx field), Edep value (Edep field), Interpolated (from file), BetheBloch
+EdepMethod: EdepValue          #  options: dEdxValue (then must define dEdx field), Edep value (Edep field), Interpolated (from file), BetheBloch
 # Edep is dEdx, and is 1.093 MeV*cm2/g for Molybdenum and 1.52 MeV*cm2/g for Dexmat CNT
-dEdx: 1.093                    # [MeV*cm2/g] G4 Edep [MeV]: Molybdenum, 24 um: 34.34*pi/4 [keV], CNT wire 20 um (Dexmat): 5.4*pi/4 [keV] 
-#Edep: 0.02696                  # [MeV]  hm, way too high temperatures!
+# dEdx: 1.093                    # [MeV*cm2/g] G4 Edep [MeV]: Molybdenum, 24 um: 34.34*pi/4 [keV], CNT wire 20 um (Dexmat): 5.4*pi/4 [keV] 
+Edep: 0.0356845                # [MeV] 2024.04.12
 dtPulse: 4e-4                  # wWidth/wSpeed?
 dtCooling: 4e-4
 EnableParameterVariation: Yes
@@ -52,9 +52,9 @@ SublimationCooling: No
 # ----------- Current Simulation Parameters ------------ #
 IntSIM: Yes
 mu: 0.0
-eta: 0.0
+eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0
 BSe: 0.0
 # ---------- Debugging --------------------------------- #
-Debug: Edep                 # options: None, Edep, Thermionic
+Debug: Thermionic                 # options: None, Edep, Thermionic
 # ------------------------------------------------------ #

@@ -46,8 +46,8 @@ ConductiveCooling: No		   # Yes but slower the process. Sometimes breaks the sim
 SublimationCooling: No         # Usually not needed because very small     
 # --------------- Int Simulation Parameters ------------ #
 IntSIM: Yes                    # unused? verify
-mu: 0.0                        # fraction of protons stopped in the target (for low energy beams) 
-eta: 0.0                       # fraction of electrons stopped in the target (for H- etc) 
+mu: 0.0                        # fraction of electrons stopped in the target (for H- etc) 
+eta: 0.0                       # fraction of protons stopped in the target (for low energy beams) 
 BSp: 0.0                       # fraction of beam protons backscattered
 BSe: 0.0                       # fraction of beam electrons (for H-) backscattered
 # ------------------------------------------------------ #
