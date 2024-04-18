@@ -27,7 +27,7 @@ Na = 6.022E+23		    # Avogadro's Number
 vluz = 2.998E+8		    # [m/s] Ligth velocity
 pmass = 1.007316		# Proton relative mass
 Qe = 1.60218e-19		# [C] elementary charge
-re = 2.817940289e-15	# [m] Clasical electron radious
+re = 2.817940289e-15	# [m] Clasical electron radius
 Na = 6.602e+23          # [part/mol] Avogadro's number
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
@@ -193,6 +193,8 @@ M_Current = []                      # Matrix of currents along time.
 V_Emissivity = []                   # List of values of emissivity used. 
 V_Pos = []                          # List of wire positions during movement, used by wire scanners. 
 V_Npar = []                         # list of number of particles crossing the wire
+stepcount = 0                       # step counter (2024.04.17, how come it does not exists elsewhere?)
+S_SEYp = 0.0                        # secondary emission yield, output of Sternglas model calculation
 
 CoolingImportance_Temp = []
 CoolingImportance_Ems = []

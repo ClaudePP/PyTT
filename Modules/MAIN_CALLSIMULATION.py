@@ -67,7 +67,9 @@ if nv.Flag_Temperature == 1:
         nv.V_MaximumTemperature = vec[1]
         #nv.M_MaxTemp = vec[2]
         #nv.V_Current2 = vec[3]   # we should not care about current?
-        FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
+        #FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
+        FileIO.WriteResults(nv.OutputFolderName)
+        
             
     elif nv.DetType == "FOIL":
         vec = CoreSimulationFunctions.TimeEvolFOIL()

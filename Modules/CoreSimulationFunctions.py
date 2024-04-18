@@ -247,7 +247,7 @@ def TempEvolSPLITTER():
     #FancyT = 0.0*np.ones([nv.SEM_nWires,TOTAL])               # This records the information of the temperature distribution for all the time steps. 
   
 
-    Flag_Current = 0.0           #   This is just to calculate or not the current and store it. 
+    Flag_Current = 0.0           #   This is just to calculate or not the current and store it, not used
 
     l = 0       #   Step Counter
 
@@ -290,7 +290,11 @@ def TempEvolSPLITTER():
         #
         if step == 0: # first step
             cold1 = 0; cold2 = 0; cold3 = 0; cold4 = 0
-            heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+            # call this once to get SEYp info
+            Npart=np.ones(TOTAL)
+            dt=1e-3
+            Current1, Current2 = TempPhysicalModels.CalculateCurrent(Npart,Temp,numberStepPulse,dt)
+            heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
             Temp = Temp + heat
 
             Flag_Current = 1.0
@@ -309,7 +313,7 @@ def TempEvolSPLITTER():
         #
         elif step <= numberStepPulse:
                 
-            heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+            heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
             cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
             cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtPulse,Temp)
                 
@@ -769,6 +773,7 @@ def TimeEvolWIRESCAN1():
         #
         
         nv.ParticleProportionMatrix = TempPhysicalModels.CreateNiMatrix()
+        nv.stepcount+=1
 
         if nv.EnableParameterVariation:
             nv.Material.epsT = nv.Material.GetEmissivity(Temp)
@@ -812,7 +817,7 @@ def TimeEvolWIRESCAN1():
         nv.CoolingImportance_Con += [np.min(cold3*nv.ConductiveCooling)]
 
 
-        print("Simulation: ", step, "    From: ", Nsteps, "    Tmax: ", np.max(Temp), "   x: ", nv.xvec*1e+3 , " [mm]")
+        print("TimeEvolWIRESCAN1 step Nr: ", step, "    From: ", Nsteps, "    Tmax: ", np.max(Temp), "   x: ", nv.xvec*1e+3 , " [mm]")
         #  ------------ Calculate Current Generated in Wire ------------ #
         V_current = TempPhysicalModels.CalculateCurrent(Flag_Current,Temp,1.0,dt)
         current1 = V_current[0]  # Secondary electron current [A]

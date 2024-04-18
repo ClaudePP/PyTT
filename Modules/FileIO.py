@@ -245,11 +245,17 @@ def LoadInputFile(FileName):
             print("Missing dEdx field describing dE/dx [MeV*cm2/g] for this beam.")
             exit()
     elif nv.EdepMethod == "EdepValue":
-        # first check if field EneDep exists, throw exception if not
+        # check if field Edep exists, throw exception if not
         try: 
-            nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.WIRESCAN_wWidth*100*np.pi/4)
+            if d_Params["DetType:"]=="WIRESCAN":
+                nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.WIRESCAN_wWidth*100)
+            elif d_Params["DetType:"]=="SPLITTER":
+                nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.SPLITTER_wDepth*100)
+            else:
+                print("Edep not yet implemented")
+                exit()                
         except:
-            print("Missing Edep field describing dE/dx [MeV*cm2/g] for this beam.")
+            print("Missing Edep [MeV] field describing dE/dx [MeV*cm2/g] for this beam.")
             exit()
 
     elif nv.EdepMethod =="BetheBloch":
@@ -390,6 +396,8 @@ def WriteResults(foldername):
     f1.write("# Particle: "+str(nv.Particle.name)+"   Material: "+str(nv.Material.name)+" \n")
     f1.write("# EdepMethod: "+nv.EdepMethod+" \n")
     f1.write("# dEdx: "+str(nv.enemat)+" [MeV*cm2/g] \n")    
+    f1.write("# Outputs:               -----------------------------\n")
+    f1.write("# SEY protons: "+str(nv.S_SEYp)+" \n")    
     f1.write("# --------------------------------------------------- \n")
     if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
         f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")   # correct

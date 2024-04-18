@@ -1,4 +1,4 @@
-Tungsten Specific Heat
+Carbono Specific Heat
 ----------------------------------
 Temperature [K]	Cp [J/gK]
 ----------------------------------

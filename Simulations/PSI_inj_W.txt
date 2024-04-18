@@ -1,0 +1,56 @@
+# --------------------- Input File for PyTT_2.0_V3 ------------ #
+#  Do NOT change the variable names.                            #
+#  There must be at least one space between name  and value.    #
+#  Explanation of each input at the end of line.                #
+# ------------------------------------------------------------- #
+
+# this is configuration file for signal foils in front of 
+# PSI KXA collimator in the Injector 2
+# author: Mariusz Sapinski
+# last modification: 2024.04.18
+
+
+# ------------ Define Beam ------------- #
+Particle: Proton	# From ParticleInfo/Proton.txt
+Energy: 72		# [MeV] Make sure the energy deposition number is in file 'particle_material.txt' file
+BeamType: Gaussian
+sigx: 3.75e-3   # [m] arbitrary
+sigy: 2.4e-3    # [m] arbitrary
+x0: 0.0			# 0 is the center of the beam
+y0: 0.0			# 0 is the center of the beam
+tpulse: 8		# [s] Always needed
+BCurrent: 1.8e-3		# [A] beam current units from Qt interface (1.8e-3)  1.8 mA
+Npart: -	    # Either number of particles or current
+frec: 0.1       # simulation over 10 seconds
+# ---------------- Define Detector ----------------- #
+Material: Tungsten
+DetType: SPLITTER
+# ------------ Parameters for SPLITTER ------------- #
+SPLITTER_Plane: Horizontal
+SPLITTER_wPos: -7.31e-3      # [m], position of the splitter with respect to the beam center
+SPLITTER_wShape: Strip      # options: Wire, Strip, right now not used, only strip
+SPLITTER_wWidth: 50e-6      # [m], strip width (perpendiculat to the beam direction) - correct
+SPLITTER_wDepth: 0.25e-3    # [m], 0.25mm - depth of the strip along the beam 
+SPLITTER_wLength: 2e-2      # [m], 2cm - length of the strip (transverse to the beam)
+SPLITTER_wRes: 0.6e-3       # [m], vertical bin resolution       
+# ------------ Temp Simulation Parameters -------------- #
+TempSIM: Yes
+T0: 300
+EdepMethod: EdepValue       # options: EdepValue (then must define Edep), Interpolated (from file), BetheBloch
+Edep: 2.262                 # [MeV]
+dtPulse: 5e-4               #  [s] temporal resolution of the simulation during the beam pulse
+dtCooling: 5e-4             #  [s] temporal resolution of the simulation when beam pulse is over - cooling only
+EnableParameterVariation: Yes    # temperature-variation 
+RadiativeCooling: Yes		# Yes 
+ThermionicCooling: Yes		# Yes
+ConductiveCooling: No		# Slows the simulation
+SublimationCooling: No
+# --------------- Int Simulation Parameters ------------ #
+IntSIM: No
+mu: 0.0
+eta: 0.0   # fraction of protons stopped in the target (for low energy beams)
+BSp: 0.0
+BSe: 0.0
+# ---------- Debugging --------------------------------- #
+Debug: None                 # options: None, Beam, Edep, Thermionic
+# ------------------------------------------------------ #

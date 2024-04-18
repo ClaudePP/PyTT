@@ -71,7 +71,11 @@ def CreateNiMatrix():
 def NumberParticles(Ntot):
     '''
     Gives you the number of particles reaching each part of the detector 
-    in fluence unit 1/m2
+    in fluence unit 1/m2.
+    For a wire one dimension (wire movement direction) is always 1.
+    This function is called twice per simulation step:
+        1. BeamHeating
+        2. CalculateCurrent
     '''
     Nmat = Ntot*nv.ParticleProportionMatrix
     
@@ -111,6 +115,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     if nv.Debug=="Edep":
         print("Debug   TempPhysicalModels:CalculateCurrent:nv.enemat: ",nv.enemat)
     SEYp = 0.01*Ls*nv.enemat*1e+6*nv.Material.rho*(1.0+1.0/(1.0+(5.4*float(nv.BEnergy)/(nv.Particle.PartMass*nv.kgMeV))))
+    nv.S_SEYp=SEYp # to be saved in output
     # BTW delta electrons lead to Secondary electron emission, no?
     SEYe = 0.01*Ls*nv.Ele_enemat*1e+6*nv.Material.rho
 
@@ -207,6 +212,11 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         #Current2 = np.sum(thcurrent[0,:])                          # Thermoionic Emission current [A] 
         # add Current3 delta electrons
 
+    # ms: 20240418, initial coding, not validated
+    elif nv.DetType == "SPLITTER":    # splitter can also be aperture foil
+        Surf = nv.SPLITTER_wRes*nv.SPLITTER_wWidth                  # [m2] - number of particles crossing the wire in each bin
+        Current1 = Surf*np.sum(Super_Q[0,:])                        # Current  Without Thermionic emission [A]
+        Current2 = np.sum(thcurrent[0,:]) 
 
     return Current1, Current2
 
@@ -222,10 +232,23 @@ def BeamHeating(Temperature, numberStepPulse):
     if (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Type == 1):
         dt = numberStepPulse
         # ms: 20230808, after Manon:
-        #nparts = NumberPartcles(nv.Nparticles)*dt*nv.frec   # synchrotron beam
-        nparts = NumberParticles(nv.Nparticles)               # cyclotron beam        
+        nparts = NumberParticles(nv.Nparticles)*dt*nv.frec   # synchrotron beam
+        #nparts = NumberParticles(nv.Nparticles)               # cyclotron beam        
     else:
         nparts = NumberParticles(nv.Nparticles) / numberStepPulse
+
+
+    if nv.Debug=='Beam':
+        fout='Output/beam_profile.txt'
+        with open(fout,'a') as fo:
+            #fo.write("beam matrix dimensions: "+str(len(nv.xvec))+','+str(len(nv.yvec))+'\n')
+            #fo.write("simstep: "+str(len(nv.M_MaxTemp))+'\n')
+            fo.write("simstep: "+str(nv.stepcount)+'\n')            
+            for k in range(len(nv.xvec)):
+                for j in range(len(nv.yvec)):
+                    fo.write(str(k)+','+str(j)+','+str(nparts[k][j])+'\n')
+
+
 
     # 2024.04.11: added 1e-4 because nparts in in 1/m2 now
     # nv.Material.CpT [J/(gK)]
