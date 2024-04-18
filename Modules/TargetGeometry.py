@@ -223,3 +223,28 @@ def SPLITTER_V_Definition(wpos,width,depth,striplength,resolution):
     Isuf = width * resolution  # [m2] Surface of a cross-section
 
     return xvec, yvec, Sup, Vol, Isuf
+
+
+def BiasedWirePotential(BV,r):
+    """
+
+    Parameters
+    ----------
+    BV : float
+        bias voltage
+    r: float
+        distance from the wire centre [m]    
+    Returns
+    
+    -------
+    None.
+
+    """
+    # BV=lambda*ln(r0)/2pi e0 => lambda=2*pi*e0*BV/ln(r0)
+    r0=nv.WIRESCAN_wWidth/2.0  # for WIRESCAN
+    lbda=2*np.pi*nv.epze*BV/np.log(r0)
+    if r<r0:
+        return BV
+    else:
+        return lbda*np.log(r)/(2*np.pi*nv.epze)
+

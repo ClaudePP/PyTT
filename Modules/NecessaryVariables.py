@@ -24,7 +24,7 @@ Emass = 9.1E-31 		# [Kg] Mass of an electron
 Eradius = 2.81794e-15   # [m] classical radius of an electron
 ratio = Emass/Pmass	    # ratio
 Na = 6.022E+23		    # Avogadro's Number
-vluz = 2.998E+8		    # [m/s] Ligth velocity
+vluz = 2.998E+8		    # [m/s] Ligth velocity   - double definition
 pmass = 1.007316		# Proton relative mass
 Qe = 1.60218e-19		# [C] elementary charge
 re = 2.817940289e-15	# [m] Clasical electron radius
@@ -33,6 +33,7 @@ Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
 kgMeV = 5.6096e+29      # [MeV/kg] for particle mass conversion
 cspeed = 299792458.0    # [m/s] speed of light
+epze = 8.8541878128E-12 # [F/m] vacuum permittivity
 
 ############################
 ParticleInfo_dir = "ParticleInfo/"
