@@ -11,6 +11,7 @@ import math
 import sys
 from Modules import MaterialBank as mb
 from Modules import NecessaryVariables as nv
+from scipy.integrate import dblquad  # 20240519, for beam profile integration
 
 
 # ------------------------- Creating Particle Matrix ----------------------- # 
@@ -23,6 +24,11 @@ from Modules import NecessaryVariables as nv
 #
 
 def CreateNiMatrix():
+    """
+    this function is called multiple times
+    every time it returns a beam distribution along the wire
+    so it is a vector, not a matrix!    
+    """
     def FindMatrixValue(x,y,Mat):
         if ((x < Mat[0][0]) or (x > Mat[-1][0])): val = 0
         elif ((y < Mat[0][1]) or (y > Mat[-1][1])): val = 0
@@ -34,7 +40,7 @@ def CreateNiMatrix():
         return val
 
     Nmat = np.zeros([len(nv.xvec),len(nv.yvec)])
-    print(len(nv.yvec))
+    #print(len(nv.yvec))
     if nv.BeamType == "Gaussian":
         for k in range(len(nv.xvec)):
             for j in range(len(nv.yvec)):
@@ -50,9 +56,15 @@ def CreateNiMatrix():
                 Nmat[i][j] = val
     
     # debugging
-    #with open('debug.txt','a') as fp:
-        #fp.write(str(Nmat[0][5]+','+str(Nmat.sum()))+'\n')
-        #fp.write(str(Nmat.sum())+'\n')
+    if nv.Debug=="Beam":
+        with open('Output/Nimatrix.txt','a') as fp:
+            fp.write("Sum: "+str(Nmat.sum())+'\n')
+            for iy in range(len(nv.yvec)):
+                for ix in range(len(nv.xvec)):
+                    fp.write(str(Nmat[ix][iy])+",")
+                fp.write("\n")    
+            #fp.write(str(Nmat[0][5]+','+str(Nmat.sum()))+'\n')
+            #fp.write(str(Nmat.sum())+'\n')
     # this shows roughly corectness
     #exit()
     # to do: compute correction due to the binning!!!
@@ -80,6 +92,75 @@ def NumberParticles(Ntot):
     Nmat = Ntot*nv.ParticleProportionMatrix
     
     return Nmat
+
+
+# ms: new functions, calculates number of particles per second passing each segment of the wire 
+# in case of gaussian beam
+# define normalized 2D gaussian, with default beam parameters (center and sigmas)
+def Gauss2D(x, y):
+    '''
+    2D normalized gaussian function
+
+    Parameters
+    ----------
+    x : float
+        horizontal position 
+    y : float
+        vertical position
+    mx : float, optional
+        beam center - horizontal coordinate. The default is nv.x0 = 0.
+    my : float, optional
+        beam center - vertical coordinate. The default is nv.y0 = 0.
+    sx : float, optional
+        horizontal sigma of the beam. The default is nv.sigx.
+    sy : TYPE, optional
+        vertical sigma of the beam. The default is nv.sigy.
+
+    Returns
+    -------
+    TYPE
+        Returns value of the normalized Gaussian distribution at given (x,y) coordinates.
+
+    '''
+    return 1. / (2. * np.pi * nv.sigx * nv.sigy) * np.exp(-((x - nv.x0)**2. / (2. * nv.sigx**2.) + (y - nv.y0)**2. / (2. * nv.sigy**2.)))
+    
+
+def ParticleRate():
+    '''
+    
+    Returns
+    -------
+    float
+        array of number of particles per second (npps) in each segment of the wire
+
+    '''
+    if nv.BeamType != "Gaussian":
+        print('Cant use this function for nongaussian beam')
+        exit(0)
+    else:
+        npps = np.zeros([len(nv.xvec),len(nv.yvec)])   # keep the same scheme as for old calculation
+        for k,xpos in enumerate(nv.xvec):
+            #print("k=",k,' xpos = ',xpos)
+            #exit(0)
+            for j,ypos in enumerate(nv.yvec):
+                # wire moves horizontally and measures horizontal beam profile:
+                if nv.WIRESCAN_Plane =="Horizontal": 
+                    x0=xpos-nv.WIRESCAN_wWidth/2
+                    x1=xpos+nv.WIRESCAN_wWidth/2
+                    y0=ypos-nv.WIRESCAN_wRes/2
+                    y1=ypos+nv.WIRESCAN_wRes/2                    
+                if nv.WIRESCAN_Plane =="Vertical": 
+                    x0=xpos-nv.WIRESCAN_wRes/2
+                    x1=xpos+nv.WIRESCAN_wRes/2
+                    y0=ypos-nv.WIRESCAN_wWidth/2
+                    y1=ypos+nv.WIRESCAN_wWidth/2   
+                #print('x0,x1 = ',x0,x1)    
+                #print('y0,y1 = ',y0,y1)    
+                npps[k,j],err=dblquad(Gauss2D,x0,x1,lambda x: y0,lambda x: y1,epsrel = 1e-9, epsabs = 0)
+    return npps*nv.Intensity    
+
+
+
 
 #------------------------- Current Calculation -------------------------------------------- # 
 
@@ -232,8 +313,11 @@ def BeamHeating(Temperature, numberStepPulse):
     if (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Type == 1):
         dt = numberStepPulse
         # ms: 20230808, after Manon:
-        nparts = NumberParticles(nv.Nparticles)*dt*nv.frec   # synchrotron beam
-        #nparts = NumberParticles(nv.Nparticles)               # cyclotron beam        
+        #nparts = NumberParticles(nv.Nparticles)*dt*nv.frec   # synchrotron beam
+        # this below should be from the current
+        #nparts = NumberParticles(nv.Nparticles)               # cyclotron beam
+        # ms: 20240519, any beam:
+        nparts = ParticleRate()*dt     
     else:
         nparts = NumberParticles(nv.Nparticles) / numberStepPulse
 
@@ -252,8 +336,13 @@ def BeamHeating(Temperature, numberStepPulse):
 
     # 2024.04.11: added 1e-4 because nparts in in 1/m2 now
     # nv.Material.CpT [J/(gK)]
-    dtemp =  nparts *  1e-4 * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
-    print("Debug TempPhysicalModels:BeamHeating:nv.Material.CpT ",nv.Material.CpT)
+    #dtemp =  nparts *  1e-4 * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
+    # 2024.05.19: removed 1e-4 because nparts is just number of particles
+    # 1e6 converts MeV to eV, and nv.Qe converts them to Joules
+    # nv.enemat is in MeV*g/cm2, CpT is in [K/g*J] 
+    dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
+
+    #print("Debug TempPhysicalModels:BeamHeating:nv.Material.CpT ",nv.Material.CpT)
     # As an output we obtain the temperature variation for each point.    
     # 2024.03.30: include also total number of particles in output, do we need it? We have nv.Nparticles
     # verify

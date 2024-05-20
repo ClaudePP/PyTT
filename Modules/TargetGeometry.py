@@ -186,7 +186,7 @@ def WIRESCAN_H_Definition(wirelength, width, resolution, X0, Y0):
     The position in the x axis will be moved as the wire moves. 
     '''
     yvec = np.array(np.arange(-wirelength / 2. + resolution / 2., wirelength / 2. - resolution / 2, resolution))
-    xvec = np.array([X0])
+    xvec = np.array([X0])  # here it is defined that xvec array has only one element
     Sup = math.pi * resolution * width  # [m2] Surface
     Vol = math.pi * resolution * (width / 2) ** 2  # [m3] Volumen
     Isuf = width * resolution
@@ -231,13 +231,14 @@ def BiasedWirePotential(BV,r):
     Parameters
     ----------
     BV : float
-        bias voltage
+        bias voltage [V]
     r: float
         distance from the wire centre [m]    
     Returns
     
     -------
-    None.
+    float: 
+        value of the potential [V]
 
     """
     # BV=lambda*ln(r0)/2pi e0 => lambda=2*pi*e0*BV/ln(r0)

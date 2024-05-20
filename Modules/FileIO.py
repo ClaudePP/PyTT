@@ -252,10 +252,10 @@ def LoadInputFile(FileName):
             elif d_Params["DetType:"]=="SPLITTER":
                 nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.SPLITTER_wDepth*100)
             else:
-                print("Edep not yet implemented")
+                print("Edep not yet implemented for this detector type")
                 exit()                
         except:
-            print("Missing Edep [MeV] field describing dE/dx [MeV*cm2/g] for this beam.")
+            print("Missing Edep [MeV] field.")
             exit()
 
     elif nv.EdepMethod =="BetheBloch":

@@ -716,7 +716,7 @@ def TimeEvolWIRESCAN1():
     # 
     #   Here the simulation steps are set by default. The user has no say in this unless this hard coded parameter is modified. 
     # 
-    Nsteps = 100000             # Simulations accuracy. How many points we will divide the space in. 
+    Nsteps = 60000             # Simulations accuracy. How many points we will divide the space in. 
     
     
    
@@ -740,11 +740,18 @@ def TimeEvolWIRESCAN1():
         x0 = nv.WIRESCAN_IniPos; x1 = nv.WIRESCAN_EndPos
         nv.WIRESCAN_wCposX = x0
         nv.WIRESCAN_wCposY = 0.0
-        dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)   # calculate recommended dt
+        dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)   # [s] calculate recommended dt
         
     if nv.Nparticles == 0.0:
         nv.Nparticles = nv.Intensity*dt/nv.Qe
+ 
+    # ms: new May 19, 2024, use beam intensity [particles/second] as principal parameter
+    if nv.Intensity == 0.0:
+        nv.Intensity = nv.Nparticles * nv.frec
         
+ 
+    
+ 
     TargetGeometry.CreateDetector(nv.DetType)
     
     #
@@ -834,7 +841,7 @@ def TimeEvolWIRESCAN1():
 
         # -------------- Update Position -------------- #
         if nv.WIRESCAN_Plane == "Horizontal":
-            nv.WIRESCAN_wCposX += nv.WIRESCAN_wSpeed*dt
+            nv.WIRESCAN_wCposX += nv.WIRESCAN_wSpeed*dt # wire centre position
             V_Pos[step] = nv.xvec[0]
     
         elif nv.WIRESCAN_Plane == "Vertical":
