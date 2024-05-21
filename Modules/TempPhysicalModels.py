@@ -156,8 +156,9 @@ def ParticleRate():
                     y1=ypos+nv.WIRESCAN_wWidth/2   
                 #print('x0,x1 = ',x0,x1)    
                 #print('y0,y1 = ',y0,y1)    
-                npps[k,j],err=dblquad(Gauss2D,x0,x1,lambda x: y0,lambda x: y1,epsrel = 1e-9, epsabs = 0)
-    return npps*nv.Intensity    
+                # x and y are exchanged, this gives proper orientation of gaussian.
+                npps[k,j],err=dblquad(Gauss2D,y0,y1,lambda x: x0,lambda x: x1,epsrel = 1e-10, epsabs = 0)
+    return npps*nv.Intensity/nv.Qe # assuming particles with charge 1 (protons)   
 
 
 
@@ -245,7 +246,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     #
     # Number of particles reaching each spot in the geometry, it is used to calculate the total current. 
     
-    nparts = Npart*NumberParticles(nv.Nparticles) / numberStepPulse
+    # nparts = Npart*NumberParticles(nv.Nparticles) / numberStepPulse
+    # new, 2024.05.20: 
+    nparts = ParticleRate()*dt
+    
     
     # Calculate Current in each point of space due to Charge deposition and SEY. [A/m2]
     # Here we transform the charge calculated before to current. 
@@ -319,7 +323,7 @@ def BeamHeating(Temperature, numberStepPulse):
         # ms: 20240519, any beam:
         nparts = ParticleRate()*dt     
     else:
-        nparts = NumberParticles(nv.Nparticles) / numberStepPulse
+        nparts = NumberParticles(nv.Nparticles) / numberStepPulse # 2correct
 
 
     if nv.Debug=='Beam':
@@ -342,11 +346,20 @@ def BeamHeating(Temperature, numberStepPulse):
     # nv.enemat is in MeV*g/cm2, CpT is in [K/g*J] 
     dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
 
+    # back to old approach:
+    # 100 is to convert m to cm 
+    dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
+    cp = nv.Material.CpT     # [J/(gK)]
+    # 1e6 is to convert g/cm3 to g/m3 
+    dtemp = dene/(cp * nv.eVol * nv.Material.rho * 1e6)
+
+
+
     #print("Debug TempPhysicalModels:BeamHeating:nv.Material.CpT ",nv.Material.CpT)
     # As an output we obtain the temperature variation for each point.    
     # 2024.03.30: include also total number of particles in output, do we need it? We have nv.Nparticles
-    # verify
-    return np.asanyarray(dtemp),nparts.sum()
+    # 2024.05.20: include energy in the output
+    return np.asanyarray(dtemp),np.asarray(dene),nparts.sum()
 
 # ---------------------------------- Radiative Cooling -------------------------- # 
 
@@ -367,7 +380,7 @@ def RadiativeCooling(dt, Temperature):
     dene = nv.eSup * nv.ST * eps * (Temperature ** 4 - (nv.T0 ** 4) * Temperature ** 0) * dt
     dtemp = -dene / (cp * nv.eVol * nv.Material.rho * 1e+6)
 
-    return dtemp
+    return dtemp,dene
 
 # ------------------------------- Thermionic Cooling --------------------------------------- # 
 
@@ -383,11 +396,13 @@ def ThermoionicCooling(dt,Temperature):
     # thcurrent should be a single function! It is defined twice.
     # 1.602e-19 - use Qe 
     #thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*1.602e-19/(nv.BZ*Temperature))
-    thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))
-    dene = (nv.Material.wfun*1.602e-19+(2*nv.BZ*Temperature))*thcurrent*dt/nv.Qe
+    thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))   # thermionic current [A]
+    # 2024.05.20:
+    #dene = (nv.Material.wfun*nv.Qe+(2*nv.BZ*Temperature))*thcurrent*dt/nv.Qe
+    dene = (nv.Material.wfun*nv.Qe+(2*nv.BZ*Temperature))*thcurrent*dt/nv.Qe
     dtemp = -dene/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
 
-    return dtemp
+    return dtemp, dene
 
 # --------------------------------- Conductive cooling --------------------------------- # 
 

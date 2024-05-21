@@ -716,12 +716,12 @@ def TimeEvolWIRESCAN1():
     # 
     #   Here the simulation steps are set by default. The user has no say in this unless this hard coded parameter is modified. 
     # 
-    Nsteps = 60000             # Simulations accuracy. How many points we will divide the space in. 
+    Nsteps = 30000             # Simulations accuracy. How many points we will divide the space in. 
     
     
    
     if nv.WIRESCAN_wSpeed <= 0.0:
-        print("Wire Scanner Velocity not Valid!")
+        print("Wire Scanner Velocity negative or zero - not Valid!")
         sys.exit()
         
     #
@@ -742,12 +742,18 @@ def TimeEvolWIRESCAN1():
         nv.WIRESCAN_wCposY = 0.0
         dt = abs(x1-x0)/(nv.WIRESCAN_wSpeed*Nsteps)   # [s] calculate recommended dt
         
+    if dt>nv.WIRESCAN_wWidth/nv.WIRESCAN_wSpeed:
+        print("Problem with too long dt: ",dt)
+        print(">>should be at least: ",nv.WIRESCAN.wWidth/nv.WIRESCAN_wSpeed)
+        exit(0)
+        
+        
     if nv.Nparticles == 0.0:
         nv.Nparticles = nv.Intensity*dt/nv.Qe
  
-    # ms: new May 19, 2024, use beam intensity [particles/second] as principal parameter
+    # ms: new May 19, 2024, use beam intensity [A] as principal parameter
     if nv.Intensity == 0.0:
-        nv.Intensity = nv.Nparticles * nv.frec
+        nv.Intensity = nv.Nparticles * nv.frec * nv.Qe  # here protons are assumed 
         
  
     
@@ -769,7 +775,7 @@ def TimeEvolWIRESCAN1():
 
     Flag_Current = 1.0
 
-    nv.ParticleProportionMatrix = TempPhysicalModels.CreateNiMatrix()
+    #nv.ParticleProportionMatrix = TempPhysicalModels.CreateNiMatrix()  # not needed anymore
 
     heat = 0; cold1 = 0; cold2 = 0; cold3 = 0; cold4 = 0
 
@@ -798,13 +804,18 @@ def TimeEvolWIRESCAN1():
             
         nv.V_Emissivity += [nv.Material.epsT[np.unravel_index(np.argmax(Temp),Temp.shape)]]
 
-        heat,npart = TempPhysicalModels.BeamHeating(Temp, dt)
+        heat,hene,npart = TempPhysicalModels.BeamHeating(Temp, dt)
         nv.V_Npar.append(npart)
         #print(heat,npart)
         #sys.exit()
         #print(np.max(heat)); sys.exit()
-        cold1 = TempPhysicalModels.RadiativeCooling(dt, Temp)
-        cold2 = TempPhysicalModels.ThermoionicCooling(dt,Temp)
+        if nv.RadiativeCooling == 1:
+            cold1,cene1 = TempPhysicalModels.RadiativeCooling(dt, Temp)
+        else: cold1 = Temp*0.0; cene1 = Temp*0.0
+
+        if nv.ThermoionicCooling == 1:
+            cold2,cene2 = TempPhysicalModels.ThermoionicCooling(dt,Temp)
+        else: cold2 = Temp*0.0; cene2 = Temp*0.0
 
         if nv.ConductiveCooling == 1:
             cold3 = TempPhysicalModels.ConductiveCooling(dt, Temp)
@@ -814,7 +825,13 @@ def TimeEvolWIRESCAN1():
             cold4 = TempPhysicalModels.SublimationCooling(dt, Temp)
         else: cold4 = Temp*0.0
 
-        Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+        # add up all the temperature changes:
+        #Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+
+        # or differently, add up energies and calculate temperature after
+        dEne=hene-cene1-cene2
+        Temp = Temp + dEne/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
+
 
         t += dt
 

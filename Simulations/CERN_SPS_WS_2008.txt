@@ -5,43 +5,43 @@
 # 	Explanation of each input at the end of file.       #
 # ----------------------------------------------------- #
 
-# this is configuration file for scan of (a fraction) of 
-# LHC beam at injection, adapted from old study
-# author: Mariusz Sapinski, 2023.11.15
+# this is configuration file for scan of SPS wire scanner
+# as used in paper CERN-AB-2008-030 BI 
+# author: Mariusz Sapinski, 2024.05.20
 
 
 # ------------ Define Beam ------------- #
 Particle: Proton	# From ParticleInfo/Proton.txt
 Energy: 450e3		# [MeV] i.e. 450 GeV
 BeamType: Gaussian
-sigx: 0.8e-3		# [m] beam sigma along the scan 
-sigy: 0.53e-3       # [m] 
+sigx: 1.63e-3		# [m] beam sigma along the scan 
+sigy: 0.65e-3       # [m] 
 x0: 0.0			    # 0 is the center of the sample
 y0: 0.0			    # 0 is the center of the sample
 tpulse: 1		    # [s] Always needed
 BCurrent: -		    # [A] 
-Npart: 0.8e14	    # either number of particles or the beam current (above)
-frec: 11236.0       # [Hz] LHC revolution frequency
+Npart: 2e13	        # either number of circulating particles or the beam current (above)
+frec: 43478.26      # [Hz] SPS revolution frequency
 # ---------------- Define Detector ----------------- #
-Material: Carbon
+Material: Carbon   
 DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
-WIRESCAN_Plane: Horizontal
-WIRESCAN_IniPos: -0.96e-2      # [m], start of the scan
-WIRESCAN_EndPos:  1.96e-2      # [m], end of the scan
+WIRESCAN_Plane: Horizontal     # 
+WIRESCAN_IniPos: -0.45e-2      # [m], start of the scan
+WIRESCAN_EndPos: 1.0e-2        # [m], end of the scan
 WIRESCAN_wShape: Wire          # options: Wire, Strip, Strip not yet coded
-WIRESCAN_wWidth: 33e-6         # [m], wire diameter
-WIRESCAN_wLength: 2e-2         # [m], length of the wire considered in simulation
-WIRESCAN_wRes: 2.5e-4          # [m], 
-WIRESCAN_Type: 1               # simulation type, explain
-WIRESCAN_wSpeed: 1.0           # [m/s] wire speed 
+WIRESCAN_wWidth: 30e-6         # [m], wire diameter
+WIRESCAN_wLength: 5e-3         # [m], length of the wire considered in simulation
+WIRESCAN_wRes: 2.5e-4          # [m], length of the wire segment along the wire
+WIRESCAN_Type: 1               # simulation algorithm
+WIRESCAN_wSpeed: 0.1           # [m/s] wire speed (also 0.1,0.2,1.0)
 WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300                         # initial temperature
-EdepMethod: Interpolated        #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
-Edep: 7640.0e-6                 # [MeV]... should be *pi/4 and divided by density*diameter
-dtPulse: 5e-4
+EdepMethod: EdepValue           # options: EdepValue (then must define Edep), Interpolated (from file), BetheBloch
+Edep: 7640.0e-6                 # [MeV] from Geant4 simulations (shape factor included)
+dtPulse: 5e-4                   # [s] 50 us - but dt is calculated, do we need this? 
 dtCooling: 5e-4
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		# important for most temperatures
@@ -54,4 +54,6 @@ mu: 0.0
 eta: 0.0
 BSp: 0.0
 BSe: 0.0
+# ---------- Debugging --------------------------------- #
+Debug: Beam                 # options: None, Beam, Edep, Thermionic
 # ------------------------------------------------------ #

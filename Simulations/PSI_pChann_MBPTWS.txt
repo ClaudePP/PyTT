@@ -15,6 +15,7 @@ Energy: 590		    # [MeV] Make sure the energy deposition number is in file 'part
 BeamType: Gaussian
 sigx: 6.2e-3		# [m] beam sigma along the scan
 sigy: 1.3e-3        # [m] 
+sigz: 20e-9         # [s] bunch length, for bunch field calculation
 x0: 0.0			    # [m] 0 is the center of the sample
 y0: 0.0			    # [m] 0 is the center of the sample
 tpulse: 8		    # [s] UCN pulse lasts 8 seconds, but scan easily fits in

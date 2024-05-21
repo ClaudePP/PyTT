@@ -1,14 +1,14 @@
 # ------------- CARBON (Graphite) ----------- #
 Name: Carbon
-Z: 6				                # Atomic Number
-Am: 12.0107    			            # Atomic Mass
-Density: 2.0       		            # [g/cm3] Density
+Z: 6				        # Atomic Number
+Am: 12.0107    			        # Atomic Mass
+Density: 2.0       		        # [g/cm3] Density
 MeltingPoint: 3773   		        # [K]
-WorkFunction: Carbon_WorkFunction   # [eV]
-Emissivity: 0.8			            #  
-SpecificHeat: Carbon_Cp_2     	    # [J/gK]
+WorkFunction: Carbon_WorkFunction       # [eV]
+Emissivity: 0.9			        #  
+SpecificHeat: Carbon_Cp_2     	        # [J/gK]
 Conductivity: 91.3      	        # [W/mK]
 ExpansionCoeff: 5e-6		        # [1/K]
 Sublimation_C1: 12.4		        # [-]
 Sublimation_C2: 40.03e+3	        # [-]
-Sublimation_Heat: 715e+3            # [J/mol]
+Sublimation_Heat: 715e+3                # [J/mol]

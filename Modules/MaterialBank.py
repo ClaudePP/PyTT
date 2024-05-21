@@ -40,10 +40,9 @@ class Material:
 
         self.name = d_MatInfo["Name:"]
         self.mpoint = float(d_MatInfo["MeltingPoint:"])             # [K]
-        self.rho = float(d_MatInfo["Density:"])                     # [g/cm3] Density
+        self.rho = float(d_MatInfo["Density:"])                     # [g/cm3] Density, nonstandard units [g/cm3]
         self.Z = float(d_MatInfo["Z:"])                             # Atomic Number
         self.Am = float(d_MatInfo["Am:"])                           # Atomic Mass
-        #self.wfun = float(d_MatInfo["WorkFunction:"])               # [eV] Work function, obsolete, does not work anymore
 	
 	# The sublimation parameters are not fully needed, one can just have an empty value. 
 	#	
@@ -239,28 +238,31 @@ class Material:
     def GetEmissivity(self,Temp):
         # Emissivity is a numpy array, with the same dimentions as Temp
         Emissivity = Temp**0
-        print("Emissivity: ",Emissivity)
+        print("MaterialBank Emissivity for segments of the target: ")
         for i in range(0,len(Emissivity)):
             for j in range(0,len(Emissivity[i])):
                 Emissivity[i][j] = self.GetParameterValue(self.D_Ems,Temp[i][j])
-
+        print(Emissivity)        
         return Emissivity
 
     def GetCp(self,Temp):
         Cp = Temp**0
-        print("MaterialBank Cp: ",Cp)
+        print("MaterialBank Cp for segments of the target: ")
         for i in range(0,len(Cp)):
             for j in range(0,len(Cp[i])):
                 Cp[i][j] = self.GetParameterValue(self.D_Cp,Temp[i][j])
+        print(Cp)        
         return Cp
 
 
     def GetWf(self,Temp):
         Wf = Temp**0  # create Wf array with the same dimensions as temperature array [[1]]
-        print("MaterialBank Wf: ",Wf)
+        print("MaterialBank Wf for segments of the target: ")
         for i in range(0,len(Wf)):
             for j in range(0,len(Wf[i])):
-                Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])
+                Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])        
+                print(str(Temp[i][j])+', '+str(Wf[i][j]))        
+        #print(Wf)        
         return Wf
 
 

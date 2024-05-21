@@ -248,6 +248,7 @@ def LoadInputFile(FileName):
         # check if field Edep exists, throw exception if not
         try: 
             if d_Params["DetType:"]=="WIRESCAN":
+                # nv.enemat is in [MeV*cm2/g]
                 nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.WIRESCAN_wWidth*100)
             elif d_Params["DetType:"]=="SPLITTER":
                 nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.SPLITTER_wDepth*100)
