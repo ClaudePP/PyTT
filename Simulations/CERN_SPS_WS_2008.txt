@@ -34,7 +34,7 @@ WIRESCAN_wWidth: 30e-6         # [m], wire diameter
 WIRESCAN_wLength: 5e-3         # [m], length of the wire considered in simulation
 WIRESCAN_wRes: 2.5e-4          # [m], length of the wire segment along the wire
 WIRESCAN_Type: 1               # simulation algorithm
-WIRESCAN_wSpeed: 0.1           # [m/s] wire speed (also 0.1,0.2,1.0)
+WIRESCAN_wSpeed: 1.0           # [m/s] wire speed (also 0.1,0.2,1.0)
 WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes

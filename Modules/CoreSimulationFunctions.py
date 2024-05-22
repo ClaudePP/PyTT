@@ -5,7 +5,7 @@
 #
 
 import numpy as np
-import sys
+import sys, os
 from Modules import TargetGeometry
 from Modules import NecessaryVariables as nv
 from Modules import TempPhysicalModels
@@ -716,8 +716,17 @@ def TimeEvolWIRESCAN1():
     # 
     #   Here the simulation steps are set by default. The user has no say in this unless this hard coded parameter is modified. 
     # 
-    Nsteps = 30000             # Simulations accuracy. How many points we will divide the space in. 
+    Nsteps = 50000             # Simulations accuracy. How many points we will divide the space in. 
     
+    
+    # remove files used for debugging in order not to keep them growing:
+    if os.path.isfile("Output/Nimatrix.txt"):
+        os.remove("Output/Nimatrix.txt")    
+    
+    if os.path.isfile("Output/beam_profile.txt"):
+        os.remove("Output/beam_profile.txt")    
+
+
     
    
     if nv.WIRESCAN_wSpeed <= 0.0:
