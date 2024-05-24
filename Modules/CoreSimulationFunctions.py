@@ -838,6 +838,7 @@ def TimeEvolWIRESCAN1():
         #Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
 
         # or differently, add up energies and calculate temperature after
+        # 2024.05.20
         dEne=hene-cene1-cene2
         Temp = Temp + dEne/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
 

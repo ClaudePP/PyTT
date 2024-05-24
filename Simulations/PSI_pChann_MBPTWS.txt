@@ -52,10 +52,10 @@ ConductiveCooling: No		# Yes but slow calculations and produces numerical error 
 SublimationCooling: No
 # ----------- Current Simulation Parameters ------------ #
 IntSIM: Yes
-mu: 0.0
+mu: 0.0      # fraction of electrons stopped in the target (for negative ions) 
 eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0     # proton backscattering fraction
 BSe: 0.0     # electron backscattering fraction (for negative ions)
 # ---------- Debugging --------------------------------- #
-Debug: Beam                 # options: None, Beam, Edep, Thermionic
+Debug: None                 # options: None, Beam, Edep, Thermionic
 # ------------------------------------------------------ #
