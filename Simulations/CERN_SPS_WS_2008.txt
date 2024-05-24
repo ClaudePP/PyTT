@@ -28,7 +28,7 @@ DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
 WIRESCAN_Plane: Horizontal     # 
 WIRESCAN_IniPos: -0.45e-2      # [m], start of the scan
-WIRESCAN_EndPos: 1.0e-2        # [m], end of the scan
+WIRESCAN_EndPos: 4.0e-2        # [m], end of the scan
 WIRESCAN_wShape: Wire          # options: Wire, Strip, Strip not yet coded
 WIRESCAN_wWidth: 30e-6         # [m], wire diameter
 WIRESCAN_wLength: 5e-3         # [m], length of the wire considered in simulation

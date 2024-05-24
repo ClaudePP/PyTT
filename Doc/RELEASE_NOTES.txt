@@ -1,0 +1,22 @@
+PyTT release notes
+
+-----------------------------------------------------------
+Version 3.0.0 (2024-05-24) 
+
+This is an initial release of a frozen tested version of the PyTT. 
+The code has been tuned to principally agree with the 2008 version
+(see PyTT doc and manual). It focuses on wire scanner simulation 
+(other cases were not tested). 
+
+The numeration starts from version 3.0.0 because:
+1. version 1 is considered to be the python 2.7 version from 2016
+2. version 2 is the python 3 version from 2020, used in PhD thesis
+    of Araceli Navarro
+
+Version 3 is largely based on version 2, however in numerical terms 
+comes back to some ideas of version 1 (eg. the numerical integration
+of gaussian or the way the energy balance is computed).
+
+Version 3.0.0 is not well debugged and polished, as resources are scarce,
+but it is released anyway to be a reference while the code continues to
+be developed.   

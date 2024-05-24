@@ -32,7 +32,7 @@ WIRESCAN_wWidth: 30e-6         # [m] wire diameter
 WIRESCAN_wLength: 2e-3         # [m] considered wire length, should be larger than corresponding beam sigma
 WIRESCAN_wRes: 2.0e-4          # [m] size of wire slice, should be smaller than beam size sigx/y
 WIRESCAN_Type: 1               # version fo the algorithm
-WIRESCAN_wSpeed: 20.0           # [m/s] wire speed 
+WIRESCAN_wSpeed: 9.0           # [m/s] wire speed 
 WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes

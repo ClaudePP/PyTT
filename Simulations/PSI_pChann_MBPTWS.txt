@@ -27,8 +27,8 @@ Material: Molybdenum      # Molybdenum or Dexmat
 DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
 WIRESCAN_Plane: Horizontal
-WIRESCAN_IniPos: -12.0e-2      # [m], nominal -9.96e-2
-WIRESCAN_EndPos:  12.0e-2      # [m], nominal 12.04e-2
+WIRESCAN_IniPos: -4.0e-2       # [m] 
+WIRESCAN_EndPos:  12.0e-2      # [m]
 WIRESCAN_wShape: Wire          # options: Wire, Strip
 WIRESCAN_wWidth: 24e-6         # [m], wire diameter
 WIRESCAN_wLength: 1.0e-2       # [m], length of the wire considered in simulation
