@@ -116,7 +116,7 @@ def TempEvolSEM():
                 
                 heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtPulse,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 
                 # Because conduction and sublimation cooling require quite intense calculations, they are not calculated 
                 # unless it has been specified. 
@@ -131,7 +131,7 @@ def TempEvolSEM():
 
                 # Depending on the users choices, some cooling effects might not be considered.
                 # this nv.RadiativeCooling, nv.ThermioniCooling, etc. Are flags (0: Not Active), (1: Active)
-                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
 
                 Flag_Current = 1.0
 
@@ -143,7 +143,7 @@ def TempEvolSEM():
             # 
             else:
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtCooling,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
                 if nv.ConductiveCooling == 1:
                     cold3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
                 else:
@@ -153,17 +153,17 @@ def TempEvolSEM():
                     cold4 = TempPhysicalModels.SublimationCooling(nv.dtCooling, Temp)
                 else: cold4 = Temp*0.0
 
-                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
 
                 Flag_Current = 0.0      # The current is not clculated in this part of the simulation. Only when there is beam. It can be changed. 
 
                 t += nv.dtCooling
 
-                totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermoionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling+nv.SublimationCooling*cold4[iMaxTemp]
+                totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling+nv.SublimationCooling*cold4[iMaxTemp]
                 nv.CoolingImportance_Temp += [Temp[iMaxTemp]]
                 
                 nv.CoolingImportance_Ems += [cold1[iMaxTemp]*nv.RadiativeCooling/totalcooling]
-                nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermoionicCooling/totalcooling]
+                nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermionicCooling/totalcooling]
                 nv.CoolingImportance_Con += [cold3[iMaxTemp]*nv.ConductiveCooling/totalcooling]
                 nv.CoolingImportance_Sub += [cold4[iMaxTemp]*nv.SublimationCooling/totalcooling]
             
@@ -315,7 +315,7 @@ def TempEvolSPLITTER():
                 
             heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
             cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
-            cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtPulse,Temp)
+            cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 
             # Because conduction and sublimation cooling require quite intense calculations, they are not calculated 
             # unless it has been specified. 
@@ -327,7 +327,7 @@ def TempEvolSPLITTER():
 
             # Depending on the users choices, some cooling effects might not be considered.
             # this nv.RadiativeCooling, nv.ThermioniCooling, etc. Are flags (0: Not Active), (1: Active)
-            Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3
+            Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3
 
             Flag_Current = 1.0
 
@@ -339,23 +339,23 @@ def TempEvolSPLITTER():
             # 
         else:
             cold1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
-            cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtCooling,Temp)
+            cold2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
             if nv.ConductiveCooling == 1:
                 cold3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
             else:
                 cold3 = Temp * 0.0
 
-            Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3
+            Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3
 
             Flag_Current = 0.0      # The current is not clculated in this part of the simulation. Only when there is beam. It can be changed. 
 
             t += nv.dtCooling
 
-            totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermoionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling
+            totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling
             nv.CoolingImportance_Temp += [Temp[iMaxTemp]]
                 
             nv.CoolingImportance_Ems += [cold1[iMaxTemp]*nv.RadiativeCooling/totalcooling]
-            nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermoionicCooling/totalcooling]
+            nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermionicCooling/totalcooling]
             nv.CoolingImportance_Con += [cold3[iMaxTemp]*nv.ConductiveCooling/totalcooling]
             
         l += 1  # what is l?
@@ -453,14 +453,14 @@ def TimeEvolFOIL():
             elif step <= numberStepPulse:
                 heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtPulse,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 
                 if nv.ConductiveCooling == 1:
                     cold3 = TempPhysicalModels.ConductiveCooling(nv.dtPulse, Temp)
                 else:
                     cold3 = Temp*0.0
 
-                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3
+                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3
 
                 Flag_Current = 1.0
 
@@ -468,22 +468,22 @@ def TimeEvolFOIL():
 
             else:
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtCooling,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
                 if nv.ConductiveCooling == 1:
                     cold3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
                 else:
                     cold3 = Temp * 0.0
-                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3
+                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3
 
                 Flag_Current = 0.0
 
                 t += nv.dtCooling
 
-                totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermoionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling
+                totalcooling = cold1[iMaxTemp]*nv.RadiativeCooling + cold2[iMaxTemp]*nv.ThermionicCooling + cold3[iMaxTemp]*nv.ConductiveCooling
                 nv.CoolingImportance_Temp += [Temp[iMaxTemp]]
                 
                 nv.CoolingImportance_Ems += [cold1[iMaxTemp]*nv.RadiativeCooling/totalcooling]
-                nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermoionicCooling/totalcooling]
+                nv.CoolingImportance_Jth += [cold2[iMaxTemp]*nv.ThermionicCooling/totalcooling]
                 nv.CoolingImportance_Con += [cold3[iMaxTemp]*nv.ConductiveCooling/totalcooling]
                 
                 
@@ -630,7 +630,7 @@ def TimeEvolWIRESCAN2():
             elif step <= numberStepPulse:
                 heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtPulse,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 if nv.ConductiveCooling == 1:
                     cold3 = TempPhysicalModels.ConductiveCooling(nv.dtPulse, Temp)
                 else:
@@ -641,14 +641,14 @@ def TimeEvolWIRESCAN2():
                 else: cold4 = Temp*0.0
 
                 
-                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3+nv.SublimationCooling*cold4
+                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3+nv.SublimationCooling*cold4
 
                 Flag_Current = 1.0
 
                 t += nv.dtPulse
             else:
                 cold1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
-                cold2 = TempPhysicalModels.ThermoionicCooling(nv.dtCooling,Temp)
+                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
                 if nv.ConductiveCooling == 1:
                     cold3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
                 else:
@@ -658,7 +658,7 @@ def TimeEvolWIRESCAN2():
                     cold4 = TempPhysicalModels.SublimationCooling(nv.dtPulse, Temp)
                 else: cold4 = Temp*0.0
 
-                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3+nv.SublimationCooling*cold4
+                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3+nv.SublimationCooling*cold4
 
                 Flag_Current = 0.0
 
@@ -666,7 +666,7 @@ def TimeEvolWIRESCAN2():
 
                 nv.CoolingImportance_Temp += [np.max(Temp)]
                 nv.CoolingImportance_Ems += [np.min(cold1*nv.RadiativeCooling)]
-                nv.CoolingImportance_Jth += [np.min(cold2*nv.ThermoionicCooling)]
+                nv.CoolingImportance_Jth += [np.min(cold2*nv.ThermionicCooling)]
                 nv.CoolingImportance_Con += [np.min(cold3*nv.ConductiveCooling)]
            
             l += 1; 
@@ -822,8 +822,8 @@ def TimeEvolWIRESCAN1():
             cold1,cene1 = TempPhysicalModels.RadiativeCooling(dt, Temp)
         else: cold1 = Temp*0.0; cene1 = Temp*0.0
 
-        if nv.ThermoionicCooling == 1:
-            cold2,cene2 = TempPhysicalModels.ThermoionicCooling(dt,Temp)
+        if nv.ThermionicCooling == 1:
+            cold2,cene2 = TempPhysicalModels.ThermionicCooling(dt,Temp)
         else: cold2 = Temp*0.0; cene2 = Temp*0.0
 
         if nv.ConductiveCooling == 1:
@@ -835,7 +835,7 @@ def TimeEvolWIRESCAN1():
         else: cold4 = Temp*0.0
 
         # add up all the temperature changes:
-        #Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermoionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+        #Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
 
         # or differently, add up energies and calculate temperature after
         # 2024.05.20
@@ -847,7 +847,7 @@ def TimeEvolWIRESCAN1():
 
         nv.CoolingImportance_Temp += [np.max(Temp)]
         nv.CoolingImportance_Ems += [np.min(cold1*nv.RadiativeCooling)]
-        nv.CoolingImportance_Jth += [np.min(cold2*nv.ThermoionicCooling)]
+        nv.CoolingImportance_Jth += [np.min(cold2*nv.ThermionicCooling)]
         nv.CoolingImportance_Con += [np.min(cold3*nv.ConductiveCooling)]
 
 

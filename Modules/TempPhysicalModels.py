@@ -235,7 +235,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         #exit(0)
 
 
-    # Current Due to thermoionic emission. This term highly depends on the temperature of the detector at each point. 
+    # Current Due to thermionic emission. This term highly depends on the temperature of the detector at each point. 
     #
  
     # not needed, remove:
@@ -289,8 +289,8 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         if nv.SEM_Plane == "Vertical":
             Super_Q = Super_Q.copy().transpose()
         for k in range(0,len(Super_Q)):
-            Current1 += [Surf*np.sum(Super_Q[k,:])]                           # Current  Without Thermoionic emission [A]
-            Current2 += [Surf*np.sum(Super_Q[k,:])+np.sum(thcurrent[k,:])]      # Current With Thermoionic Emission [A] 
+            Current1 += [Surf*np.sum(Super_Q[k,:])]                           # Current  Without Thermionic emission [A]
+            Current2 += [Surf*np.sum(Super_Q[k,:])+np.sum(thcurrent[k,:])]      # Current With Thermionic Emission [A] 
    
     elif nv.DetType == "FOIL":
         Surf = nv.FOIL_xwidth/nv.FOIL_nx * nv.FOIL_ywidth/nv.FOIL_ny
@@ -308,8 +308,8 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         Surf = nv.WIRESCAN_wRes*nv.WIRESCAN_wWidth                  # [m2] - number of particles crossing the wire in each bin
         Current1 = np.sum(Super_Q[0,:])                             # [A] Current  Without Thermionic emission
         Current2 = np.sum(thcurrent[0,:])                           # [A] Thermionic Current
-        #Current1 = np.sum(Super_Q[0,:])                            # Current  Without Thermoionic emission [A]
-        #Current2 = np.sum(thcurrent[0,:])                          # Thermoionic Emission current [A] 
+        #Current1 = np.sum(Super_Q[0,:])                            # Current  Without Thermionic emission [A]
+        #Current2 = np.sum(thcurrent[0,:])                          # Thermionic Emission current [A] 
         # add Current3 delta electrons
 
     # ms: 20240418, initial coding, not validated
@@ -399,10 +399,10 @@ def RadiativeCooling(dt, Temperature):
 
 # ------------------------------- Thermionic Cooling --------------------------------------- # 
 
-# to do: correct name
-def ThermoionicCooling(dt,Temperature):
+# 
+def ThermionicCooling(dt,Temperature):
     '''
-    Here thermoionic cooling is calculated
+    Here thermionic cooling is calculated
     :param dt: [s] time duration of the cooling process.
     :param Temperature: [K] Temperature Matrix
     :return: temperature reduction (negative sign)

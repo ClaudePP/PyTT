@@ -162,9 +162,9 @@ def LoadInputFile(FileName):
         nv.RadiativeCooling = 0 
 
     if d_Params["ThermionicCooling:"] == 'Yes':
-        nv.ThermoionicCooling = 1
+        nv.ThermionicCooling = 1
     elif d_Params["ThermionicCooling:"] == 'No': 
-        nv.ThermoionicCooling = 0
+        nv.ThermionicCooling = 0
     
     if d_Params["ConductiveCooling:"] == 'Yes':
         nv.ConductiveCooling = 1

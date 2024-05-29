@@ -40,7 +40,7 @@ EdepMethod: Interpolated          #  options: Value (then must define Edep), Int
 dtPulse: 5e-4
 dtCooling: 5e-4
 EnableParameterVariation: Yes
-RadiativeCooling: Yes		# Yes for screen
+RadiativeCooling: Yes		# 
 ThermionicCooling: Yes		# Yes, above 3000K, not importnat for screen. Helps for cooling
 ConductiveCooling: No		# Yes but slower the process. If no, Temp simulated values will be higher 
 SublimationCooling: No
