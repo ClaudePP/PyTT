@@ -1,8 +1,8 @@
 # ------------------ Physical Models ----------------------------------- # 
 # 
-# This module contains all the functions that have to do with the physics of our simulations. 
-# From Calculating the amount of particles heating the wire, to the current generation to the cooling 
-# processes.
+# This module contains all the functions that have to do with the thermal physics of our simulations:
+# Heating and cooling processes, but also
+# calculating the amount of particles heating the wire and the current generation processes.
 #
 
 
