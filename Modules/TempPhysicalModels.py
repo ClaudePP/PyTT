@@ -398,7 +398,6 @@ def RadiativeCooling(dt, Temperature):
     return dtemp,dene
 
 # ------------------------------- Thermionic Cooling --------------------------------------- # 
-
 # 
 def ThermionicCooling(dt,Temperature):
     '''
@@ -418,6 +417,53 @@ def ThermionicCooling(dt,Temperature):
     dtemp = -dene/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
 
     return dtemp, dene
+
+
+# ------------------------------- Thermionic Electron Spectra ----------------------------- # 
+# 
+def ThermionicElectronSpectra(Temp,Eks):
+    '''
+
+    Parameters
+    ----------
+    Temp : float
+        target temperature [K]
+    Eks : array of floats    
+        array of energies [eV]
+    Returns
+    -------
+    fracs: array of floats
+        
+    '''
+    kBeV=nv.BZ/nv.Qe
+    fracs = (Eks/pow(2*kBeV*Temp,2))*np.exp(-Eks/(2*kBeV*Temp))
+    
+    return fracs
+
+
+# ------------------------------- Electron velocity from kinetic energy -------------------- # 
+# 
+def ElectronVelocity(Eks):
+    '''
+    Computes electron velocity [m/s] from kinetic energy [eV].
+    !!! Non-relativistic !!!
+
+    Parameters
+    ----------
+    Eks : float
+        electron kinetic energy [eV]
+
+    Returns
+    -------
+    ve : float
+        electron velocity [m/s]
+
+    '''
+    EJoule=Eks*nv.Qe  # [J] convert eV to Joules
+    ve = np.sqrt(2*EJoule/nv.Emass)
+    return ve
+
+
 
 # --------------------------------- Conductive cooling --------------------------------- # 
 
