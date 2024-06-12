@@ -433,7 +433,7 @@ def ThermionicElectronSpectra(Temp,Eks):
     Returns
     -------
     fracs: array of floats
-        
+        relative intensities for each energy in Eks
     '''
     kBeV=nv.BZ/nv.Qe
     fracs = (Eks/pow(2*kBeV*Temp,2))*np.exp(-Eks/(2*kBeV*Temp))
