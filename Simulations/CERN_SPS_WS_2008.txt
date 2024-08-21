@@ -55,5 +55,5 @@ eta: 0.0
 BSp: 0.0
 BSe: 0.0
 # ---------- Debugging --------------------------------- #
-Debug: Beam                 # options: None, Beam, Edep, Thermionic
+Debug: SEY                 # options: None, Beam, Edep, Thermionic
 # ------------------------------------------------------ #

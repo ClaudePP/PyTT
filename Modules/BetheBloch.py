@@ -9,6 +9,7 @@ import numpy as np
 from scipy import constants
 from Modules import ParticleBank as pb
 from Modules import MaterialBank as mb
+from Modules import RelativisticFormulas as re
 
 
 # physics constant:
@@ -21,10 +22,47 @@ I = 0.000173 # Ionisation energy in MeV (of Silicon? verify!) - to Target datacl
 mu = constants.physical_constants["atomic mass constant energy equivalent in MeV"][0]
 
 """ maximum energy transferred in one collision in MeV """
+""" the same function in DeltaElectrons module? Move to RelativisticFormulas """
 def Tmax(partgamma,ionmass):
+    '''
+    Parameters
+    ----------
+    partgamma : float
+        Relativistic gamma of the projectile.
+    ionmass : float
+        Ion mass energy equivalent [MeV].
+
+    Returns
+    -------
+    float
+        Maximum energy transfer
+    '''    
     #partgamma = lambda partbeta: 1.0/sqrt(1-pow(partbeta,2))
     partbeta = lambda partgamma: np.sqrt(1.0-pow(1.0/partgamma,2))
     return 2*m_e*pow(partbeta(partgamma)*partgamma,2) / (1+2*partgamma*m_e/ionmass+pow(m_e/ionmass,2))
+
+# from: https://pl.wikipedia.org/wiki/Wzór_Bethego-Blocha
+def Tmaxv2(partgamma,ionmass):
+    '''
+    Parameters
+    ----------
+    partgamma : float
+        Relativistic gamma of the projectile.
+    ionmass : float
+        Ion mass [kg].
+
+    Returns
+    -------
+    float
+        Maximum energy transfer
+    '''
+    m_ele=constants.electron_mass  # [kg]
+    #partbeta = lambda partgamma: np.sqrt(1.0-pow(1.0/partgamma,2))
+    partbeta=re.beta_from_gamma(partgamma)
+    nominator=2*m_ele*pow(constants.c,2)*pow(partbeta,2)*partgamma**2
+    denominat=1+(2*partgamma*m_ele/ionmass)+pow(m_ele/ionmass,2)
+    return nominator/denominat
+
 
 
 def BetheBloch(particle, bene, material):

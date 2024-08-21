@@ -211,7 +211,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         print("SEY protons = ",SEYp)
         #exit(0)
     nv.S_SEYp=SEYp # to be saved in output
-    # BTW delta electrons lead to Secondary electron emission, no?
+    # BTW delta electrons lead to Secondary electron emission!
     SEYe = 0.01*Ls*nv.Ele_enemat*1e+6*nv.Material.rho
 
     # ms, 20230808:
