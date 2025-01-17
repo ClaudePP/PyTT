@@ -9,6 +9,7 @@ Created on Wed Jun 12 08:33:00 2024
 from Modules import NecessaryVariables as nv
 import numpy as np
 from Modules import MaterialBank as mb
+from scipy.constants import physical_constants
 
 
 # maximum kinetic energy of delta electrons
@@ -18,17 +19,39 @@ def Edmax(beta,Eshell=0):
     Parameters
     ----------
     beta : float
-        relativistic beta of projectile particles
+        Relativistic beta of projectile particles (dimensionless, 0 ≤ beta < 1).
     Eshell: float    
-        [eV] the binding energy of the shell from which electron is extracted
+        Binding energy of the shell from which the electron is extracted, in [eV]. Default is 0.
     Returns
     -------
     float
-        maximum energy [J = kg*m^2/s^2]
+        Maximum energy of delta electrons in Joules [J = kg*m^2/s^2]
+    Notes
+    -----
+    - Requires constants: `nv.Qe` (elementary charge in Coulomb), 
+      `nv.Emass` (electron mass in kg), and `nv.cspeed` (speed of light in m/s).
+    """
 
     '''
-    Eshell=Eshell*nv.Qe  # [eV]->[J]
-    return 2*nv.Emass*pow(nv.cspeed*beta,2)/(1.0-beta**2)+Eshell 
+    if not (0 <= beta < 1):
+        raise ValueError("Beta must be between 0 (inclusive) and 1 (exclusive).")    
+    
+    electron_mass = physical_constants["electron mass"][0]  # kg
+    speed_of_light = physical_constants["speed of light in vacuum"][0]  # m/s
+    elementary_charge = physical_constants["elementary charge"][0]  # C (J/eV)    
+    
+    
+    # Convert binding energy from eV to J    
+    #Eshell_J=Eshell*nv.Qe  # [eV]->[J]
+    Eshell_J=Eshell*elementary_charge  # [eV]->[J]
+    
+    
+    # Calculate maximum kinetic energy
+    max_energy = 2*electron_mass*pow(speed_of_light*beta,2)/(1.0-beta**2)+Eshell_J 
+
+    return max_energy
+
+
 
 
 # Kanaya-Okayama Formula
