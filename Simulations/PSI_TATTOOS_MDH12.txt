@@ -1,0 +1,52 @@
+# ------------- Input File for PyTT_3.0.0 --------------------------- #
+#      There must be at least one space between name and the value    #
+#       Explanation of each input at the end of file.                 #
+# ------------------------------------------------------------------- #
+
+# SEM grid (harfe) in front of TATTOOS target
+# by Mariusz Sapinski
+# 2025.01.25
+
+# ------------ Define Beam ------------- #
+Particle: Proton 
+Energy: 590         # [MeV]
+BeamType: Gaussian
+sigx: 5.0e-3		
+sigy: 5.0e-3
+x0: 0.0		
+y0: 0.0		
+tpulse: 1           # [s] DC current, split beam
+BCurrent: 70e-6     # [A]
+Npart: -
+frec: 1             # [Hz]
+# ---------------- Define Detector ----------------- #
+Material: Tungsten
+DetType: SEM
+# ------------ Parameters for SEM ------------------ #
+SEM_Plane: Horizontal
+SEM_nWires: 1
+SEM_wWidth: 100e-6   # [m] wire diameter  
+SEM_wLength: 5e-2 
+SEM_wSep: 1.0e-3 	
+SEM_wRes: 1e-3 		 # [m] simulation resolution
+SEM_Npulses: 1 
+# ------------ Temp Simulation Parameters -------------- #
+TempSIM: Yes
+T0: 300
+EdepMethod: Interpolated
+dtPulse: 1e-5
+dtCooling: 5e-4
+EnableParameterVariation: Yes
+RadiativeCooling: Yes		
+ThermionicCooling: Yes	
+ConductiveCooling: No
+SublimationCooling: No
+# --------------- Int Simulation Parameters ------------ #
+IntSIM: Yes
+mu: 0.0      # fraction of electrons stopped in the target (for negative ion beam) 
+eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
+BSp: 0.0     # proton backscattering
+BSe: 0.0     # electron backscattering
+# ---------- Debugging --------------------------------- #
+Debug: SEY                 # options: None, Beam, Edep, Thermionic
+# ------------------------------------------------------ #
