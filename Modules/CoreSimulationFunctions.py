@@ -12,6 +12,7 @@ from Modules import TempPhysicalModels
 
 
 # ------------  SEM GRID SIMULATION ------------------------ #
+# in PSI it is called harfe monitor
 # 
 
 def TempEvolSEM():
@@ -32,6 +33,7 @@ def TempEvolSEM():
     
     numberStepPulse = round(nv.tpulse/nv.dtPulse)
     numberStepCooling = round((1./nv.frec - nv.tpulse)/nv.dtCooling)
+
 
     if (numberStepPulse == 0) or (numberStepPulse == 0):
         print("dtPulse or dtCooling have been uncorrectly choosen! ")
@@ -62,6 +64,7 @@ def TempEvolSEM():
 
     for cycle in range(0,nv.Npulses):
         for step in range(0,int(totalSteps)):
+            print("pulse = ",cycle," step = ",step," out of ",totalSteps)
 
             #  If the material properties are set to vary with the temperature they need to be updated at each 
             #  time step as the temperature will change. 
@@ -95,7 +98,15 @@ def TempEvolSEM():
             #
             if cycle == 0 and step == 0:
                 cold1 = 0; cold2 = 0; cold3 = 0; cold4 = 0
-                heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+                #heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+                #heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+                dt=nv.dtPulse
+                #heat,hene,npart = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+                heat,hene,npart = TempPhysicalModels.BeamHeating(Temp, dt)
+                
+
+                print("Temp=",Temp)
+                print("heat=",heat)
                 Temp = Temp + heat
 
                 Flag_Current = 1.0
@@ -114,24 +125,37 @@ def TempEvolSEM():
             #
             elif step <= numberStepPulse:
                 
-                heat = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
-                cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
-                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
+                #heat, hene, npart = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+                heat, hene, npart = TempPhysicalModels.BeamHeating(Temp, dt)                
+                print("numberStepPulse = ", numberStepPulse) # Debug
+                cold1,cene1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
+                cold2,cene2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 
                 # Because conduction and sublimation cooling require quite intense calculations, they are not calculated 
                 # unless it has been specified. 
                 
                 if nv.ConductiveCooling == 1:
-                    cold3 = TempPhysicalModels.ConductiveCooling(nv.dtPulse, Temp)
-                else: cold3 = Temp*0.0
+                    cold3, cene3 = TempPhysicalModels.ConductiveCooling(nv.dtPulse, Temp)
+                else: cold3 = Temp*0.0; cene3 = Temp*0.0
 
                 if nv.SublimationCooling == 1:
-                    cold4 = TempPhysicalModels.SublimationCooling(nv.dtPulse, Temp)
-                else: cold4 = Temp*0.0
+                    cold4,cene4 = TempPhysicalModels.SublimationCooling(nv.dtPulse, Temp)
+                else: cold4 = Temp*0.0; cene4=Temp*0.0
 
                 # Depending on the users choices, some cooling effects might not be considered.
                 # this nv.RadiativeCooling, nv.ThermioniCooling, etc. Are flags (0: Not Active), (1: Active)
-                Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                #print("Temp=",Temp)
+                #print("heat=",heat)
+                #Temp = Temp + heat + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                # or differently, add up energies and calculate temperature after
+                # 2025.01.26
+                dEne=hene-cene1-cene2-cene3-cene4
+                Temp = Temp + dEne/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
+
+
+
+
+
 
                 Flag_Current = 1.0
 
@@ -142,18 +166,23 @@ def TempEvolSEM():
             # Also here the time step is the one for the cooling part. 
             # 
             else:
-                cold1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
-                cold2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
+                cold1,cene1 = TempPhysicalModels.RadiativeCooling(nv.dtCooling,Temp)
+                cold2,cene2 = TempPhysicalModels.ThermionicCooling(nv.dtCooling,Temp)
                 if nv.ConductiveCooling == 1:
-                    cold3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
+                    cold3,cene3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
                 else:
-                    cold3 = Temp * 0.0
+                    cold3,cene3 = Temp * 0.0
 
                 if nv.SublimationCooling == 1:
-                    cold4 = TempPhysicalModels.SublimationCooling(nv.dtCooling, Temp)
-                else: cold4 = Temp*0.0
+                    cold4,cene4 = TempPhysicalModels.SublimationCooling(nv.dtCooling, Temp)
+                else: cold4,cene4 = Temp*0.0
 
-                Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                #Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
+                # 2025.01.26
+                dEne=hene-cene1-cene2-cene3-cene4
+                Temp = Temp + dEne/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
+
+
 
                 Flag_Current = 0.0      # The current is not clculated in this part of the simulation. Only when there is beam. It can be changed. 
 
@@ -716,8 +745,8 @@ def TimeEvolWIRESCAN1():
     # 
     #   Here the simulation steps are set by default. The user has no say in this unless this hard coded parameter is modified. 
     # 
-    Nsteps = 50000             # Simulations accuracy. How many points we will divide the space in. 
-    
+    Nsteps = 5000             # Simulations accuracy. How many points we will divide the space in. 
+    # idea: put it into configuration file    
     
     # remove files used for debugging in order not to keep them growing:
     if os.path.isfile("Output/Nimatrix.txt"):
@@ -794,7 +823,7 @@ def TimeEvolWIRESCAN1():
         # Beacause of the movement at each  time steps we calculate the amount of particles reaching the wire. 
         #
         
-        nv.ParticleProportionMatrix = TempPhysicalModels.CreateNiMatrix()
+        nv.ParticleProportionMatrix = TempPhysicalModels.CreateNiMatrix()  # do we need it?
         nv.stepcount+=1
 
         if nv.EnableParameterVariation:
@@ -827,8 +856,8 @@ def TimeEvolWIRESCAN1():
         else: cold2 = Temp*0.0; cene2 = Temp*0.0
 
         if nv.ConductiveCooling == 1:
-            cold3 = TempPhysicalModels.ConductiveCooling(dt, Temp)
-        else: cold3 = Temp*0.0
+            cold3,cene3 = TempPhysicalModels.ConductiveCooling(dt, Temp)
+        else: cold3 = Temp*0.0; cene3 = Temp*0.0
         
         if nv.SublimationCooling == 1:
             cold4 = TempPhysicalModels.SublimationCooling(dt, Temp)

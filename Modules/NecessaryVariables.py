@@ -28,7 +28,6 @@ vluz = 2.998E+8		    # [m/s] Ligth velocity   - double definition
 pmass = 1.007316		# Proton relative mass
 Qe = 1.60218e-19		# [C] elementary charge
 re = 2.817940289e-15	# [m] Clasical electron radius
-Na = 6.602e+23          # [part/mol] Avogadro's number
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
 kgMeV = 5.6096e+29      # [MeV/kg] for particle mass conversion
@@ -82,7 +81,7 @@ is_it_STRIP = 0
 is_it_SPLITTER = 0
 
 # For the simulation, detectors will be simulated as a grid. 
-xvec = np.asanyarray([0])           # Vector of x positions of each detor slice.
+xvec = np.asanyarray([0])           # Vector of x positions of each detector slice.
 yvec = np.asanyarray([0])           # Vector of y postions of each detector slice. 
 
 IntSurf = 0                         # [m2] Intensity surface: Surface of the detectors' slice particles see (cross section). 

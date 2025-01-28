@@ -238,30 +238,37 @@ class Material:
     def GetEmissivity(self,Temp):
         # Emissivity is a numpy array, with the same dimentions as Temp
         Emissivity = Temp**0
-        print("MaterialBank Emissivity for segments of the target: ")
+        if nv.Debug=="Radiative":
+            print("Debug   MaterialBank:GetEmissivity for segments of the target: ")
         for i in range(0,len(Emissivity)):
             for j in range(0,len(Emissivity[i])):
                 Emissivity[i][j] = self.GetParameterValue(self.D_Ems,Temp[i][j])
-        print(Emissivity)        
+        if nv.Debug=="Radiative":          
+            print(Emissivity)        
         return Emissivity
+
 
     def GetCp(self,Temp):
         Cp = Temp**0
-        print("MaterialBank Cp for segments of the target: ")
+        if nv.Debug=="Edep":
+            print("Debug   MaterialBank Cp for segments of the target: ")
         for i in range(0,len(Cp)):
             for j in range(0,len(Cp[i])):
                 Cp[i][j] = self.GetParameterValue(self.D_Cp,Temp[i][j])
-        print(Cp)        
+        if nv.Debug=="Edep":        
+            print(Cp)        
         return Cp
 
 
     def GetWf(self,Temp):
         Wf = Temp**0  # create Wf array with the same dimensions as temperature array [[1]]
-        print("MaterialBank Wf for segments of the target: ")
+        if nv.Debug=="Thermionic":
+            print("Debug    MaterialBank Wf for segments of the target: ")
         for i in range(0,len(Wf)):
             for j in range(0,len(Wf[i])):
-                Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])        
-                print(str(Temp[i][j])+', '+str(Wf[i][j]))        
+                Wf[i][j] = self.GetParameterValue(self.D_Wf,Temp[i][j])
+                if nv.Debug=="Thermionic":
+                    print(str(Temp[i][j])+', '+str(Wf[i][j]))        
         #print(Wf)        
         return Wf
 

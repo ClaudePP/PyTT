@@ -24,7 +24,7 @@ Material: Tungsten
 DetType: SEM
 # ------------ Parameters for SEM ------------------ #
 SEM_Plane: Horizontal
-SEM_nWires: 1
+SEM_nWires: 3
 SEM_wWidth: 100e-6   # [m] wire diameter  
 SEM_wLength: 5e-2 
 SEM_wSep: 1.0e-3 	
@@ -34,8 +34,8 @@ SEM_Npulses: 1
 TempSIM: Yes
 T0: 300
 EdepMethod: Interpolated
-dtPulse: 1e-5
-dtCooling: 5e-4
+dtPulse: 1e-4
+dtCooling: 1e-4
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		
 ThermionicCooling: Yes	
@@ -48,5 +48,5 @@ eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0     # proton backscattering
 BSe: 0.0     # electron backscattering
 # ---------- Debugging --------------------------------- #
-Debug: SEY                 # options: None, Beam, Edep, Thermionic
+Debug: Beam                 # options: None, Beam, Edep, Thermionic, Radiative
 # ------------------------------------------------------ #

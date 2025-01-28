@@ -138,27 +138,57 @@ def ParticleRate():
         print('Cant use this function for nongaussian beam')
         exit(0)
     else:
+        # nv.xvec and yvec are defined in Modules/TargetGeometry.py
+        # npps is number of particles per second of Gaussian beam
         npps = np.zeros([len(nv.xvec),len(nv.yvec)])   # keep the same scheme as for old calculation
-        for k,xpos in enumerate(nv.xvec):
-            #print("k=",k,' xpos = ',xpos)
-            #exit(0)
-            for j,ypos in enumerate(nv.yvec):
-                # wire moves horizontally and measures horizontal beam profile:
-                if nv.WIRESCAN_Plane =="Horizontal": 
-                    x0=xpos-nv.WIRESCAN_wWidth/2
-                    x1=xpos+nv.WIRESCAN_wWidth/2
-                    y0=ypos-nv.WIRESCAN_wRes/2
-                    y1=ypos+nv.WIRESCAN_wRes/2                    
-                if nv.WIRESCAN_Plane =="Vertical": 
-                    x0=xpos-nv.WIRESCAN_wRes/2
-                    x1=xpos+nv.WIRESCAN_wRes/2
-                    y0=ypos-nv.WIRESCAN_wWidth/2
-                    y1=ypos+nv.WIRESCAN_wWidth/2   
-                #print('x0,x1 = ',x0,x1)    
-                #print('y0,y1 = ',y0,y1)    
-                # x and y are exchanged, this gives proper orientation of gaussian.
-                npps[k,j],err=dblquad(Gauss2D,y0,y1,lambda x: x0,lambda x: x1,epsrel = 1e-10, epsabs = 0)
-    return npps*nv.Intensity/nv.Qe # assuming particles with charge 1 (protons)   
+        if nv.DetType == "WIRESCAN":
+            for k,xpos in enumerate(nv.xvec):
+                #print("k=",k,' xpos = ',xpos)
+                #exit(0)
+                for j,ypos in enumerate(nv.yvec):
+                    # wire moves horizontally and measures horizontal beam profile:
+                        if nv.WIRESCAN_Plane =="Horizontal": 
+                            x0=xpos-nv.WIRESCAN_wWidth/2
+                            x1=xpos+nv.WIRESCAN_wWidth/2
+                            y0=ypos-nv.WIRESCAN_wRes/2
+                            y1=ypos+nv.WIRESCAN_wRes/2                    
+                        elif nv.WIRESCAN_Plane =="Vertical": 
+                            x0=xpos-nv.WIRESCAN_wRes/2
+                            x1=xpos+nv.WIRESCAN_wRes/2
+                            y0=ypos-nv.WIRESCAN_wWidth/2
+                            y1=ypos+nv.WIRESCAN_wWidth/2   
+                        #print('x0,x1 = ',x0,x1)    # Debug  
+                        #print('y0,y1 = ',y0,y1)    # Debug
+                        # x and y are exchanged, this gives proper orientation of gaussian.
+                        npps[k,j],err=dblquad(Gauss2D,y0,y1,lambda x: x0,lambda x: x1,epsrel = 1e-10, epsabs = 0)
+                        #print("nv.xvec=",nv.xvec)  # debug
+                        #print("nv.yvec=",nv.yvec)  # debug                        
+                        #print('npps [k,j] = ',npps[k,j]) # debugging
+        if nv.DetType == "SEM":
+            # add number of wires!
+            for k,xpos in enumerate(nv.xvec):
+                #print("Debug TempPhysicalModel k=",k,' xpos = ',xpos)
+                #exit(0)
+                for j,ypos in enumerate(nv.yvec):
+                    # wire moves horizontally and measures horizontal beam profile:
+                        if nv.SEM_Plane =="Horizontal": 
+                            x0=xpos-nv.SEM_wWidth/2
+                            x1=xpos+nv.SEM_wWidth/2
+                            y0=ypos-nv.SEM_wRes/2
+                            y1=ypos+nv.SEM_wRes/2                    
+                        elif nv.SEM_Plane =="Vertical": 
+                            x0=xpos-nv.SEM_wRes/2
+                            x1=xpos+nv.SEM_wRes/2
+                            y0=ypos-nv.SEM_wWidth/2
+                            y1=ypos+nv.SEM_wWidth/2   
+                        #print('x0,x1 = ',x0,x1)    # Debug
+                        #print('y0,y1 = ',y0,y1)    # Debug
+                        # x and y are exchanged, this gives proper orientation of gaussian.
+                        npps[k,j],err=dblquad(Gauss2D,y0,y1,lambda x: x0,lambda x: x1,epsrel = 1e-10, epsabs = 0)
+                        #print("nv.xvec=",nv.xvec)   # Debug
+                        #print("nv.yvec=",nv.yvec)   # Debug                     
+        #print("npps=",npps)    # Debug, controlled January 2025, OK, it makes sense!
+    return npps*nv.Intensity/nv.Qe # assuming particles with charge 1 (protons)   # use scipy for Qe
 
 
 
@@ -208,7 +238,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         # 5.4e-6 - [amu/eV]
     SEYp = 0.01*Ls*dEdxel*(1.0+1.0/(1.0+(5.4e-6*BEnergy_eV/pmassamu)))
     if nv.Debug=='SEY':
-        print("SEY protons = ",SEYp)
+        print("Debug   TempPhysicalModels:SEY protons = ",SEYp)
         #exit(0)
     nv.S_SEYp=SEYp # to be saved in output
     # BTW delta electrons lead to Secondary electron emission!
@@ -231,7 +261,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     
     Q = Qdep + Qse_p + Qse_e  # 2024.04.05 - check if here should be minus Qse_e
     if nv.Debug=='SEY':
-        print("Q = ",Q)
+        print("Debug   TempPhysicalModels:Q = ",Q)
         #exit(0)
 
 
@@ -264,7 +294,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     
     # nparts = Npart*NumberParticles(nv.Nparticles) / numberStepPulse
     # new, 2024.05.20: 
-    nparts = ParticleRate()*dt
+    nparts = ParticleRate()*dt   # this only works for WireScanner for now
         
     # Calculate Current in each point of space due to Charge deposition and SEY. [A/m2]
     # Here we transform the charge calculated before to current. 
@@ -338,8 +368,10 @@ def BeamHeating(Temperature, numberStepPulse):
         # ms: 20240519, any beam:
         nparts = ParticleRate()*dt     
     else:
-        nparts = NumberParticles(nv.Nparticles) / numberStepPulse # 2correct
-
+        #nparts = NumberParticles(nv.Nparticles) / numberStepPulse # 2correct
+        dt = nv.dtPulse        
+        nparts = ParticleRate()*dt     
+        print("nparts = ", nparts, " dt = ",dt) # debug (Beam)
 
     if nv.Debug=='Beam':
         fout='Output/beam_profile.txt'
@@ -364,6 +396,16 @@ def BeamHeating(Temperature, numberStepPulse):
     # back to old approach:
     # 100 is to convert m to cm 
     dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
+    if nv.DetType == "SEM":
+        dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.SEM_wWidth*nv.SEM_wRes*nv.Material.CpT)
+        dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.SEM_wWidth*100  # J
+        
+    
+    
+    
+    # debug:
+    print("dene=",dene)    
+
     cp = nv.Material.CpT     # [J/(gK)]
     # 1e6 is to convert g/cm3 to g/m3 
     dtemp = dene/(cp * nv.eVol * nv.Material.rho * 1e6)
