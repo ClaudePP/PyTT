@@ -167,11 +167,6 @@ def TempEvolSEM():
                 dEne=hene-cene1-cene2-cene3-cene4
                 Temp = Temp + dEne/(nv.Material.CpT*nv.eVol*nv.Material.rho*1e+6)
 
-
-
-
-
-
                 Flag_Current = 1.0
 
                 t += nv.dtPulse
@@ -223,7 +218,6 @@ def TempEvolSEM():
             #current2 = V_current[1]
             #  ------------ Calculate Current Generated in Wire ------------ #
             V_current = TempPhysicalModels.CalculateCurrent(Flag_Current,Temp,numberStepPulse,nv.dtPulse)
-            midwire=1  # better selection procedure of the middle wire!!!! remove
             current1 = V_current[0]  # Secondary electron current [A]   # it contains all wires!
             current2 = V_current[1]  # Thermionic emission current [A]
             # -------------------------------------------------------------- #            
@@ -232,7 +226,7 @@ def TempEvolSEM():
             print(type(Imax1))
             print(Imax1.shape)
             for iwir in range(nv.SEM_nWires): 
-                Imax1[iwir][l-1] = current1[iwir]   # Imax1 is a wrong name I guess
+                Imax1[iwir][l-1] = current1[iwir]   # Imax1 is a misleading name I guess
                 Imax2[iwir][l-1] = current2[iwir]            
 
 

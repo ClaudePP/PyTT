@@ -15,7 +15,7 @@ sigx: 5.0e-3
 sigy: 5.0e-3
 x0: 0.0		
 y0: 0.0		
-tpulse: 1           # [s] 
+tpulse: 3.4           # [s] 
 BCurrent: 70e-6     # [A] - 70 uA
 Npart: -
 frec: 0.3           # [Hz]

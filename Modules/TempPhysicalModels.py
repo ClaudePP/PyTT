@@ -17,6 +17,7 @@ from scipy.constants import physical_constants
 
 # global variable (constant)
 elementary_charge = physical_constants["elementary charge"][0]
+Stefan_Boltzmann = physical_constants["Stefan-Boltzmann constant"][0]
 
 
 
@@ -468,8 +469,9 @@ def RadiativeCooling(dt, Temperature):
 
     cp = nv.Material.CpT     # [J/(gK)]
     eps = nv.Material.epsT   # emmissivity []
+    #Stefan-Boltzmann constant
     # nv.ST - Stefan-Boltzmann [J/sec m2 K4]
-    dene = nv.eSup * nv.ST * eps * (Temperature ** 4 - (nv.T0 ** 4) * Temperature ** 0) * dt
+    dene = nv.eSup * Stefan_Boltzmann * eps * (Temperature ** 4 - (nv.T0 ** 4) * Temperature ** 0) * dt
     dtemp = -dene / (cp * nv.eVol * nv.Material.rho * 1e+6)
 
     return dtemp,dene
