@@ -15,10 +15,10 @@ sigx: 5.0e-3
 sigy: 5.0e-3
 x0: 0.0		
 y0: 0.0		
-tpulse: 1           # [s] DC current, split beam
+tpulse: 3           # [s] DC current, split beam
 BCurrent: 70e-6     # [A]
 Npart: -
-frec: 1             # [Hz]
+frec: 0.5           # [Hz]
 # ---------------- Define Detector ----------------- #
 Material: Tungsten
 DetType: SEM
@@ -34,8 +34,8 @@ SEM_Npulses: 1
 TempSIM: Yes
 T0: 300
 EdepMethod: Interpolated
-dtPulse: 1e-4
-dtCooling: 1e-4
+dtPulse: 1e-2
+dtCooling: 1e-2
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		
 ThermionicCooling: Yes	
@@ -48,5 +48,5 @@ eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0     # proton backscattering
 BSe: 0.0     # electron backscattering
 # ---------- Debugging --------------------------------- #
-Debug: Beam                 # options: None, Beam, Edep, Thermionic, Radiative
+Debug: Electric                 # options: None, Beam, Edep, Thermionic, Radiative, Electric, SEY
 # ------------------------------------------------------ #

@@ -48,12 +48,20 @@ def TempEvolSEM():
 
     Time = np.ones(TOTAL); t = 0; Time[0] = t                 # Time of the simulation step
     Temp = nv.T0 * np.ones([len(nv.xvec),len(nv.yvec)])       # Matrix with the temperature distribution at each time step. 
-    Tmax = np.ones(TOTAL); Tmax[0] = Temp.max()               # Maximum temperature at each time step. 
+    #Tmax = np.ones(TOTAL); Tmax[0] = Temp.max()               # Maximum temperature at each time step. 
+    Tmax = np.ones([nv.SEM_nWires,TOTAL]); #Tmax[0] = Temp.max()               # Maximum temperature at each time step. 
+    
     
     # Notice that saving all the time the temperature and intensity distribution might slow down the code and increase significantly the output files. 
     FancyI = 0.0*np.ones([nv.SEM_nWires,TOTAL])               # This records the information of the Intensity distribution for all the time steps. 
     FancyT = 0.0*np.ones([nv.SEM_nWires,TOTAL])               # This records the information of the temperature distribution for all the time steps. 
   
+    Imax1 = 0.0*np.ones([nv.SEM_nWires,TOTAL])
+    Imax2 = 0.0*np.ones([nv.SEM_nWires,TOTAL])
+    #Imax1 = 0.0*np.ones([TOTAL])
+    #Imax2 = 0.0*np.ones([TOTAL])
+
+
 
     Flag_Current = 0.0           #   This is just to calculate or not the current and store it. 
 
@@ -104,6 +112,8 @@ def TempEvolSEM():
                 #heat,hene,npart = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
                 heat,hene,npart = TempPhysicalModels.BeamHeating(Temp, dt)
                 
+                nv.V_Npar.append(npart)
+
 
                 print("Temp=",Temp)
                 print("heat=",heat)
@@ -130,6 +140,11 @@ def TempEvolSEM():
                 print("numberStepPulse = ", numberStepPulse) # Debug
                 cold1,cene1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
                 cold2,cene2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
+                
+                print("npart=",npart)
+                
+                nv.V_Npar.append(npart)
+
                 
                 # Because conduction and sublimation cooling require quite intense calculations, they are not calculated 
                 # unless it has been specified. 
@@ -203,10 +218,24 @@ def TempEvolSEM():
             #  ------------ Calculate Current Generated in Wire ------------ #
             # Notice that by default this current is only calculated during the beam pulse. 
             # 
+            # before 2025.01.29:
+            #V_current = TempPhysicalModels.CalculateCurrent(Flag_Current,Temp,numberStepPulse,nv.dtPulse)
+            #current2 = V_current[1]
+            #  ------------ Calculate Current Generated in Wire ------------ #
             V_current = TempPhysicalModels.CalculateCurrent(Flag_Current,Temp,numberStepPulse,nv.dtPulse)
-            current2 = V_current[1]
-            
-           
+            midwire=1  # better selection procedure of the middle wire!!!! remove
+            current1 = V_current[0]  # Secondary electron current [A]   # it contains all wires!
+            current2 = V_current[1]  # Thermionic emission current [A]
+            # -------------------------------------------------------------- #            
+            print(type(l),l, current1)
+            print(type(current1))
+            print(type(Imax1))
+            print(Imax1.shape)
+            for iwir in range(nv.SEM_nWires): 
+                Imax1[iwir][l-1] = current1[iwir]   # Imax1 is a wrong name I guess
+                Imax2[iwir][l-1] = current2[iwir]            
+
+
             #
             # In this part we store all the useful information that was colected in this time step. 
 
@@ -214,7 +243,11 @@ def TempEvolSEM():
                 continue
             else:
                 Time[l] = t
-                Tmax[l] = np.max(Temp)
+                #print("Debug, Temperature = ",Temp)
+                for iwir in range(nv.SEM_nWires):
+                    print("Debug, Temperature = ",iwir,Temp[iwir],np.max(Temp[iwir]))
+                    Tmax[iwir][l-1] = np.max(Temp[iwir][:])
+                    print(Tmax[iwir][l-1])
 
                 for mk in range(0,len(current2)):
                     FancyI[mk][l] = current2[mk]
@@ -228,10 +261,17 @@ def TempEvolSEM():
                         
                         
             print("Simulation: ", l, "    From: ", nv.Npulses*totalSteps, "    Tmax: ", np.max(Temp))
-            
-            
-    return Time, Tmax, FancyT, FancyI
 
+ 
+
+
+            
+    #return Time, Tmax, FancyTemp, Imax1, V_Pos, Imax2  # from WireSCAN1
+    #        0     1      2      3     
+    # old (before 2025.01.29):
+    # return Time, Tmax, FancyT, FancyI
+    # Imax1, Imax2 - arrays of currents, for SEM - per wire
+    return Time, Tmax, FancyT, Imax1, Imax2
 
 
 # ------------  SPLITTER SIMULATION ------------------------ #
@@ -711,7 +751,7 @@ def TimeEvolWIRESCAN2():
                 Time[l] = t
                 Tmax[l] = np.max(Temp)
                 
-                Imax1[l] = np.max(current1)
+                Imax1[l] = np.max(current1)  # should it not be sum?
                 Imax2[l] = np.max(current2)
 
                 if nv.WIRESCAN_Plane == "Horizontal": 

@@ -398,16 +398,55 @@ def WriteResults(foldername):
     f1.write("# EdepMethod: "+nv.EdepMethod+" \n")
     f1.write("# dEdx: "+str(nv.enemat)+" [MeV*cm2/g] \n")    
     f1.write("# Outputs:               -----------------------------\n")
-    f1.write("# SEY protons: "+str(nv.S_SEYp)+" \n")    
+    f1.write("# SEY protons: "+str(nv.S_SEYp)+" \n")   
+    # add info about detector type and number of wires in case of SEM
     f1.write("# --------------------------------------------------- \n")
-    if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
-        f1.write("#   Emissivity   |   Time [us]  |   Temperature  [K] |   \n")   # correct
+    if (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
+        f1.write("#   Time [us], Npart,  MaxTemp [K],  SEMcurr [aA], THcurr [uA] \n")
+        # later add emissivity?
+    elif (nv.DetType == "SEM"):
+        if nv.SEM_nWires==1:  # remove that maybe
+            f1.write("# Time[us],Npart,MaxTemp[K],SEMcurr[uA],THcurr[uA]\n")   # single wire version
+        else:
+            NpartStr=""
+            MaxTempStr=""
+            SEMcurrStr=""
+            THcurrStr="THcurr"
+            for k in range(nv.SEM_nWires):
+                NpartStr+="Npart"+str(k)+","
+                MaxTempStr+="MaxTemp"+str(k)+"[K],"
+                SEMcurrStr+="SEMcurr"+str(k)+"[uA],"
+                THcurrStr+="THcurr"+str(k)+"[uA],"
+            # wirenr=int(nv.SEM_nWires/2) # another option
+            f1.write("# Time[us],"+NpartStr+MaxTempStr+SEMcurrStr+THcurrStr+"\n")   # multi wire version
     else:   # WIRESCANNER
         f1.write("#   Time [us], Position [mm], Npart, MaxTemp [K], SEMcurr [uA], THcurr [uA] \n")
-        
-    for j in range(0,len(nv.V_MaximumTemperature)):
-        if (nv.DetType == "SEM") or (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
-          f1.write(str(nv.V_Emissivity[j])+"   "+str(round(nv.V_Time[j]*1e+6,6))+"   "+str(round(nv.V_MaximumTemperature[j],3))+"\n")
+    #-----------------------------------------------------------    
+    for j in range(0,len(nv.V_MaximumTemperature[0])):
+        # for now (2025.01.29) this works for SEM... other not yet
+        if (nv.DetType == "FOIL") or (nv.DetType == "SPLITTER"):
+          #f1.write(str(nv.V_Emissivity[j])+"   "+str(round(nv.V_Time[j]*1e+6,6))+"   "+str(round(nv.V_MaximumTemperature[j],3))+"\n")
+          otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us
+          onpa=str(round(nv.V_Npar[j],6))       # number of particles hitting the wire
+          omxt=str(round(nv.V_MaximumTemperature[j],3)) # max wire temparature
+          osem=str(nv.V_Current1[j]*1e6)    # SEM current A->uA 
+          othc=str(nv.V_Current2[j]*1e6)    # thermionic current A->uA 
+          f1.write(otime+","+onpa+","+omxt+","+osem+","+othc+"\n")
+        elif (nv.DetType == "SEM"):  
+          otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us
+          print("nv.V_Npar[j] = ",j,nv.V_Npar[j])
+          #onpa=str(round(nv.V_Npar[j],6))       # number of particles hitting the wires
+          onpa=",".join(str(round(x,0)) for x in nv.V_Npar[j])
+          #omxt=str(round(nv.V_MaximumTemperature[j],3)) # max wire temparature
+          print("nv.V_MaximumTemperature[j] = ",j,nv.V_MaximumTemperature[:,j])
+          omxt=",".join(str(round(x,1)) for x in nv.V_MaximumTemperature[:,j])
+          #osem=str(nv.V_Current1[j]*1e6)    # SEM current A->uA 
+          #osem=",".join(str(round(x*1e6,4)) for x in nv.V_Current1[:,j])
+          osem=",".join(str(x*1e6) for x in nv.V_Current1[:,j])
+          othc=",".join(str(x*1e6) for x in nv.V_Current2[:,j])
+          #othc=str(nv.V_Current2[j]*1e6)     # thermionic current A->uA 
+          f1.write(otime+","+onpa+","+omxt+","+osem+","+othc+"\n")
+          #f1.write(otime+","+onpa+","+omxt+"\n")
         else:  # WIRESCANNER
           # formatting output:
           otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us

@@ -55,11 +55,14 @@ if nv.Flag_Temperature == 1:
     print(nv.DetType)
     if nv.DetType == "SEM":
         vec = CoreSimulationFunctions.TempEvolSEM()
+        #  vec = Time, Tmax, FancyT, Imax1, Imax2
         nv.V_Time = vec[0]
         nv.V_MaximumTemperature = vec[1]
         nv.M_MaxTemp = vec[2]
-        nv.V_Current2 = vec[3]
-        FileIO.WriteOutputPlotsTxt(nv.OutputFolderName)
+        nv.V_Current1 = vec[3]   # which one?
+        nv.V_Current2 = vec[4]
+        #FileIO.WriteOutputPlotsTxt(nv.OutputFolderName) # obsolete
+        FileIO.WriteResults(nv.OutputFolderName)
 
     elif nv.DetType == "SPLITTER":
         vec = CoreSimulationFunctions.TempEvolSPLITTER()

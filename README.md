@@ -37,3 +37,23 @@ Running tests from command line (temporary solution):
 > python3 Test.py
 
 
+# -------- PyTT virtual environment ----------------  #
+2025.01.29
+in: /Users/sapinski/Phys/ThinTarget/PyTT
+> python3 -m venv pytt.venv - create
+> source pytt.venv/bin/activate
+> deactivate (at the end)
+
+installing additional modules via brew withion activated environment:
+brew install python-matplotlib
+- no, use pip3 install matplotlib
+
+
+---------------------------------------
+
+detector types:
+
+WIRESCAN - wire scanner, single wire moving throught the beam
+SEM - SEM-grid or harf, a set of fixed, parallel wires
+
+

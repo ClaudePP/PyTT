@@ -12,6 +12,13 @@ import sys
 from Modules import MaterialBank as mb
 from Modules import NecessaryVariables as nv
 from scipy.integrate import dblquad  # 20240519, for beam profile integration
+from scipy.constants import physical_constants
+
+
+# global variable (constant)
+elementary_charge = physical_constants["elementary charge"][0]
+
+
 
 
 # ------------------------- Creating Particle Matrix ----------------------- # 
@@ -187,8 +194,11 @@ def ParticleRate():
                         npps[k,j],err=dblquad(Gauss2D,y0,y1,lambda x: x0,lambda x: x1,epsrel = 1e-10, epsabs = 0)
                         #print("nv.xvec=",nv.xvec)   # Debug
                         #print("nv.yvec=",nv.yvec)   # Debug                     
-        #print("npps=",npps)    # Debug, controlled January 2025, OK, it makes sense!
-    return npps*nv.Intensity/nv.Qe # assuming particles with charge 1 (protons)   # use scipy for Qe
+        if nv.Debug=="Beam":
+            print("TempPhysicalModels:ParticleRate npps=",npps)    # Debug, controlled January 2025, OK, it makes sense!
+            # npps is an array with dimentsion [nwires][nbins]
+        # nv.Intensity is in Amps    
+    return npps*nv.Intensity/elementary_charge # assuming particles with charge 1 (protons)
 
 
 
@@ -281,10 +291,10 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     # RH is Richardson constant 120.173	 [A/cm2 K2] - factor 1e4 converts it to to [A/m2 K2]   
     # wfun is material work function [eV]
     if nv.Debug=="Thermionic":
-        print("Debug   TempPhysicalModels:thcurrent:nv.Material.wfun: ",nv.Material.wfun)
-        print("Debug   TempPhysicalModels:thcurrent:nv.RH: ",nv.RH)
-        print("Debug   TempPhysicalModels:thcurrent:nv.eSup: ",nv.eSup)
-        print("Debug   TempPhysicalModels:thcurrent:nv.Temperature: ",Temperature)
+        print("Debug   TempPhysicalModels:CalculateCurrent:thcurrent:nv.Material.wfun: ",nv.Material.wfun)
+        print("Debug   TempPhysicalModels:CalculateCurrent:thcurrent:nv.RH: ",nv.RH)
+        print("Debug   TempPhysicalModels:CalculateCurrent:thcurrent:nv.eSup: ",nv.eSup)
+        print("Debug   TempPhysicalModels:CalculateCurrent:thcurrent:nv.Temperature: ",Temperature)
     #thcurrent = nv.eSup*1e+4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))   # Current [A]
     thcurrent = nv.eSup*1e4*nv.RH*Temperature**2*np.exp(-nv.Material.wfun*nv.Qe/(nv.BZ*Temperature))   # Current [A]
 
@@ -300,6 +310,12 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
     # Here we transform the charge calculated before to current. 
 
     Super_Q = nparts*Q*nv.Qe/dt   # [A]
+    if (nv.Debug=="Electric") or (nv.Debug=="SEY"):
+        print("TempPhysicalModels:CalculateCurrent Super_Q: ",Super_Q)
+        print("TempPhysicalModels:CalculateCurrent len(Super_Q): ",len(Super_Q))
+        for k in range(0,len(Super_Q)):
+            print(np.sum(Super_Q[k,:]))
+    
     
     # At this stage we have a matrix with the amount of current generated in each point in space, 
     # but we are interested in how much total current is generated in the detector, so we need to add up 
@@ -318,10 +334,19 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         Current1 = []; Current2 = []
         if nv.SEM_Plane == "Vertical":
             Super_Q = Super_Q.copy().transpose()
-        for k in range(0,len(Super_Q)):
-            Current1 += [Surf*np.sum(Super_Q[k,:])]                           # Current  Without Thermionic emission [A]
-            Current2 += [Surf*np.sum(Super_Q[k,:])+np.sum(thcurrent[k,:])]      # Current With Thermionic Emission [A] 
-   
+        for k in range(0,len(Super_Q)):  # this is a loop over wires in fact
+            #Current1 += [Surf*np.sum(Super_Q[k,:])]                           # Current  Without Thermionic emission [A]
+            #Current2 += [Surf*np.sum(Super_Q[k,:])+np.sum(thcurrent[k,:])]      # Current With Thermionic Emission [A] 
+            # 20250131: , remove Surf?  ****
+            #Current1 += [Surf*np.sum(Super_Q[k,:])]                           # SEM current [A]
+            #Current2 += [Surf*np.sum(thcurrent[k,:])]                         # Thermionic current [A] 
+            Current1 += [np.sum(Super_Q[k,:])]                           # SEM current [A]
+            Current2 += [np.sum(thcurrent[k,:])]                         # Thermionic current [A] 
+
+        print("Current1: ", Current1)  # debug array of np.floats with dimension = number of wires
+        print("Current2: ", Current2)  # debug array of np.floats with dimension = number of wires
+
+    
     elif nv.DetType == "FOIL":
         Surf = nv.FOIL_xwidth/nv.FOIL_nx * nv.FOIL_ywidth/nv.FOIL_ny
         Current1 = 0.0; Current2 = 0.0
@@ -371,7 +396,7 @@ def BeamHeating(Temperature, numberStepPulse):
         #nparts = NumberParticles(nv.Nparticles) / numberStepPulse # 2correct
         dt = nv.dtPulse        
         nparts = ParticleRate()*dt     
-        print("nparts = ", nparts, " dt = ",dt) # debug (Beam)
+        print("TempPhysicalModels:BeamHeating nparts = ", nparts, nparts.sum()," dt = ",dt) # debug (Beam)
 
     if nv.Debug=='Beam':
         fout='Output/beam_profile.txt'
@@ -391,16 +416,19 @@ def BeamHeating(Temperature, numberStepPulse):
     # 2024.05.19: removed 1e-4 because nparts is just number of particles
     # 1e6 converts MeV to eV, and nv.Qe converts them to Joules
     # nv.enemat is in MeV*g/cm2, CpT is in [K/g*J] 
-    dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
-
-    # back to old approach:
-    # 100 is to convert m to cm 
-    dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
+    if nv.DetType == "WIRESCAN":
+        nptsum=0
+        dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*elementary_charge / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
+        # back to old approach:
+        # 100 is to convert m to cm 
+        dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*elementary_charge*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
+        nptsum=nparts.sum()
     if nv.DetType == "SEM":
+        nptsum=[]
         dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.SEM_wWidth*nv.SEM_wRes*nv.Material.CpT)
         dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.SEM_wWidth*100  # J
-        
-    
+        for k in range(0,nv.SEM_nWires):
+            nptsum.append(np.sum(nparts[k,:]))
     
     
     # debug:
@@ -416,7 +444,7 @@ def BeamHeating(Temperature, numberStepPulse):
     # As an output we obtain the temperature variation for each point.    
     # 2024.03.30: include also total number of particles in output, do we need it? We have nv.Nparticles
     # 2024.05.20: include energy in the output
-    return np.asanyarray(dtemp),np.asarray(dene),nparts.sum()
+    return np.asanyarray(dtemp),np.asarray(dene),nptsum
 
 # ---------------------------------- Radiative Cooling -------------------------- # 
 
