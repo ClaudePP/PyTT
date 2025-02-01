@@ -15,10 +15,10 @@ sigx: 5.0e-3
 sigy: 5.0e-3
 x0: 0.0		
 y0: 0.0		
-tpulse: 3           # [s] DC current, split beam
-BCurrent: 70e-6     # [A]
+tpulse: 1           # [s] 
+BCurrent: 70e-6     # [A] - 70 uA
 Npart: -
-frec: 0.5           # [Hz]
+frec: 0.3           # [Hz]
 # ---------------- Define Detector ----------------- #
 Material: Tungsten
 DetType: SEM
@@ -34,8 +34,8 @@ SEM_Npulses: 1
 TempSIM: Yes
 T0: 300
 EdepMethod: Interpolated
-dtPulse: 1e-2
-dtCooling: 1e-2
+dtPulse: 1e-3
+dtCooling: 1e-3
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		
 ThermionicCooling: Yes	

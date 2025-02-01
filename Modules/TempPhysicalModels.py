@@ -383,7 +383,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
 
 def BeamHeating(Temperature, numberStepPulse):
     
-   
+    # Determine the number of particles nparts
     if (nv.DetType == "WIRESCAN") and (nv.WIRESCAN_Type == 1):
         dt = numberStepPulse
         # ms: 20230808, after Manon:
@@ -396,8 +396,12 @@ def BeamHeating(Temperature, numberStepPulse):
         #nparts = NumberParticles(nv.Nparticles) / numberStepPulse # 2correct
         dt = nv.dtPulse        
         nparts = ParticleRate()*dt     
-        print("TempPhysicalModels:BeamHeating nparts = ", nparts, nparts.sum()," dt = ",dt) # debug (Beam)
+        #print("TempPhysicalModels:BeamHeating nparts = ", nparts, nparts.sum()," dt = ",dt) # debug (Beam)
+        
+    print(f"[DEBUG] TempPhysicalModels BeamHeating: nparts = {nparts}, sum = {nparts.sum()}, dt = {dt}")
+    
 
+    # Debugging to output file
     if nv.Debug=='Beam':
         fout='Output/beam_profile.txt'
         with open(fout,'a') as fo:
@@ -409,36 +413,39 @@ def BeamHeating(Temperature, numberStepPulse):
                     fo.write(str(k)+','+str(j)+','+str(nparts[k][j])+'\n')
 
 
-
+    # Energy deposition and temperature increase calculation:
     # 2024.04.11: added 1e-4 because nparts in in 1/m2 now
     # nv.Material.CpT [J/(gK)]
     #dtemp =  nparts *  1e-4 * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / nv.Material.CpT
     # 2024.05.19: removed 1e-4 because nparts is just number of particles
     # 1e6 converts MeV to eV, and nv.Qe converts them to Joules
     # nv.enemat is in MeV*g/cm2, CpT is in [K/g*J] 
+    energy_factor = (nv.enemat + nv.Ele_enemat * nv.Particle.Nelectrons * nv.Mu) * 1e6 * elementary_charge
+    material_cp = nv.Material.CpT  # Specific heat capacity [J/(gK)]
     if nv.DetType == "WIRESCAN":
-        nptsum=0
-        dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*elementary_charge / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
-        # back to old approach:
-        # 100 is to convert m to cm 
-        dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*elementary_charge*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
+        #nptsum=0
+        #dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*elementary_charge / (nv.WIRESCAN_wWidth*nv.WIRESCAN_wRes*nv.Material.CpT)
+        dene = nparts * energy_factor * nv.Material.rho * nv.WIRESCAN_wWidth * 100  # J
+        dtemp = nparts * energy_factor / (nv.WIRESCAN_wWidth * nv.WIRESCAN_wRes * material_cp)
+        #dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*elementary_charge*nv.Material.rho*nv.WIRESCAN_wWidth*100  # J
         nptsum=nparts.sum()
     if nv.DetType == "SEM":
-        nptsum=[]
-        dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.SEM_wWidth*nv.SEM_wRes*nv.Material.CpT)
-        dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.SEM_wWidth*100  # J
-        for k in range(0,nv.SEM_nWires):
-            nptsum.append(np.sum(nparts[k,:]))
-    
-    
-    # debug:
-    print("dene=",dene)    
+        dtemp = nparts * energy_factor / (nv.SEM_wWidth * nv.SEM_wRes * material_cp)
+        dene = nparts * energy_factor * nv.Material.rho * nv.SEM_wWidth * 100  # J
+        nptsum = [np.sum(nparts[k, :]) for k in range(nv.SEM_nWires)]
 
-    cp = nv.Material.CpT     # [J/(gK)]
+        # rm:        
+        #nptsum=[]
+        #dtemp =  nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e+6*nv.Qe / (nv.SEM_wWidth*nv.SEM_wRes*nv.Material.CpT)
+        #dene = nparts * (nv.enemat+nv.Ele_enemat*nv.Particle.Nelectrons*nv.Mu)*1e6*nv.Qe*nv.Material.rho*nv.SEM_wWidth*100  # J
+        #for k in range(0,nv.SEM_nWires):
+        #    nptsum.append(np.sum(nparts[k,:]))
+        
+    # Debugging output
+    print(f"[DEBUG] TempPhysicalModels:BeamHeating: dene = {dene}")
+
     # 1e6 is to convert g/cm3 to g/m3 
-    dtemp = dene/(cp * nv.eVol * nv.Material.rho * 1e6)
-
-
+    dtemp = dene/(material_cp * nv.eVol * nv.Material.rho * 1e6)
 
     #print("Debug TempPhysicalModels:BeamHeating:nv.Material.CpT ",nv.Material.CpT)
     # As an output we obtain the temperature variation for each point.    
