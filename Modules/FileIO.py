@@ -430,11 +430,11 @@ def WriteResults(foldername):
             f1.write("Time[us],"+NpartStr+MaxTempStr+SEMcurrStr+THcurrStr+"\n")   # multi wire version
             for j in range(0,len(nv.V_MaximumTemperature[0])):
                 otime=str(round(nv.V_Time[j]*1e+6,6))   # time converted from s to us
-                print("nv.V_Npar[j] = ",j,nv.V_Npar[j])
+                #print("nv.V_Npar[j] = ",j,nv.V_Npar[j])
                 #onpa=str(round(nv.V_Npar[j],6))       # number of particles hitting the wires
                 onpa=",".join(str(round(x,0)) for x in nv.V_Npar[j])
                 #omxt=str(round(nv.V_MaximumTemperature[j],3)) # max wire temparature
-                print("nv.V_MaximumTemperature[j] = ",j,nv.V_MaximumTemperature[:,j])
+                #print("nv.V_MaximumTemperature[j] = ",j,nv.V_MaximumTemperature[:,j])
                 omxt=",".join(str(round(x,1)) for x in nv.V_MaximumTemperature[:,j])
                 #osem=str(nv.V_Current1[j]*1e6)    # SEM current A->uA 
                 #osem=",".join(str(round(x*1e6,4)) for x in nv.V_Current1[:,j])

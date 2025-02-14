@@ -399,7 +399,8 @@ def BeamHeating(Temperature, numberStepPulse):
         nparts = ParticleRate()*dt     
         #print("TempPhysicalModels:BeamHeating nparts = ", nparts, nparts.sum()," dt = ",dt) # debug (Beam)
         
-    print(f"[DEBUG] TempPhysicalModels BeamHeating: nparts = {nparts}, sum = {nparts.sum()}, dt = {dt}")
+    if nv.Debug=="Beam":       
+        print(f"[DEBUG] TempPhysicalModels BeamHeating: nparts = {nparts}, sum = {nparts.sum()}, dt = {dt}")
     
 
     # Debugging to output file
@@ -443,7 +444,8 @@ def BeamHeating(Temperature, numberStepPulse):
         #    nptsum.append(np.sum(nparts[k,:]))
         
     # Debugging output
-    print(f"[DEBUG] TempPhysicalModels:BeamHeating: dene = {dene}")
+    if nv.Debug=="Edep":
+        print(f"[DEBUG] TempPhysicalModels:BeamHeating: dene = {dene}")
 
     # 1e6 is to convert g/cm3 to g/m3 
     dtemp = dene/(material_cp * nv.eVol * nv.Material.rho * 1e6)

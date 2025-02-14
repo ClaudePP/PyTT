@@ -3,32 +3,32 @@
 #       Explanation of each input at the end of file.                 #
 # ------------------------------------------------------------------- #
 
-# SEM grid (harfe) in front of TATTOOS target
+# SEM grid (harfe) in front of UCN
 # by Mariusz Sapinski
-# 2025.01.25
+# 2025.02.13
 
 # ------------ Define Beam ------------- #
 Particle: Proton 
 Energy: 590         # [MeV]
 BeamType: Gaussian
-sigx: 3.0e-3		
-sigy: 3.0e-3
+sigx: 4.7e-3		
+sigy: 4.7e-3
 x0: 0.0		
 y0: 0.0		
 tpulse: 3.4           # [s] 
-BCurrent: 100e-6     # [A] - 70 uA
+BCurrent: 2e-3     # [A] - 2 mA
 Npart: -
 frec: 0.3           # [Hz]
 # ---------------- Define Detector ----------------- #
-Material: Tungsten
+Material: Molybdenum
 DetType: SEM
 # ------------ Parameters for SEM ------------------ #
 SEM_Plane: Horizontal
 SEM_nWires: 3
-SEM_wWidth: 100e-6   # [m] wire diameter  
+SEM_wWidth: 40e-6     # [m] wire diameter  
 SEM_wLength: 5e-2 
-SEM_wSep: 2.0e-3 	
-SEM_wRes: 1e-3 		 # [m] simulation resolution
+SEM_wSep: 8.0e-3      # [m]  	
+SEM_wRes: 1e-3 		  # [m] simulation resolution
 SEM_Npulses: 1 
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
@@ -48,5 +48,5 @@ eta: 0.0     # fraction of protons stopped in the target (for low energy beams)
 BSp: 0.0     # proton backscattering
 BSe: 0.0     # electron backscattering
 # ---------- Debugging --------------------------------- #
-Debug: None                 # options: None, Beam, Edep, Thermionic, Radiative, Electric, SEY
+Debug: Electric                 # options: None, Beam, Edep, Thermionic, Radiative, Electric, SEY
 # ------------------------------------------------------ #
