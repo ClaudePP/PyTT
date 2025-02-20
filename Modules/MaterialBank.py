@@ -77,7 +77,9 @@ class Material:
 
             f_ems.close()
 
-        self.epsT = self.GetEmissivity(np.array([[300]]))   # Default at 300 K
+        self.epsT = self.GetEmissivity(np.array([[300.0]]))   # Default at 300 K
+        #self.epsT = self.GetEmissivity([[300.0]])   # Default at 300 K
+
 
         # ----------------------------------- Specific Heat ----------------------------------------- #
 	# 
@@ -237,14 +239,17 @@ class Material:
 
     def GetEmissivity(self,Temp):
         # Emissivity is a numpy array, with the same dimentions as Temp
-        Emissivity = Temp**0
+        #Emissivity = Temp**0
+        Emissivity = np.full_like(Temp, 0.99, dtype=float)   # correct way to create a table with the same dimensions as Temp
+        #print("DEBUG MaterialBank:GetEmissivity = ",Emissivity)
         if nv.Debug=="Radiative":
             print("Debug   MaterialBank:GetEmissivity for segments of the target: ")
         for i in range(0,len(Emissivity)):
             for j in range(0,len(Emissivity[i])):
                 Emissivity[i][j] = self.GetParameterValue(self.D_Ems,Temp[i][j])
+                #print(i,j,Emissivity[i][j])
         if nv.Debug=="Radiative":          
-            print(Emissivity)        
+            print("Emm: ", Emissivity)        
         return Emissivity
 
 

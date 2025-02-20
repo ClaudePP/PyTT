@@ -239,9 +239,9 @@ def TempEvolSEM():
                 Time[l] = t
                 #print("Debug, Temperature = ",Temp)
                 for iwir in range(nv.SEM_nWires):
-                    print("Debug, Temperature = ",iwir,Temp[iwir],np.max(Temp[iwir]))
+                    #print("Debug, Temperature = ",iwir,Temp[iwir],np.max(Temp[iwir]))
                     Tmax[iwir][l-1] = np.max(Temp[iwir][:])
-                    print(Tmax[iwir][l-1])
+                    #print(Tmax[iwir][l-1])
 
                 for mk in range(0,len(current2)):
                     FancyI[mk][l] = current2[mk]

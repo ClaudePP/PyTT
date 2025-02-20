@@ -1,2 +1,4 @@
 jupyter notebook --NotebookApp.iopub_data_rate_limit=1e10
 
+This is directory with outputs of simulations and analysis scripts.
+
