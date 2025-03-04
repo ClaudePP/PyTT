@@ -1,0 +1,56 @@
+# ------------- Input File for PyTT ------------------ #
+#     Do NOT change the description names              #
+#     There must be at least one space between name    #
+#	    and value.					                     #
+# ---------------------------------------------------- #
+
+# author: North Star team
+# February 2025
+
+
+# ------------ Define Beam ------------- #
+Particle: Electron 
+Energy: 40.0    # [MeV]
+BeamType: Gaussian
+sigx: 5.1e-3    # [m] 
+sigy: 5.1e-3    # [m]
+x0: 0.0 
+y0: 0.0 
+tpulse: 3.4     # [s]
+BCurrent: 1e-3  # [A]
+Npart: -
+frec: 0.3       # [Hz]
+# ---------------- Define Detector ----------------- #
+Material: Tungsten
+DetType: SEM 
+# ------------ Parameters for SEM ------------------ # 
+SEM_Plane: Horizontal
+SEM_nWires: 3 
+SEM_wWidth: 1e-4     # [m] 100 um
+SEM_wLength: 3e-2    # [m] 3 cm 
+SEM_wSep: 1e-3       # [m] 1 mm
+SEM_wRes: 1e-3       # [m] 1 mm 
+SEM_Npulses: 1 
+# ------------- Temperature Simulation Parameters -------------- # 
+TempSIM: Yes 
+T0: 300 
+EdepMethod: dEdxValue   # options: Interpolated, dEdxValue
+#EneDep: EneDepData/Electron_Tungsten.txt
+dEdx: 6.44         # MeV*g/cm2
+dtPulse: 1e-3 
+dtCooling: 1e-3 
+EnableParameterVariation: Yes 
+RadiativeCooling: Yes 
+ThermionicCooling: Yes 
+ConductiveCooling: No 
+SublimationCooling: No 
+# ------------- Intensity Simulation Parameters -------------- # 
+#IntensitySimulation: Yes   # me@20250225: keep full string
+IntSIM: Yes 
+mu: 1.0      # fraction of electrons stopped in the target (for negative ion beam) 
+eta: 1.0     # fraction of protons stopped in the target (for low energy beams)
+BSp: 0.0     # proton backscattering
+BSe: 0.0     # electron backscattering
+# ---------- Debugging --------------------------------- #
+Debug: None                 # options: None, Beam, Edep, Thermionic, Radiative, Electric, SEY
+# ------------------------------------------------------ #

@@ -11,11 +11,11 @@
 Particle: Proton 
 Energy: 590         # [MeV]
 BeamType: Gaussian
-sigx: 5.0e-3		
-sigy: 5.0e-3
+sigx: 5.0e-3        # [m]		
+sigy: 5.0e-3        # [m]
 x0: 0.0		
 y0: 0.0		
-tpulse: 3.4           # [s] 
+tpulse: 3.4         # [s] 
 BCurrent: 70e-6     # [A] - 70 uA
 Npart: -
 frec: 0.3           # [Hz]
@@ -26,16 +26,16 @@ DetType: SEM
 SEM_Plane: Horizontal
 SEM_nWires: 3
 SEM_wWidth: 100e-6   # [m] wire diameter  
-SEM_wLength: 5e-2 
-SEM_wSep: 2.0e-3 	
+SEM_wLength: 5e-2    # [m] 
+SEM_wSep: 2.0e-3 	 # [m]
 SEM_wRes: 1e-3 		 # [m] simulation resolution
 SEM_Npulses: 1 
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
-T0: 300
+T0: 300              # [K]
 EdepMethod: Interpolated
-dtPulse: 1e-3
-dtCooling: 1e-3
+dtPulse: 1e-3        # [s]
+dtCooling: 1e-3      # [s] 
 EnableParameterVariation: Yes
 RadiativeCooling: Yes		
 ThermionicCooling: Yes	

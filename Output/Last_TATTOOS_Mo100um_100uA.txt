@@ -1,6 +1,6 @@
 # --------------- PyTT output file ------------------ 
 # input file: Simulations/PSI_TATTOOS_MDH12.txt 
-# execution date and time: 2025/02/14 16:58:20 
+# execution date and time: 2025/02/20 21:37:49 
 # Particle: Proton   Material: Molybdenum 
 # EdepMethod: Interpolated 
 # dEdx: 1.642 [MeV*cm2/g] 

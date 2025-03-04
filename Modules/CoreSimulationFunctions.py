@@ -181,11 +181,11 @@ def TempEvolSEM():
                 if nv.ConductiveCooling == 1:
                     cold3,cene3 = TempPhysicalModels.ConductiveCooling(nv.dtCooling,Temp)
                 else:
-                    cold3,cene3 = Temp * 0.0
+                    cold3 = Temp * 0.0; cene3 = Temp * 0.0 
 
                 if nv.SublimationCooling == 1:
                     cold4,cene4 = TempPhysicalModels.SublimationCooling(nv.dtCooling, Temp)
-                else: cold4,cene4 = Temp*0.0
+                else: cold4 = Temp * 0.0; cene4 = Temp * 0.0
 
                 #Temp = Temp + nv.RadiativeCooling*cold1 + nv.ThermionicCooling*cold2 + nv.ConductiveCooling*cold3 + nv.SublimationCooling*cold4
                 # 2025.01.26

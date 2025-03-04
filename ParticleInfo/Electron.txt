@@ -2,4 +2,4 @@
 Name: Electron
 ParticleMass: 9.109E-31		# [Kg] Mass of particle.e.
 Nprotons: 0.0
-Nelectrons: 0.0
+Nelectrons: 1.0
