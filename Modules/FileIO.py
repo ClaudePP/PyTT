@@ -208,8 +208,8 @@ def LoadInputFile(FileName):
     
     print(d_Params)
     nv.EdepMethod = d_Params["EdepMethod:"]
-    #ostrEdepMethod = nv.EdepMethod   # not needed ?
     nv.enemat=0.0
+    # dE/dx interpolated from data in a file:
     if nv.EdepMethod == "Interpolated":
         # data with dE/dx:
         EneDep_Filename = "EneDepData/" + d_Params["Particle:"] + "_" + d_Params["Material:"] + ".txt"
@@ -248,10 +248,13 @@ def LoadInputFile(FileName):
         # check if field Edep exists, throw exception if not
         try: 
             if d_Params["DetType:"]=="WIRESCAN":
-                # nv.enemat is in [MeV*cm2/g]
+                # nv.enemat is in [MeV*cm2/g] # what about pi/4? ****************?
                 nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.WIRESCAN_wWidth*100)
             elif d_Params["DetType:"]=="SPLITTER":
                 nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.SPLITTER_wDepth*100)
+            elif d_Params["DetType:"]=="SEM":
+                print(d_Params["Edep:"],nv.SEM_wWidth)
+                nv.enemat = float(d_Params["Edep:"])/(nv.Material.rho*nv.SEM_wWidth*100)
             else:
                 print("Edep not yet implemented for this detector type")
                 exit()                
@@ -420,7 +423,7 @@ def WriteResults(foldername):
             NpartStr=""
             MaxTempStr=""
             SEMcurrStr=""
-            THcurrStr="THcurr"
+            THcurrStr=""
             for k in range(nv.SEM_nWires):
                 NpartStr+="Npart"+str(k)+","
                 MaxTempStr+="MaxTemp"+str(k)+"[K],"

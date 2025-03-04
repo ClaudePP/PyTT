@@ -248,6 +248,7 @@ def CalculateCurrent(Npart,Temperature,numberStepPulse,dt):
         # dEdxel - [eV/cm]
         # 5.4e-6 - [amu/eV]
     SEYp = 0.01*Ls*dEdxel*(1.0+1.0/(1.0+(5.4e-6*BEnergy_eV/pmassamu)))
+    SEYp = SEYp*nv.Particle.Nprotons # it must be zero for electron beam
     if nv.Debug=='SEY':
         print("Debug   TempPhysicalModels:SEY protons = ",SEYp)
         #exit(0)
