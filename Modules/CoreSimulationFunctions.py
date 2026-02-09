@@ -357,7 +357,10 @@ def TempEvolSPLITTER():
             Npart=np.ones(TOTAL)
             dt=1e-3
             Current1, Current2 = TempPhysicalModels.CalculateCurrent(Npart,Temp,numberStepPulse,dt)
-            heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+            #heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+            # is this correct?
+            heat, hene, npart = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)               
+
             Temp = Temp + heat
 
             Flag_Current = 1.0
@@ -376,7 +379,7 @@ def TempEvolSPLITTER():
         #
         elif step <= numberStepPulse:
                 
-            heat,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
+            heat,_,_ = TempPhysicalModels.BeamHeating(Temp, numberStepPulse)
             cold1 = TempPhysicalModels.RadiativeCooling(nv.dtPulse, Temp)
             cold2 = TempPhysicalModels.ThermionicCooling(nv.dtPulse,Temp)
                 

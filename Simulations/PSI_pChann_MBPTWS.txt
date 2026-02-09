@@ -8,7 +8,6 @@
 # author: Mariusz Sapinski
 # last modification: 2024.04.10
 
-
 # ------------ Define Beam ------------- #
 Particle: Proton	# From ParticleInfo/Proton.txt
 Energy: 590		    # [MeV] Make sure the energy deposition number is in file 'particle_material.txt' file
@@ -28,7 +27,7 @@ DetType: WIRESCAN
 # ------------ Parameters for WIRESCAN ------------- #
 WIRESCAN_Plane: Horizontal
 WIRESCAN_IniPos: -4.0e-2       # [m] 
-WIRESCAN_EndPos:  12.0e-2      # [m]
+WIRESCAN_EndPos: 12.0e-2       # [m]
 WIRESCAN_wShape: Wire          # options: Wire, Strip
 WIRESCAN_wWidth: 24e-6         # [m], wire diameter
 WIRESCAN_wLength: 1.0e-2       # [m], length of the wire considered in simulation

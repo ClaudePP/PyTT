@@ -54,4 +54,6 @@ mu: 0.0
 eta: 0.0
 BSp: 0.0
 BSe: 0.0
+# ---------- Debugging --------------------------------- #
+Debug: None                 # options: None, Beam, Edep, Thermionic, Radiative
 # ------------------------------------------------------ #

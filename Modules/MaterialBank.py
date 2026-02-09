@@ -211,6 +211,7 @@ class Material:
         if len(D_Par["Temperature"]) == 1:
             Parameter = D_Par["Parameter"][0]
         else:
+            print(D_Par["Temperature"])
             for k in range(0,len(D_Par["Temperature"])):
           
                 if (T <= D_Par["Temperature"][k]) and (k == 0):
@@ -239,11 +240,12 @@ class Material:
 
     def GetEmissivity(self,Temp):
         # Emissivity is a numpy array, with the same dimentions as Temp
-        #Emissivity = Temp**0
-        Emissivity = np.full_like(Temp, 0.99, dtype=float)   # correct way to create a table with the same dimensions as Temp
+        Emissivity = Temp**0
+        #Emissivity = np.full_like(Temp, 0.99, dtype=float)   # correct way to create a table with the same dimensions as Temp
         #print("DEBUG MaterialBank:GetEmissivity = ",Emissivity)
         if nv.Debug=="Radiative":
             print("Debug   MaterialBank:GetEmissivity for segments of the target: ")
+            print("Emissivity shape: ", Emissivity.shape)
         for i in range(0,len(Emissivity)):
             for j in range(0,len(Emissivity[i])):
                 Emissivity[i][j] = self.GetParameterValue(self.D_Ems,Temp[i][j])
@@ -257,11 +259,12 @@ class Material:
         Cp = Temp**0
         if nv.Debug=="Edep":
             print("Debug   MaterialBank Cp for segments of the target: ")
+            print("Cp shape: ", Cp.shape)
         for i in range(0,len(Cp)):
             for j in range(0,len(Cp[i])):
                 Cp[i][j] = self.GetParameterValue(self.D_Cp,Temp[i][j])
         if nv.Debug=="Edep":        
-            print(Cp)        
+            print("Cp: ", Cp)        
         return Cp
 
 

@@ -5,7 +5,7 @@
 
 # Linac4 SEM grid
 # by Araceli Navarro
-
+# modified my mariusz.sapinski@psi.ch (2026.02.09)
 
 
 # ------------ Define Beam ------------- #
@@ -48,4 +48,6 @@ mu: 1.0
 eta: 1.0
 BSp: 0.0     # proton backscattering
 BSe: 0.0     # electron backscattering
+# ---------- Debugging --------------------------------- #
+Debug: None                 # options: None, Beam, Edep, Thermionic
 # ------------------------------------------------------ #

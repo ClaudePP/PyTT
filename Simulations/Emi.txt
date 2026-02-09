@@ -29,6 +29,7 @@ DetType: WIRESCAN
 WIRESCAN_Plane: Horizontal
 WIRESCAN_IniPos: -2.96e-2      # [m], nominal -9.96e-2
 WIRESCAN_EndPos:  2.96e-2      # [m], nominal 12.04e-2
+WIRESCAN_wShape: Wire          # options: Wire, Strip
 WIRESCAN_wWidth: 30e-6
 WIRESCAN_wLength: 2e-2
 WIRESCAN_wRes: 5e-4
@@ -38,6 +39,7 @@ WIRESCAN_Npulses: 1
 # ------------ Temp Simulation Parameters -------------- #
 TempSIM: Yes
 T0: 300
+EdepMethod: Interpolated          #  options: Value (then must define Edep), Interpolated (from file), BetheBloch
 dtPulse: 5e-4
 dtCooling: 1e-3
 EnableParameterVariation: Yes
@@ -51,4 +53,6 @@ mu: 1.0
 eta: 1.0
 BSp: 0.0
 BSe: 0.0
+# ---------- Debugging --------------------------------- #
+Debug: None                 # options: None, Beam, Edep, Thermionic, Radiative, Electric, SEY
 # ------------------------------------------------------ #

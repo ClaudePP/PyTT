@@ -9,25 +9,26 @@
 import numpy as np
 from Modules import ParticleBank as pb
 from Modules import MaterialBank as mb
+import scipy.constants as const
 
 ################################################
 #            Physical Constants                #
 ################################################
 # to do: use scipy.constants
 
-ST = 5.6704E-8 		    # [J/sec m2 K4] Stefan-Bolthman constant for black-body radiation law
-BZ = 1.38065e-23		# [J/K] Bolzmann constant
+ST = const.Stefan_Boltzmann # [J/sec m2 K4] Stefan-Bolthman constant for black-body radiation law
+BZ = const.Boltzmann      # [J/K] Bolzmann constant
 RH = 120.173			# [A/cm2 K2]	Richardson constant
-h = 6.626e-34			# [m2kg/s] Planks constant
-Pmass = 1.67E-27 		# [Kg] Mass of a proton
-Emass = 9.109E-31 		# [Kg] Mass of an electron
+h = const.Planck		# [m2kg/s] Planks constant
+Pmass = const.m_p       # [Kg] Mass of a proton
+Emass = const.m_e       # [Kg] Mass of an electron
 Eradius = 2.81794e-15   # [m] classical radius of an electron
 ratio = Emass/Pmass	    # ratio
 Na = 6.022E+23		    # Avogadro's Number [particles/mole]
 vluz = 2.998E+8		    # [m/s] Ligth velocity   - double definition
 pmass = 1.007316		# Proton relative mass
 Qe = 1.60218e-19		# [C] elementary charge
-re = 2.817940289e-15	# [m] Clasical electron radius
+re = 2.817940289e-15	# [m] Clasical electron radius - double definition
 Um = 1.9944e-26         # [kg/uma] Mass of uma
 Amu = 6.022e+26         # [uma/kg]
 kgMeV = 5.6096e+29      # [MeV/kg] for particle mass conversion

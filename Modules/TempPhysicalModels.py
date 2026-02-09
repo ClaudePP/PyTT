@@ -436,6 +436,11 @@ def BeamHeating(Temperature, numberStepPulse):
         dtemp = nparts * energy_factor / (nv.SEM_wWidth * nv.SEM_wRes * material_cp)
         dene = nparts * energy_factor * nv.Material.rho * nv.SEM_wWidth * 100  # J
         nptsum = [np.sum(nparts[k, :]) for k in range(nv.SEM_nWires)]
+    # copy from SEM, but maybe needs modifications?
+    if nv.DetType == "SPLITTER":
+        dtemp = nparts * energy_factor / (nv.SPLITTER_wWidth * nv.SPLITTER_wRes * material_cp)
+        dene = nparts * energy_factor * nv.Material.rho * nv.SPLITTER_wWidth * 100  # J
+        nptsum = nparts.sum()
 
         # rm:        
         #nptsum=[]
